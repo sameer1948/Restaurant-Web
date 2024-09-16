@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AdminService } from '../../admin.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { NgModule } from '@angular/core';
 
@@ -15,7 +14,7 @@ export class BranchComponent {
 
    branchs: Branch[] = [];
 
-  constructor(private adminService: AdminService) { }
+  constructor(private adminService: Admin) { }
 
   ngOnInit() {
     this.adminService.getEmployees().subscribe((data) =>{
