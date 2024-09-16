@@ -1,5 +1,5 @@
 {
-  "name": "my-app-rest",
+  "name": "restaurant-web",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:my-app-rest": "node dist/my-app-rest/server/server.mjs"
+    "serve:ssr:restaurant-web": "node dist/restaurant-web/server/server.mjs"
   },
   "private": true,
   "dependencies": {
