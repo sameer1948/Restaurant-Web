@@ -1,13 +1,35 @@
-import { Component } from '@angular/core';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
-})
-export class AppComponent {
-  title = 'my-app-rest';
+export class menuList {
 
-  one = 'One';
-  two = 'Two';
+  id : number;
+  item : string;
+  qty : string;
+  price : DoubleRange;
+  itemPngPath : string;
+
+  constructor(list: menuList) {
+    this.id = list.id;
+    this.item = list.item;
+    this.qty = list.qty;
+    this.price = list.price;
+    this.itemPngPath = list.itemPngPath;
+  }
 }
+
+// export class Car {
+//   id: number;
+//   make: string;
+//   model: string;
+//   color: string;
+//   year: Date;
+
+//   constructor(car) {
+//       {
+//         this.id = car.id;
+//         this.make = car.make || '';
+//         this.model = car.model || '';
+//         this.color = car.color || '';
+//         this.year = new Date(car.year).getYear();
+//       }
+//   }
+// }
