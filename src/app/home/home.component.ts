@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit{
 
   menuItems: Array<menuList> = [];
 
+  path : string = 'H:\\spring\\Restaurant\\src\\main\\resources\\static\\idly.png';
+
   constructor(private menuService : MenuService) {}
   
   ngOnInit(): void {

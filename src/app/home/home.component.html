@@ -1,4 +1,4 @@
-<div class="home-section">
+<!-- <div class="home-section">
     <mat-grid-list cols="4" rowHeight="100px">
         @for (tile of tiles; track tile) {
           <mat-grid-tile
@@ -7,34 +7,35 @@
             [style.background]="tile.color">{{tile.text}}</mat-grid-tile>
         }
       </mat-grid-list>    
+</div> -->
+
+<!-- This is the section for displaying menu -->
+<!-- TODO Add Responsive feature for this  -->
+<div class="home-section">
+  <mat-grid-list cols="3" rowHeight="1:1">
+      @for (item of menuItems; track item) {
+        <mat-grid-tile>
+          <mat-card class="menu-card" appearance="outlined">
+            <mat-card-header>
+              <div mat-card-avatar class="menu-image"></div>
+              <mat-card-title>item.item</mat-card-title>
+              <mat-card-subtitle><b> Price : {{item.price}} Qty : {{item.price}} </b> </mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image src={{item.itemPngPath}} alt={{item.itemPngPath}}>
+            <mat-card-content>
+              <p>sample description</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button>Add</button>
+              <button mat-button>Remove</button>
+            </mat-card-actions>
+          </mat-card>
+        </mat-grid-tile>
+      }
+    </mat-grid-list>    
 </div>
 
-<div>
-  <mat-grid-list >
-    <mat-grid-tile *ngFor="let item of menuItems; index as i; first as isFirst">  
-  
-  <!-- <li *ngFor="let item of menuItems; index as i; first as isFirst"> -->
-    {{item.id}}  {{item.qty}} {{item.price}} {{item.itemPngPath}} <span *ngIf="isFirst">default</span>
-    <mat-card class="example-card" appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>{{item.item}}</mat-card-title>
-        <mat-card-subtitle>{{item.qty}} {{item.price}}</mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-      <!-- <mat-card-content>
-        <p>
-          The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-          A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-          bred for hunting.
-        </p>
-      </mat-card-content> -->
-      <mat-card-actions>
-        <button mat-button>LIKE</button>
-        <button mat-button>SHARE</button>
-      </mat-card-actions>
-    </mat-card>
-  <!-- </li> -->
-  </mat-grid-tile>
-</mat-grid-list>
-  </div>
+<img src={{path}} alt="Girl in a jacket" width="500" height="600">
+
+<img [attr.src]=path />
+
