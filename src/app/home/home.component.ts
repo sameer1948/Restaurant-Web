@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../services/menu.service';
-import { error } from 'console';
-import { menuList } from '../model/menuList';
+import { MenuList } from '../model/MenuList';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
 
   tiles: Tile[] = [
     {text: 'One', cols: 3, rows: 1, color: 'lightblue'},
@@ -17,7 +16,7 @@ export class HomeComponent implements OnInit{
     {text: 'Four', cols: 2, rows: 1, color: '#DDBDF1'},
   ];
 
-  menuItems: Array<menuList> = [];
+  menuItems: Array<MenuList> = [];
 
   path : string = 'H:\\spring\\Restaurant\\src\\main\\resources\\static\\idly.png';
 

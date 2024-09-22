@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
@@ -22,45 +23,53 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ProfileComponent } from './profile/profile.component';
+//import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
-import { TransactionsComponent } from './orders/transactions/transactions.component';
-import { HttpClientModule  } from '@angular/common/http';
+//import { TransactionsComponent } from './orders/transactions/transactions.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { AdminModule } from './admin/admin.module';
+import { AddMenuComponent } from './menu/add-menu/add-menu.component';
+import { ModifyMenuComponent } from './menu/modify-menu/modify-menu.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RemoveMenuComponent } from './menu/remove-menu/remove-menu.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    ProfileComponent,
-    SettingsComponent,
-    TransactionsComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    DialogModule,
-    HttpClientModule,
-
-    MatButtonModule,
-    MatCardModule,
-    MatDividerModule,
-    MatGridListModule,
-    MatListModule,
-    MatLabel,
-    MatMenuModule,
-    MatIcon,
-    MatInputModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatTableModule,
-    MatToolbarModule,
-
-  ],
-  providers: [
-    provideClientHydration()
-  ],
-  bootstrap: [AppComponent]
-  
+@NgModule({ declarations: [
+        AppComponent,
+        HomeComponent,
+        //ProfileComponent,
+        SettingsComponent,
+       // TransactionsComponent,
+        AddMenuComponent,
+        ModifyMenuComponent,
+        RemoveMenuComponent
+    ],
+    bootstrap: [AppComponent], 
+    imports: [BrowserModule,
+        AdminModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        DialogModule,
+        FormsModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatGridListModule,
+        MatListModule,
+        MatLabel,
+        MatMenuModule,
+        MatIcon,
+        MatInputModule,
+        MatSelectModule,
+        MatSnackBarModule,        
+        MatSidenavModule,
+        MatTableModule,
+        MatToolbarModule,
+        ReactiveFormsModule], 
+        providers: [
+        provideClientHydration(),
+        provideHttpClient(withInterceptorsFromDi())
+    ] ,
 })
 export class AppModule { }

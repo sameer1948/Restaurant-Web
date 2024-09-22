@@ -1,19 +1,19 @@
 
-export class menuList {
+export class MenuList {
 
-  id : number;
-  item : string;
-  qty : string;
-  price : DoubleRange;
-  itemPngPath : string;
+  id : number = 0;
+  item : string = "";
+  qty : string = "";
+  price : number = 0;
+  itemPngPath : string = "";
 
-  constructor(list: menuList) {
-    this.id = list.id;
-    this.item = list.item;
-    this.qty = list.qty;
-    this.price = list.price;
-    this.itemPngPath = list.itemPngPath;
-  }
+  // constructor(list: MenuList) {
+  //   this.id = list.id;
+  //   this.item = list.item;
+  //   this.qty = list.qty;
+  //   this.price = list.price;
+  //   this.itemPngPath = list.itemPngPath;
+  // }
 }
 
 // export class Car {

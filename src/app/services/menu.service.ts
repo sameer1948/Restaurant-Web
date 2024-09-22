@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { menuList } from '../model/menuList';
+import { MenuList } from '../model/MenuList';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,8 @@ export class MenuService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllItems() : Observable<menuList[]> {
+  getAllItems() : Observable<MenuList[]> {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<menuList[]>(this.MENU_API_URL + 'fetch-all-menu', null, {headers : headers});
+    return this.httpClient.post<MenuList[]>(this.MENU_API_URL + 'fetch-all-menu', null, {headers : headers});
   }
 }
