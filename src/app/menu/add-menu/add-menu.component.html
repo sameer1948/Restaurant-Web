@@ -1,0 +1,83 @@
+<!-- <mat-card class="menu-card" appearance="outlined">
+  <form [formGroup]="form">
+    <mat-card-header>
+      <mat-card-title>Add New Item To Menu List</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="inputs-container">
+      <div formGroupName="menuItem">
+
+        <mat-form-field hintLabel="Max 15 characters">
+          <mat-label>Item Name</mat-label>
+          <input formControlName="item" matInput #input maxlength="15" placeholder="Ex. Nougat"
+            (input)="onInput($event)" />
+          <mat-hint align="end">{{value().length}}/15</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Select Quantity</mat-label>
+          <mat-select>
+            <mat-option formControlName="qty" value="option">Option</mat-option>
+          </mat-select>
+          <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field floatLabel="always">
+          <mat-label>Amount</mat-label>
+          <input formControlName="price" matInput type="number" class="example-right-align" placeholder="0" />
+          <span matTextPrefix>$&nbsp;</span>
+          <span matTextSuffix>.00</span>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Item Image Path</mat-label>
+          <input formControlName="item" matInput placeholder="Your Image Path" />
+          <mat-hint align="end">sample Path </mat-hint>
+        </mat-form-field>
+
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button type='submit' (click)="addItem()"> Add</button>
+      <button mat-button (click)="onClose()">Cancel</button>
+    </mat-card-actions>
+  </form>
+</mat-card> -->
+
+<h2 mat-dialog-title>Add New Item To Menu List</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="form">
+    <div formGroupName="menuItem">
+
+      <mat-form-field hintLabel="Max 15 characters">
+        <mat-label>Item Name</mat-label>
+        <input formControlName="item" matInput #input maxlength="15" placeholder="Ex. Nougat" (input)="onInput($event)" />
+        <mat-hint align="end">{{value().length}}/15</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always">
+        <mat-label>Select Quantity</mat-label>
+        <mat-select [(value)]="selectedQty">          
+          <mat-option *ngFor="let quantity of quantities" [value]=quantity>{{quantity}}</mat-option>            
+        </mat-select>
+        <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always">
+        <mat-label>Amount</mat-label>
+        <input formControlName="price" matInput type="number" class="example-right-align" placeholder="0" />        
+      </mat-form-field>
+
+      <mat-form-field floatLabel="always">
+        <mat-label>Item Image Path</mat-label>
+        <input formControlName="path" matInput placeholder="Your Image Path" />
+        <mat-hint align="end">sample Path </mat-hint>
+      </mat-form-field>
+
+    </div>
+
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onClose()"> Cancel </button>
+  <button mat-button type='submit' (click)="addItem()"> Add </button>
+</mat-dialog-actions>
