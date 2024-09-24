@@ -2,14 +2,31 @@
     background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
 }
 
-.menu-card {
-    //padding: 10px 10px;
-    border-style: ridge;
-    border-radius: 10%;
-  }
   
 .menu-image {
   //background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
   background-size: cover;
 }
+
+#menu-section {
+  background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+  flex-wrap: wrap;
   
+}
+
+.menu-card {
+  float: left;
+  width: 20%;
+  padding: 0 10px;
+  margin: 10px 10px;
+  
+}
+
+#ordered-section {
+  background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+  
+}
+
+.ordered-card {
+
+}
