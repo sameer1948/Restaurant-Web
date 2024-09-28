@@ -1,129 +1,109 @@
-<!-- <div class="home-section">
-    <mat-grid-list cols="4" rowHeight="100px">
-        @for (tile of tiles; track tile) {
-          <mat-grid-tile
-            [colspan]="tile.cols"
-            [rowspan]="tile.rows"
-            [style.background]="tile.color">{{tile.text}}</mat-grid-tile>
-        }
-      </mat-grid-list>    
-</div> -->
+<div class="container">
+  <!-- Food List Section -->
+  <div class="food-list" [class.full-width]="!orderedMenu.length">
+    <h2>Available Food Items</h2>
+    <div class="food-list-search">
+      <mat-form-field>
+        <mat-label><mat-icon>search</mat-icon> Search</mat-label>
+        <input matInput (keyup)="searchItem($event)" placeholder="Enter any Key" #input>
+      </mat-form-field>
+    </div>
+    <mat-grid-list cols="3" rowHeight="2:1">
+      <mat-grid-tile *ngFor="let food of menuItems">
+        <mat-card>
+          <mat-card-content>
+            <h3>{{ food.item }}</h3>
+            <p>{{ food.price | currency:'INR':true }}</p>
+            <img mat-card-image [src]="food.itemPngPath" alt="{{ food.item }}">
+            <!-- <button mat-button color="primary" (click)="addToCart(food)">Add</button> -->
+          </mat-card-content>
+          <mat-card-actions>
+            <!-- <button mat-button (click)="addItem(food)">Add</button>   -->
+            <button mat-icon-button color="primary" (click)="addItem(food)">
+              <mat-icon>post_add</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
 
-<!-- This is the section for displaying menu -->
-<!-- TODO Add Responsive feature for this  -->
-<!-- <div class="home-section">
-  <mat-grid-list cols="3" rowHeight="1:1">
-    @for (item of menuItems; track item) {
-    <mat-grid-tile>
-      <mat-card class="menu-card" appearance="outlined">
-        <mat-card-header>
-          <div mat-card-avatar class="menu-image"></div>
-          <mat-card-title>{{item.item}}</mat-card-title>
-          <mat-card-subtitle><b> Price : {{item.price}} Qty : {{item.qty}} </b> </mat-card-subtitle>
-        </mat-card-header>
-        <img mat-card-image src={{item.itemPngPath}} alt={{item.itemPngPath}}>
-        <mat-card-content>
-          <p>sample description</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-button (click)="addItem(item)">Add</button>
-          <button mat-button>Remove</button>
-        </mat-card-actions>
-      </mat-card>
-    </mat-grid-tile>
-    }
-    <mat-grid-tile>
-      dwsdiskdj
-    </mat-grid-tile>
-  </mat-grid-list>
-</div> -->
-<!-- 
-<mat-grid-list cols="4" rowHeight="100px">
-  @for (item of menuItems; track item) {
-  <mat-grid-tile [colspan]="3" id="menu-section">
-    <mat-card class="menu-card" appearance="outlined">
+  <!-- Selected Items Section -->
+  <div class="selected-items" *ngIf="orderedMenu.length">
+    <h2>Selected Food Items</h2>
+    <mat-form-field>
+      <mat-label><mat-icon>search</mat-icon> Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Enter any Key" #input>
+    </mat-form-field>
+    <mat-card class="menu-card">
       <mat-card-header>
-        <div mat-card-avatar class="menu-image"></div>
-        <mat-card-title>{{item.item}}</mat-card-title>
-        <mat-card-subtitle><b> Price : {{item.price}} Qty : {{item.qty}} </b> </mat-card-subtitle>
+
       </mat-card-header>
-      <img mat-card-image src={{item.itemPngPath}} alt={{item.itemPngPath}}>
       <mat-card-content>
-        <p>sample description</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="addItem(item)">Add</button>
-        <button mat-button>Remove</button>
-      </mat-card-actions>
-    </mat-card>
-  </mat-grid-tile>
-  }
-  <mat-grid-tile [colspan]="1">
-    <mat-card class="menu-card" appearance="outlined">
-      <mat-card-content>
-        <p>sample description</p>
-      </mat-card-content>
-    </mat-card>
-  </mat-grid-tile>
-</mat-grid-list> -->
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-
-<mat-grid-list cols="6">
-  <mat-grid-tile [colspan]="4" id="menu-section">
-    @for (item of menuItems; track item) {
-    <mat-card class="menu-card" appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="menu-image"></div>
-        <mat-card-title>{{item.item}}</mat-card-title>
-        <mat-card-subtitle><b> Price : {{item.price}} Qty : {{item.qty}} </b> </mat-card-subtitle>
-      </mat-card-header>
-      <img mat-card-image src={{item.itemPngPath}} alt={{item.itemPngPath}}>
-      <mat-card-content>
-        <p>sample description</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button (click)="addItem(item)">Add</button>
-        <button mat-button>Remove</button>
-      </mat-card-actions>
-    </mat-card>
-    }
-  </mat-grid-tile>
-
-  <mat-grid-tile [colspan]="2" id="ordered-section">
-    <mat-card class="ordered-card" appearance="outlined">
-      <mat-card-content>
-        @for (order of orderedMenu; track order) {
-        <span><strong>{{order.item}}</strong></span>
-        }
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
-          <!-- Position Column -->
-          <ng-container matColumnDef="demo-position">
-            <th mat-header-cell *matHeaderCellDef> No. </th>
-            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          <!-- Serial Column -->
+          <ng-container matColumnDef="serial">
+            <th mat-header-cell *matHeaderCellDef> S.No </th>
+            <td mat-cell *matCellDef="let element"> {{element.id}} </td>
           </ng-container>
-  
+
           <!-- Name Column -->
-          <ng-container matColumnDef="demo-name">
+          <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.item}} </td>
           </ng-container>
-  
-          <!-- Weight Column -->
-          <ng-container matColumnDef="demo-weight">
-            <th mat-header-cell *matHeaderCellDef> Weight </th>
-            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+
+          <!-- Quantity Column -->
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef> Quantity </th>
+            <td mat-cell *matCellDef="let element"> {{element.qty}} </td>
           </ng-container>
-  
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="demo-symbol">
-            <th mat-header-cell *matHeaderCellDef> Symbol </th>
-            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+
+          <!-- Price Column -->
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Price </th>
+            <td mat-cell *matCellDef="let element"> {{element.price | currency:'INR':true }} </td>
           </ng-container>
-  
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element">
+              <button mat-icon-button color="warn" (click)="removeItem(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
         </table>
+        <br>
+        <br>
+        <p id="total-section"><strong>Total Price : {{finalPrice | currency:'INR':true }}</strong></p>
+        <br>
+        <br>
       </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-fab extended color="warn" (click)="clearAll()">
+          <mat-icon>
+            delete_forever
+          </mat-icon>
+          Clear
+        </button>
+        <button mat-fab extended color="primary" (click)="checkout(finalPrice)">
+          <mat-icon>
+            shopping_cart_checkout
+          </mat-icon>
+          Checkout
+        </button>
+      </mat-card-actions>
     </mat-card>
-  </mat-grid-tile>
-</mat-grid-list>
+  </div>
+</div>
