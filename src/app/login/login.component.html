@@ -1,0 +1,35 @@
+<div class="login-container">
+    <div class="left-panel">
+        <h1>Welcome Back!</h1>
+        <p>Please log in to your account.</p>
+    </div>
+
+    <div class="right-panel">
+        <mat-card class="login-card">
+            <mat-card-title class="title">Login</mat-card-title>
+            <mat-card-content>
+                <form>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Email / User Id</mat-label>
+                        <input matInput type="email" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="showPassword ? 'text' : 'password'" required/>
+                        <button mat-icon-button type="button" (click)="togglePasswordVisibility()"
+                        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                        <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                      </button>
+                    </mat-form-field>
+
+                    <div class="button-container">
+                        <button mat-raised-button color="warn"> Cancel</button>
+                        <button mat-raised-button color="primary" type="submit">Login</button>
+                    </div>
+                </form>
+                <p class="footer-text">Don't have an account? <a href="#">Sign Up</a></p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

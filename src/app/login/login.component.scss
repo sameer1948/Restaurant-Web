@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .login-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .left-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #6b73ff, #000dff);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .left-panel h1 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .left-panel p {
+    font-size: 1.2rem;
+  }
+  
+  .right-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+  }
+  
+  .login-card {
+    width: 90%;
+    max-width: 400px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    mat-form-field {
+        display: block;
+    }
+  }
+  
+  
+  .title {
+    text-align: center;
+  }
+  
+  .footer-text {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center; /* Center the button */
+    //margin-top: 1.5rem; /* Add some space above the button */
+    button {
+        margin: 10px;
+    }
+  }
+  
