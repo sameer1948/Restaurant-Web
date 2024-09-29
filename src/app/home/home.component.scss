@@ -45,6 +45,12 @@ mat-form-field {
   border-radius: 10px;
 }
 
+.example-card {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+
 /* Scrollable selected items list */
 .selected-items-scrollable {
   max-height: 65vh; /* Adjust height for the selected items section */

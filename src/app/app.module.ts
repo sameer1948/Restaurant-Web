@@ -33,6 +33,8 @@ import { ModifyMenuComponent } from './menu/modify-menu/modify-menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RemoveMenuComponent } from './menu/remove-menu/remove-menu.component';
+import { NewOrderComponent } from './orders/new-order/new-order.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -42,7 +44,9 @@ import { RemoveMenuComponent } from './menu/remove-menu/remove-menu.component';
        // TransactionsComponent,
         AddMenuComponent,
         ModifyMenuComponent,
-        RemoveMenuComponent
+        RemoveMenuComponent,
+        NewOrderComponent,
+        LoginComponent
     ],
     bootstrap: [AppComponent], 
     imports: [BrowserModule,

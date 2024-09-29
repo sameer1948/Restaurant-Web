@@ -5,13 +5,15 @@ import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
 import { BranchComponent } from './admin/branch/branch.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {path:'home', component: HomeComponent},
   //{path:'profile', component: ProfileComponent},
   {path:'settings', component: SettingsComponent},
   {path:'services', component: BranchComponent},
-  {path:'ad-home', component: AdminHomeComponent}
+  {path:'ad-home', component: AdminHomeComponent},
+  {path:'login', component: LoginComponent}
 ];
 
 @NgModule({

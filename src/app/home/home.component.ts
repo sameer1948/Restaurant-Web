@@ -3,6 +3,8 @@ import { MenuService } from '../services/menu.service';
 import { MenuList } from '../model/MenuList';
 import { MatTableDataSource } from '@angular/material/table';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { NewOrderComponent } from '../orders/new-order/new-order.component';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +31,9 @@ export class HomeComponent implements OnInit {
   dataSource : any; 
   finalPrice : number = 0.0;
 
-  constructor(private menuService: MenuService) { }
+  path = 'https://img.freepik.com/free-photo/flat-lay-assortment-healthy-food_23-2148381271.jpg';
+
+  constructor(private menuService: MenuService, private _matDialog : MatDialog,) { }
 
   ngOnInit(): void {
     this.menuService.getAllItems()
@@ -61,8 +65,8 @@ export class HomeComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  removeItem(menu: any) {    
-    this.orderedMenu = this.orderedMenu.filter(item => item !== menu);
+  removeItem(index: number) {    
+    this.orderedMenu.splice(index, 1);
     this.dataSource = new MatTableDataSource(this.orderedMenu);
     this.finalPrice = this.calculateFinalPrice(this.orderedMenu);
     console.log("remove : " + this.orderedMenu)
@@ -77,12 +81,20 @@ export class HomeComponent implements OnInit {
     return result;
   }
 
-  checkout(total: number) {
-    console.log(total)    ;
+  checkout() {    
+    const matDialogConfig = new MatDialogConfig()
+    matDialogConfig.disableClose = true;
+    matDialogConfig.autoFocus = true;
+    matDialogConfig.width = "60%";
+    matDialogConfig.data = this.orderedMenu;
+    this._matDialog.open(NewOrderComponent, matDialogConfig).afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result.result == 'success')
+        this.orderedMenu = [];
+    });
   }
 
-  clearAll() {
-    
+  clearAll() {    
     this.orderedMenu = [];
   }
      
