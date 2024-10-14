@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltip } from '@angular/material/tooltip';
 
 import { DialogModule } from '@angular/cdk/dialog';
 
@@ -35,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RemoveMenuComponent } from './menu/remove-menu/remove-menu.component';
 import { NewOrderComponent } from './orders/new-order/new-order.component';
 import { LoginComponent } from './login/login.component';
+
 
 @NgModule({ declarations: [
         AppComponent,
@@ -70,6 +72,7 @@ import { LoginComponent } from './login/login.component';
         MatSidenavModule,
         MatTableModule,
         MatToolbarModule,
+        MatTooltip,
         ReactiveFormsModule], 
         providers: [
         provideClientHydration(),
