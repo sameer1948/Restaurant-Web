@@ -27,7 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 //import { TransactionsComponent } from './orders/transactions/transactions.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { AdminModule } from './admin/admin.module';
 import { AddMenuComponent } from './menu/add-menu/add-menu.component';
 import { ModifyMenuComponent } from './menu/modify-menu/modify-menu.component';
@@ -36,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { RemoveMenuComponent } from './menu/remove-menu/remove-menu.component';
 import { NewOrderComponent } from './orders/new-order/new-order.component';
 import { LoginComponent } from './login/login.component';
+import { authInterceptor } from './interceptor/auth.interceptor';
 
 
 @NgModule({ declarations: [
@@ -76,7 +77,7 @@ import { LoginComponent } from './login/login.component';
         ReactiveFormsModule], 
         providers: [
         provideClientHydration(),
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withInterceptors([authInterceptor]))
     ] ,
 })
 export class AppModule { }
