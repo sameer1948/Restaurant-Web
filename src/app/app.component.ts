@@ -15,9 +15,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     
-    if (sessionStorage.getItem("token") != null) {
+    /* if (sessionStorage.getItem("token") != null) {
       this.isAuthenticated = true;
-    }
+    } */
   }
  
   protected logout() {

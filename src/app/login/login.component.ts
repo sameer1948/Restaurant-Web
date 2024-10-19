@@ -3,6 +3,7 @@ import { LoginRequest } from '../model/LoginRequest';
 import { AuthenicationService } from '../services/authenication.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotificationService } from '../common/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,7 @@ export class LoginComponent {
   });
 
   constructor(private _authenticationService : AuthenicationService,
-    private notificationService : NotificationService) {
+    private notificationService : NotificationService, private router : Router) {
 
   }
 
@@ -39,14 +40,13 @@ export class LoginComponent {
     this._authenticationService.authenticate(loginRequest).subscribe(
       data => { 
         console.log(data);
-        if (data.statusCode === 202) {
-          sessionStorage.setItem("token", data.token);
-          sessionStorage.setItem("role", data.role);
-          this.notificationService.successMessage(data.message);
+        if (data.statusCode === 202) {          
+          this.notificationService.successMessage(data.message);         
           this.loginForm.reset();
+          this.router.navigate(['/settings']);
         } else if (data.statusCode === 500) {
           this.notificationService.errorMessage(data.message);
-        }        
+        }      
 
       }, error => {
         console.log(error)
