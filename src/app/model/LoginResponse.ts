@@ -6,5 +6,6 @@ export class LoginResponse {
     refreshToken : string = "";
     expirationTime : string = "";
     role : string = "";
+    url : string = "";
 
 }

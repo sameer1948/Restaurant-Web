@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 //import { TransactionsComponent } from './orders/transactions/transactions.component';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AdminModule } from './admin/admin.module';
 import { AddMenuComponent } from './menu/add-menu/add-menu.component';
 import { ModifyMenuComponent } from './menu/modify-menu/modify-menu.component';
@@ -37,6 +37,9 @@ import { RemoveMenuComponent } from './menu/remove-menu/remove-menu.component';
 import { NewOrderComponent } from './orders/new-order/new-order.component';
 import { LoginComponent } from './login/login.component';
 import { authInterceptor } from './interceptor/auth.interceptor';
+import { GlobalErrorHandler } from './services/global-error-handler';
+import { ErrorComponent } from './errors/error/error.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 
 
 @NgModule({ declarations: [
@@ -49,7 +52,9 @@ import { authInterceptor } from './interceptor/auth.interceptor';
         ModifyMenuComponent,
         RemoveMenuComponent,
         NewOrderComponent,
-        LoginComponent
+        LoginComponent,
+        ErrorComponent,
+        UnauthorizedComponent,
     ],
     bootstrap: [AppComponent], 
     imports: [BrowserModule,
@@ -77,7 +82,8 @@ import { authInterceptor } from './interceptor/auth.interceptor';
         ReactiveFormsModule], 
         providers: [
         provideClientHydration(),
-        provideHttpClient(withInterceptors([authInterceptor]))
+        provideHttpClient(withInterceptors([authInterceptor])),
+        { provide: ErrorHandler, useClass: GlobalErrorHandler }
     ] ,
 })
 export class AppModule { }

@@ -12,6 +12,13 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent {
   
+  private readonly ADMIN_ROLE : string = 'ADMIN';
+  
+  private readonly USER_HOME: string = '/home';
+  private readonly ADMIN_HOME : string = '/ad-home' ;
+
+
+
   showPassword: boolean = false; // Manage password visibility
 
   loginForm : FormGroup = new FormGroup({ 
@@ -42,8 +49,12 @@ export class LoginComponent {
         console.log(data);
         if (data.statusCode === 202) {          
           this.notificationService.successMessage(data.message);         
-          this.loginForm.reset();
-          this.router.navigate(['/settings']);
+          this.loginForm.reset();                    
+          if (data.role.includes(this.ADMIN_ROLE)) {
+            this.router.navigate([this._authenticationService.redirectUrl || this.ADMIN_HOME]);
+          } else {
+            this.router.navigate([this._authenticationService.redirectUrl || this.USER_HOME]);
+          }
         } else if (data.statusCode === 500) {
           this.notificationService.errorMessage(data.message);
         }      

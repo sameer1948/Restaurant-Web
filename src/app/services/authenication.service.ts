@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 import { LoginRequest } from '../model/LoginRequest';
 import { LoginResponse } from '../model/LoginResponse';
 import { EncryptDecryptService } from './encrypt-decrypt.service';
@@ -18,6 +18,7 @@ export class AuthenicationService {
   private readonly AUTHENTICATION_API_URL: string = 'http://localhost:8080/auth/';
   private readonly CONTENT_TYPE = { 'content-type': 'application/json'}  ;
  
+  redirectUrl: string | null = null; // Store the redirect URL
 
   constructor(private httpClient: HttpClient, 
     private encryptService : EncryptDecryptService,  
@@ -25,14 +26,29 @@ export class AuthenicationService {
 
   public authenticate(loginRequest : LoginRequest) : Observable<LoginResponse> {
     
-    let loginResponse = this.httpClient.post<LoginResponse>(this.AUTHENTICATION_API_URL + 'authenticate', loginRequest, {headers : this.CONTENT_TYPE})
+    /* let loginResponse = this.httpClient.post<LoginResponse>(this.AUTHENTICATION_API_URL + 'authenticate', loginRequest, {headers : this.CONTENT_TYPE})
     loginResponse.subscribe(
       (response) => {
         if (response.statusCode === 202) {
           this.storeToken(response.token, response.role, response.refreshToken);
+          response.url = this.redirectUrl != null ? this.redirectUrl : "";
         }
       });
-    return loginResponse;
+    return loginResponse; */
+
+    return this.httpClient.post<LoginResponse>(this.AUTHENTICATION_API_URL + 'authenticate', loginRequest, { headers: this.CONTENT_TYPE })
+    .pipe(
+      tap(response => {
+        if (response.statusCode === 202) {
+          this.storeToken(response.token, response.role, response.refreshToken);        
+        }
+      }),
+      catchError(error => {
+        // Handle error appropriately
+        console.error('Authentication failed', error);
+        return throwError(error); // Propagate the error
+      })
+    );
   } 
 
   private storeToken(token : string, role : string, refreshToken : string) : void {    

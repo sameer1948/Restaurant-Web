@@ -13,8 +13,14 @@ export class MenuService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllItems() : Observable<MenuList[]> {
+  public getAllItems() : Observable<MenuList[]> {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<MenuList[]>(this.MENU_API_URL + 'fetch-all-menu', null, {headers : headers});
   }
+
+  public createNew(menuList : MenuList) : Observable<MenuList> {
+    const headers = { 'content-type': 'application/json'}  
+    return this.httpClient.post<MenuList>(this.MENU_API_URL + 'add-menu', menuList, {headers : headers});
+  }
+  
 }
