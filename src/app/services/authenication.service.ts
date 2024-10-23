@@ -40,7 +40,7 @@ export class AuthenicationService {
     .pipe(
       tap(response => {
         if (response.statusCode === 202) {
-          this.storeToken(response.token, response.role, response.refreshToken);        
+          this.storeTokens(response.token, response.role, response.refreshToken);        
         }
       }),
       catchError(error => {
@@ -51,12 +51,16 @@ export class AuthenicationService {
     );
   } 
 
-  private storeToken(token : string, role : string, refreshToken : string) : void {    
+  private storeTokens(token : string, role : string, refreshToken : string) : void {    
     sessionStorage.setItem(this.encryptService.encrypt(this.TOKEN_NAME), this.encryptService.encrypt(token));
     sessionStorage.setItem(this.encryptService.encrypt(this.USER_ROLE), this.encryptService.encrypt(role));
     sessionStorage.setItem(this.encryptService.encrypt(this.REFRESH_TOKEN), this.encryptService.encrypt(refreshToken));
  
   }  
+
+  public clearTokens() : void {
+    sessionStorage.clear();
+  }
 
   public isAuthenticated() : boolean {  
     return isPlatformBrowser(this.platformId) ? !! sessionStorage.getItem(this.encryptService.encrypt(this.TOKEN_NAME)) : false;    
@@ -64,12 +68,16 @@ export class AuthenicationService {
 
   public getUserRole() : string | null {
     
-    if (sessionStorage.length > 1) {
-      return sessionStorage.getItem(this.encryptService.encrypt(this.USER_ROLE)) != null ? 
-      sessionStorage.getItem(this.encryptService.encrypt(this.USER_ROLE)) : null;
+    if (isPlatformBrowser(this.platformId)) {
+      if (sessionStorage.length > 1) {
+        return sessionStorage.getItem(this.encryptService.encrypt(this.USER_ROLE)) != null ?
+          sessionStorage.getItem(this.encryptService.encrypt(this.USER_ROLE)) : null;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
     }
-    return null;
-
   }
 
   public getRefreshToken() : string | null {
