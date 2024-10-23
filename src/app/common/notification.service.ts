@@ -6,33 +6,40 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 })
 export class NotificationService {
 
-  successConfig : MatSnackBarConfig = {
-    duration : 3000,
-    horizontalPosition : 'center',
-    verticalPosition : 'top',
-    panelClass : ['notification', 'success']
-
+  private defaultConfig: MatSnackBarConfig = {
+    duration: 3000,
+    horizontalPosition: 'center',
+    verticalPosition: 'top',
   };
 
-  errorConfig : MatSnackBarConfig = {
-    duration : 3000,
-    horizontalPosition : 'center',
-    verticalPosition : 'top',
-    panelClass : ['notification', 'error']
+  constructor(private snackBar: MatSnackBar) {}
 
-  };
-
-  constructor(private _snackBar : MatSnackBar) { }
-
-  successMessage(message : string) {
-    this._snackBar.open(message, '', this.successConfig);
-
+  public successMessage(message: string, duration: number = 3000) : void {
+    const config: MatSnackBarConfig = {
+      ...this.defaultConfig,
+      duration,
+      panelClass: ['notification', 'success']
+    };
+    this.snackBar.open(message, '', config);
   }
 
-  errorMessage(message : string) {
-    this._snackBar.open(message, '', this.errorConfig);
-
+  public errorMessage(message: string, duration: number = 3000) : void {
+    const config: MatSnackBarConfig = {
+      ...this.defaultConfig,
+      duration,
+      panelClass: ['notification', 'error']
+    };
+    this.snackBar.open(message, '', config);
   }
 
   
+  public actionMessage(message: string, action: string, duration: number = 3000) : void {
+    const config: MatSnackBarConfig = {
+      ...this.defaultConfig,
+      duration,
+      panelClass: ['notification', 'info']
+    };
+    this.snackBar.open(message, action, config);  }
+
+
 }
