@@ -1,8 +1,8 @@
-<mat-toolbar class="nav-group">
+<!-- <mat-toolbar class="nav-group"> -->
   <!-- <button mat-icon-button class="primary" aria-label="Example icon-button with menu icon"> -->
     <!-- <mat-icon>menu</mat-icon> -->
   <!-- </button> -->
-  <img src="favicon.ico"/>
+  <!-- <img src="favicon.ico"/>
   <span>  My Restautant </span>
   <span class="nav-spacer"></span>
 
@@ -16,15 +16,18 @@
           <button mat-menu-item><mat-icon>logout</mat-icon> Logout </button>
         </mat-menu>
     </button>
-    <button mat-icon-button routerLink="/settings"> <mat-icon>settings</mat-icon> </button>  
+    <button mat-icon-button routerLink="/settings"> <mat-icon>settings</mat-icon> </button>   -->
     <!-- another way <button mat-icon-button> <mat-icon fontIcon="home"></mat-icon></button> -->   
-    <button mat-icon-button routerLink="/login" *ngIf="isAuthenticated === false"> <mat-icon>admin_panel_settings </mat-icon> </button>
+    <!-- <button mat-icon-button routerLink="/login" *ngIf="isAuthenticated === false"> <mat-icon>admin_panel_settings </mat-icon> </button>
     <button mat-icon-button (click)="logout()" *ngIf="isAuthenticated === true"> <mat-icon>logout</mat-icon> </button>
   </div>
 
-</mat-toolbar>
+</mat-toolbar> -->
 
 <!-- <app-home></app-home> -->
-<router-outlet></router-outlet>
+<!-- <router-outlet></router-outlet>
 
 <mat-toolbar class="nav-group-footer"> <span class="nav-spacer"></span> </mat-toolbar>
+ -->
+
+ <app-menu-bar></app-menu-bar>
