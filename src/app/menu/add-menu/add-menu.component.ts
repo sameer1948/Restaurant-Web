@@ -47,25 +47,26 @@ export class AddMenuComponent {
 
     this._adminService.addItemToMenu(menuList).subscribe(
       (data) => {
-        console.log(data);
-        this.onClose();
+        console.log(data);        
         this._notificationService.successMessage("Sucess");
+        this._matDialogRef.close('success');
 
-      }, (error) => {
+      }, (error) => {        
         this._notificationService.errorMessage("Something went wrong while Inserting Menu...!")
       }
     );
-    
+        
   }
 
   onClose() {
-    this.form.reset();
-    // this.form.setValue({
-    //   item : '',
-    //   qty : '',
-    //   price :'',
-    //   path : ''
-    // });
+    this.form.reset({
+      menuItem: {
+        item: '',
+        qty: '',
+        price: 0,
+        path: ''
+      }
+    });
     this._matDialogRef.close();
   }
 

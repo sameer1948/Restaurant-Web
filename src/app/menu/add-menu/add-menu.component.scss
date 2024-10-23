@@ -1,6 +1,52 @@
+mat-dialog-content {
+  padding: 20px; // More spacious padding for a comfortable layout
+  background-color: #ffffff; // White background for a clean look
+  border-radius: 10px; // Slightly larger rounded corners
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); // Subtle shadow for depth
+}
+
+mat-form-field {
+  width: 100%; // Full width for inputs
+  margin-bottom: 20px; // Increased spacing between fields
+}
+
+mat-dialog-title {
+  background-color: #4caf50; // Green color for the title background
+  color: white; // White text for contrast
+  padding: 16px 24px; // Adequate padding for the title
+  font-size: 1.5rem; // Larger font size for emphasis
+  border-top-left-radius: 10px; // Rounded corners for the title
+  border-top-right-radius: 10px;
+}
+
+mat-dialog-actions {
+  background-color: #f1f1f1; // Light gray background for action buttons
+  padding: 12px; // Padding for spacing
+  border-bottom-left-radius: 10px; // Rounded corners for actions
+  border-bottom-right-radius: 10px;
+}
+
+button {
+  min-width: 120px; // Ensure buttons have enough width
+  margin-left: 10px; // Space between buttons
+  border-radius: 5px; // Rounded corners for buttons
+  transition: background-color 0.3s; // Smooth transition for hover effects
+
+  &:hover {
+    background-color: #d1d1d1; // Change background on hover
+  }
+}
+
+.mat-hint {
+  color: #9e9e9e; // Light gray hint color for better visibility
+}
+
+.mat-select {
+  .mat-select-arrow {
+    color: #4caf50; // Match dropdown arrow color with title
+  }
+}
+
 .example-right-align {
-    text-align: right;
-  }
-  .inputs-container mat-form-field + mat-form-field {
-    margin-left: 8px;
-  }
+  text-align: right; // Right align for price input
+}
