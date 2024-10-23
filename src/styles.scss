@@ -3,5 +3,20 @@
 // html, body { height: 100%; }
 // body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-//@import '@angular/material/prebuilt-themes/indigo-pink.css';
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
+//@import '@angular/material/prebuilt-themes/azure-blue.css';  Not Working
+
+//@import '@angular/material/prebuilt-themes/rose-red.css'; Not Working
+
+//@import '@angular/material/prebuilt-themes/cyan-orange.css'; Not Working
+
+//@import '@angular/material/prebuilt-themes/magenta-violet.css'; Not Working
+
+//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';  //Working
+
+@import '@angular/material/prebuilt-themes/indigo-pink.css';  //Working
+
+//@import '@angular/material/prebuilt-themes/pink-bluegrey.css'; // Working Dark
+
+//@import '@angular/material/prebuilt-themes/purple-green.css'; // Working Dark
+
+
