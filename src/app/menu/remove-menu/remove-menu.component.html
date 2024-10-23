@@ -1,50 +1,18 @@
-<h2 mat-dialog-title>Update Items In Menu</h2>
-<mat-dialog-content class="mat-typography">
-
-    <mat-form-field class="menu-list">
-        <mat-label>Select an option</mat-label>
-        <mat-select [(value)]="selected" (selectionChange)="onSelect()">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let item of menuItems" [value]="item">{{item.item}}</mat-option>
-        </mat-select>
-        <mat-hint align="end">Select Item From Menu ^</mat-hint>
-    </mat-form-field>
-    <br>
-    <span>{{selected | json}}</span>
-    <br>
-    <form [formGroup]="form">
-        <div formGroupName="menuItem">
-
-            <mat-form-field hintLabel="Max 15 characters">
-                <mat-label>Item Name</mat-label>
-                <input formControlName="item" matInput #input maxlength="15" placeholder="Ex. Nougat"
-                    (input)="onInput($event)" readonly/>
-                <mat-hint align="end">{{value().length}}/15</mat-hint>
-            </mat-form-field>
-
-            <mat-form-field floatLabel="always">
-                <mat-label>Select Quantity</mat-label>
-                <mat-select [(value)]="selectedQty">
-                    <mat-option *ngFor="let quantity of quantities" [value]=quantity disabled>{{quantity}}</mat-option>
-                </mat-select>
-                <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
-            </mat-form-field>
-
-            <mat-form-field floatLabel="always">
-                <mat-label>Amount</mat-label>
-                <input formControlName="price" matInput type="number" class="example-right-align" placeholder="0" readonly/>
-            </mat-form-field>
-
-            <mat-form-field floatLabel="always">
-                <mat-label>Item Image Path</mat-label>
-                <input formControlName="itemPngPath" matInput placeholder="Your Image Path"  readonly/>
-                <mat-hint align="end">sample Path </mat-hint>
-            </mat-form-field>
-        </div>
-
-    </form>
+<h2 mat-dialog-title>Do you want remove the Item  ?</h2>
+<mat-dialog-content class="dialog-content">
+  <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Close">
+      <mat-icon>close</mat-icon>
+  </button>
+  <div class="item-details">
+      <h3 class="item-title">{{ data.item }}</h3>
+      <p><strong>ID:</strong> {{ data.id }}</p>
+      <p><strong>Quantity:</strong> {{ data.qty !== null ? data.qty : 'N/A' }}</p>
+      <p><strong>Price:</strong> {{ data.price | currency }}</p>
+      <img *ngIf="data.itemPngPath" [src]="data.itemPngPath" alt="{{ data.item }}" class="item-image" />
+  </div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
-    <button mat-button (click)="onClose()"> Cancel </button>
-    <button mat-button type='submit' (click)="removeItem()"> Update </button>
+  <button mat-button color="warn" (click)="onRemove()" aria-label="Remove item">Remove</button>
+  <button mat-button (click)="onCancel()" aria-label="Cancel">Cancel</button>
 </mat-dialog-actions>

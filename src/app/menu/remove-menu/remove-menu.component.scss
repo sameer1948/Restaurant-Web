@@ -1,0 +1,44 @@
+.dialog-content {
+    position: relative;
+    padding: 20px;
+    text-align: left;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #888;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+.item-details {
+    margin: 10px 0;
+}
+
+.item-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.item-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+mat-dialog-actions {
+    padding: 10px 20px;
+}
+
+button {
+    margin-left: 8px;
+}
