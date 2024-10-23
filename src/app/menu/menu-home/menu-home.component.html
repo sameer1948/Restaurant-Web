@@ -1,0 +1,154 @@
+<!-- <mat-card class="menu-container" appearance="outlined">
+
+    <mat-card-header>
+        <mat-card-title> <mat-icon>menu</mat-icon> Menu </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    
+        <div class="search-container">
+            <button color="accent" mat-icon-button matTooltip="Add New Menu" (click)="addItem()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-form-field>
+                <mat-label>Search For Item</mat-label>
+                <input matInput type="text" [(ngModel)]="searchTerm" placeholder="Enter Item Name" autocomplete="off" (input)="searchItems()">
+                <button *ngIf="searchTerm" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+
+
+        <div class="item-list-container">
+            
+            <h2>Item List</h2>
+           
+            <ul>
+                <li class="headings">
+                    <span class="item-number"><strong>S.No</strong></span>
+                    <span class="item-name"><strong>Item Name</strong></span>
+                    <span class="item-quantity"><strong>Quantity</strong></span>
+                    <span class="item-price"><strong>Price</strong></span>
+                    <span class="item-path"><strong>Path</strong></span>
+                    <span class="item-name"><strong>Actions</strong></span>
+                </li>
+
+                <li *ngFor="let item of items | slice: startIndex : endIndex; let i = index">
+                    <mat-card class="item-card">
+                        <div class="item-content">
+                            <span class="item-number">{{ i + 1 }}</span> 
+                            <span class="item-name">{{ item.item }}</span>
+                            <span class="item-quantity">{{ item.qty }}</span>
+                            <span class="item-price">{{ item.price }}</span>
+                            <span class="item-path">{{ item.itemPngPath }}</span>
+                            <div class="item-actions">
+                                <button color="primary" mat-icon-button matTooltip="Edit Menu" (click)="editItem(item)">
+                                    <mat-icon>edit_note</mat-icon>
+                                </button>
+                                <button color="warn" mat-icon-button matTooltip="Delete Menu" (click)="deleteItem(item)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card>
+                </li>
+            </ul>           
+                  
+        </div>
+    
+    </mat-card-content>
+
+    <mat-card-actions>
+
+        <div class="btn-nav-container">
+            <button color="primary" mat-icon-button matTooltip="Prev Page" (click)="prevPage()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <strong>{{currentPage}}</strong>
+            <button color="primary" mat-icon-button matTooltip="Next Page" (click)="nextPage()">
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
+        </div>
+                
+        <div class="selection-nav-container">
+            <strong>No . of Items Per Page : </strong>
+            <button *ngIf="items.length>10" mat-raised-button (click)="setItemsPerPage(10)" value="10">10</button>
+            <button *ngIf="items.length>20" mat-raised-button (click)="setItemsPerPage(20)" value="20">20</button>
+            <button *ngIf="items.length>50" mat-raised-button (click)="setItemsPerPage(50)" value="50">50</button>            
+        </div>
+
+    </mat-card-actions>
+</mat-card> -->
+
+<mat-card class="menu-container" appearance="outlined">
+    <mat-card-header>
+        <mat-card-title> <mat-icon>menu</mat-icon> Menu </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="search-container">
+            <button color="accent" mat-icon-button matTooltip="Add New Menu" (click)="addItem()">
+                <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-form-field>
+                <mat-label>Search For Item</mat-label>
+                <input matInput type="text" [(ngModel)]="searchTerm" placeholder="Enter Item Name" autocomplete="off" (input)="searchItems()">
+                <button *ngIf="searchTerm" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+
+        <div class="item-list-container">
+            <h2>Item List (Total: {{ filteredItems.length }})</h2>
+            <ul>
+                <li class="headings">
+                    <span class="item-number"><strong>S.No</strong></span>
+                    <span class="item-name"><strong>Item Name</strong></span>
+                    <span class="item-quantity"><strong>Quantity</strong></span>
+                    <span class="item-price"><strong>Price</strong></span>
+                    <span class="item-path"><strong>Path</strong></span>
+                    <span class="item-name"><strong>Actions</strong></span>
+                </li>
+
+                <li *ngFor="let item of getPaginatedItems(); let i = index">
+                    <mat-card class="item-card">
+                        <div class="item-content">
+                            <span class="item-number">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</span> <!-- S.No -->
+                            <span class="item-name">{{ item.item }}</span>
+                            <span class="item-quantity">{{ item.qty }}</span>
+                            <span class="item-price">{{ item.price }}</span>
+                            <span class="item-path">{{ item.itemPngPath }}</span>
+                            <div class="item-actions">
+                                <button color="primary" mat-icon-button matTooltip="Edit Menu" (click)="editItem(item)">
+                                    <mat-icon>edit_note</mat-icon>
+                                </button>
+                                <button color="warn" mat-icon-button matTooltip="Delete Menu" (click)="deleteItem(item)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-card>
+                </li>
+            </ul>           
+        </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <div class="btn-nav-container">
+            <button color="primary" mat-icon-button matTooltip="Prev Page" (click)="prevPage()" [disabled]="currentPage === 1">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <strong>{{currentPage}}</strong>
+            <button color="primary" mat-icon-button matTooltip="Next Page" (click)="nextPage()" [disabled]="currentPage >= (filteredItems.length / itemsPerPage)">
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
+        </div>
+
+        <div class="selection-nav-container">
+            <strong>No. of Items Per Page:</strong>
+            <button *ngIf="items.length > 10" mat-raised-button (click)="setItemsPerPage(10)">10</button>
+            <button *ngIf="items.length > 20" mat-raised-button (click)="setItemsPerPage(20)">20</button>
+            <button *ngIf="items.length > 50" mat-raised-button (click)="setItemsPerPage(50)">50</button>            
+        </div>
+    </mat-card-actions>
+</mat-card>

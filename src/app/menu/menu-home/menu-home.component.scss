@@ -1,0 +1,148 @@
+
+.menu-container{
+    margin: 20px 20px 20px 20px;  
+    padding: 20px; 
+}
+
+
+.search-container {
+  margin: 20px 20px 20px 20px;  
+  display: flex;
+  align-items: center; // Align items vertically
+  gap: 16px; // Adjust spacing between elements as needed
+}
+
+mat-form-field {
+  flex: 1; // Make the input field take the remaining space
+}
+
+ul {
+  list-style-type: none; /* Removes dots */
+  padding: 0; /* Removes default padding */
+  margin: 0; /* Removes default margin */
+}
+
+
+.headings {
+  display: flex; /* Flexbox for layout */
+  font-weight: bold; /* Make headings bold */
+  background-color: #f0f0f0; /* Optional: Background for headers */
+  padding: 20px; /* Padding for header */
+}
+
+
+.item-number {
+  width: 40px; /* Fixed width for serial number */
+}
+
+
+.item-name,
+.item-quantity,
+.item-price,
+.item-path {
+  flex-grow: 1; /* Allow these to take available space */
+  padding: 0 10px; /* Padding between items */  
+}
+
+
+.item-actions {
+  display: flex;
+  gap: 8px; /* Space between action buttons */
+}
+
+
+
+.item-list-container {  
+  //max-width: 400px;  
+  margin: 20px auto;  
+  padding: 20px;  
+  border: 1px solid #ddd;  
+  border-radius: 10px;  
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+  overflow-y: auto;  
+  max-height: 500px;  
+} 
+
+
+.item-card {
+  margin: 8px 0; /* Space between cards */
+  padding: 16px; /* Padding inside the card */
+  display: flex; /* Flexbox for layout */
+  justify-content: space-between; /* Space between content and actions */
+  align-items: center; /* Center items vertically */
+  transition: transform 0.3s; /* Smooth hover effect */
+}
+
+.item-card:hover {
+  transform: scale(1.02); /* Slight zoom effect on hover */
+}
+
+.item-content {
+  display: flex;
+  justify-content: space-between; /* Space between item name and actions */
+  width: 100%; /* Ensure it takes full width */
+}
+
+.mat-card-actions {
+  display: flex; /* Use Flexbox for layout */
+  justify-content: space-between; /* Space between the two containers */
+  align-items: center; /* Center items vertically */
+  padding: 16px; /* Padding for the card actions */
+}
+
+.btn-nav-container {
+  display: flex; /* Use Flexbox for the button navigation */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  flex-grow: 1; /* Allow it to take available space */
+}
+
+.selection-nav-container {
+  display: flex; /* Use Flexbox for the selection container */
+  align-items: center; /* Center items vertically */
+  gap: 8px; /* Space between the label and buttons */
+}
+
+
+// mat-card-actions {
+//   //display: flex;
+//   //align-items: center; /* Align items vertically centered */
+//   //justify-content: center; /* Center items horizontally */
+//   gap: 100px; /* Optional: space between items */
+// } 
+
+// .btn-nav-container {
+//   display: flex;
+//   align-items: center; /* Align items vertically centered */
+//   justify-content: center; /* Center items horizontally */
+//   gap: 10px; /* Optional: space between items */
+// }
+
+// .selection-nav-container {
+//   //display: flex;
+//   //align-items: center; /* Align items vertically centered */
+//   justify-content: end; /* Center items horizontally */
+//   gap: 10px; /* Optional: space between items */
+// }
+
+
+
+
+
+
+ 
+    
+// .item {  
+//   display: flex;  
+//   align-items: center;  
+//   padding: 10px;  
+//   border-bottom: 1px solid #ddd;  
+// }  
+    
+//   .item span {  
+//     flex: 1;  
+//     font-size: 18px;  
+//     font-weight: bold;  
+//   }  
+  
+  
