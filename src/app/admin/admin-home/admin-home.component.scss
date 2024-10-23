@@ -1,31 +1,213 @@
-.menu {
-    padding: 10px 10px;
-    margin: 10px 10px;
-  }
-    
-section {
-    display: table;
-}
 
+
+.List{
+  margin: 20px 20px 20px 20px;  
+  padding: 20px; 
+}
+  
 .button-container {
     display: flex;
-    justify-content: center;
-    width: 120px;
-}  
-
-.button-flex-container {
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-
-.button-row {
-    display: table-cell;
-    max-width: 600px;
-}
+    justify-content: center;  /* Center buttons horizontally */
+    margin-bottom: 20px;
+  }
   
-.button-row .mat-mdc-button-base {
-    margin: 8px 8px 8px 0;
-} 
+  .button-container button {
+    margin-right: 10px;
+  }
   
+  /* Optional: Remove margin from the last button */
+  .button-container button:last-child {
+    margin-right: 0;
+  }
+  
+
+  // .item-list {      
+  //   margin: 20px auto;  
+  //   padding: 20px;  
+  //   border: 1px solid #ddd;  
+  //   border-radius: 10px;  
+  //   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+  // }  
+    
+  // .item {  
+  //   display: flex;  
+  //   align-items: center;  
+  //   padding: 10px;  
+  //   border-bottom: 1px solid #ddd;  
+  // }  
+    
+  // .item span {  
+  //   flex: 1;  
+  //   font-size: 18px;  
+  //   font-weight: bold;  
+  // }  
+    
+  // .edit-btn, .delete-btn {  
+  //   margin-left: 10px;  
+  //   padding: 5px 10px;  
+  //   border: none;  
+  //   border-radius: 5px;  
+  //   cursor: pointer;  
+  // }  
+    
+  // .edit-btn {  
+  //   background-color: #4CAF50;  
+  //   color: #fff;  
+  // }  
+    
+  // .delete-btn {  
+  //   background-color: #f44336;  
+  //   color: #fff;  
+  // }  
+    
+  // .add-btn {  
+  //   margin-top: 20px;  
+  //   padding: 10px 20px;  
+  //   border: none;  
+  //   border-radius: 5px;  
+  //   cursor: pointer;  
+  //   background-color: #4CAF50;  
+  //   color: #fff;  
+  // }
+  
+  .item-list {  
+    //max-width: 400px;  
+    margin: 20px auto;  
+    padding: 20px;  
+    border: 1px solid #ddd;  
+    border-radius: 10px;  
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    overflow-y: auto;  
+    max-height: 500px;  
+  }  
+    
+  .item {  
+    display: flex;  
+    align-items: center;  
+    padding: 10px;  
+    border-bottom: 1px solid #ddd;  
+  }  
+    
+  .item span {  
+    flex: 1;  
+    font-size: 18px;  
+    font-weight: bold;  
+  }  
+    
+  .edit-btn, .delete-btn {  
+    margin-left: 10px;  
+    padding: 5px 10px;  
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer;  
+  }  
+    
+  .edit-btn {  
+    background-color: #4CAF50;  
+    color: #fff;  
+  }  
+    
+  .delete-btn {  
+    background-color: #f44336;  
+    color: #fff;  
+  }  
+    
+  .add-btn {  
+    margin-top: 20px;  
+    padding: 10px 20px;  
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer;  
+    background-color: #4CAF50;  
+    color: #fff;  
+  }  
+    
+  .prev-btn, .next-btn {  
+    margin-top: 20px;  
+    padding: 10px 20px;  
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer;  
+  }  
+    
+  .prev-btn {  
+    background-color: #ccc;  
+    color: #333;  
+  }  
+    
+  .next-btn {  
+    background-color: #4CAF50;  
+    color: #fff;  
+  }
+
+  
+  .item-list {  
+    //max-width: 400px;  
+    margin: 20px auto;  
+    padding: 20px;  
+    border: 1px solid #ddd;  
+    border-radius: 10px;  
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  
+    overflow-y: auto;  
+    max-height: 500px;  
+  }  
+    
+  .item {  
+    display: flex;  
+    align-items: center;  
+    padding: 10px;  
+    border-bottom: 1px solid #ddd;  
+  }  
+    
+  .item span {  
+    flex: 1;  
+    font-size: 18px;  
+    font-weight: bold;  
+  }  
+    
+  .edit-btn, .delete-btn {  
+    margin-left: 10px;  
+    padding: 5px 10px;  
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer;  
+  }  
+    
+  .edit-btn {  
+    background-color: #4CAF50;  
+    color: #fff;  
+  }  
+    
+  .delete-btn {  
+    background-color: #f44336;  
+    color: #fff;  
+  }  
+    
+  .add-btn {  
+    margin-top: 20px;  
+    padding: 10px 20px;  
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer;  
+    background-color: #4CAF50;  
+    color: #fff;  
+  }  
+    
+  .prev-btn, .next-btn {  
+    margin-top: 20px;  
+    padding: 10px 20px;  
+    border: none;  
+    border-radius: 5px;  
+    cursor: pointer;  
+  }  
+    
+  .prev-btn {  
+    background-color: #ccc;  
+    color: #333;  
+  }  
+    
+  .next-btn {  
+    background-color: #4CAF50;  
+    color: #fff;  
+  }
   
