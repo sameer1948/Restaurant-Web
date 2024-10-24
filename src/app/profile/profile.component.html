@@ -1,46 +1,78 @@
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-4 text-center">
-      <img src="assets/profile-pic.jpg" alt="Profile Picture" class="rounded-circle img-fluid mb-3" />
-      <h2>Your Name</h2>
-      <p>Your Bio goes here. Something interesting about you!</p>
-      <div class="social-icons">
-        <a href="#" class="text-decoration-none me-2">
-          <span class="material-icons">facebook</span>
-        </a>
-        <a href="#" class="text-decoration-none me-2">
-          <span class="material-icons">twitter</span>
-        </a>
-        <a href="#" class="text-decoration-none">
-          <span class="material-icons">linkedin</span>
-        </a>
+<div class="container">
+
+  <h2><mat-icon>badges</mat-icon>Account Information</h2>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="account-info-row">
+        <div class="account-info-item">
+          <p><strong>Username:</strong> {{ user.username }}</p>
+        </div>
+        <div class="account-info-item">
+          <p><strong>Password:</strong> ********</p>
+        </div>
       </div>
-    </div>
-    <div class="col-md-8">
-      <h3 class="mb-4">Profile Details</h3>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <span class="material-icons me-2">email</span>
-          d
-        </li>
-        <li class="list-group-item">
-          <span class="material-icons me-2">phone</span>
-          (123) 456-7890
-        </li>
-        <li class="list-group-item">
-          <span class="material-icons me-2">location_on</span>
-          Your Address
-        </li>
-        <li class="list-group-item">
-          <span class="material-icons me-2">cake</span>
-          January 1, 1990
-        </li>
-        <li class="list-group-item">
-          <span class="material-icons me-2">web</span>
-          www.yourwebsite.com
-        </li>
-      </ul>
-      <button class="btn btn-primary mt-3">Edit Profile</button>
-    </div>
-  </div>
+      <div class="account-info-row">
+        <div class="account-info-item">
+          <p><strong>Roles:</strong> {{ user.roles }}</p>
+        </div>
+        <div class="account-info-item">
+          <p><strong>Account Status:</strong> {{ user.isEnabled ? 'Enabled' : 'Disabled' }}</p>
+        </div>
+      </div>
+      <button mat-raised-button color="warn" (click)="openChangePasswordDialog()">Change Password</button>
+    </mat-card-content>
+  </mat-card>
+
+  <h2>Personal Information</h2>
+  <mat-card>
+    <form [formGroup]="personalInfoForm" (ngSubmit)="save()">
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Middle Name</mat-label>
+            <input matInput formControlName="middleName">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Phone</mat-label>
+            <input matInput formControlName="phone">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="form-field">
+            <mat-label>Security Number</mat-label>
+            <input matInput formControlName="securityNumber">
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit">Save</button>
+      </mat-card-content>
+    </form>
+  </mat-card>
 </div>
