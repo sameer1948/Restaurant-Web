@@ -1,0 +1,59 @@
+.users-container {
+  margin: 20px;
+
+  // Align the search container
+  .search-container {
+    display: flex;
+    align-items: center; // Vertically center items
+    margin-top: 16px;
+    margin-bottom: 16px;
+
+    mat-form-field {
+      flex: 1; // Allow input field to take available space
+      position: relative; // Positioning context for the icons
+
+      mat-icon {
+        position: absolute; // Position search icon inside the input
+        left: 12px;
+        top: 12px;
+      }
+
+      input {
+        padding-left: 40px; // Prevent text overlap with the search icon
+        width: calc(100% - 40px); // Adjust width for padding
+      }
+    }
+
+    // Clear button styling
+    button[mat-icon-button] {
+      padding: 0; // Remove padding for compactness
+      margin-left: 8px; // Space between input and clear button
+    }
+  }
+}
+
+// // Table styling
+// table {
+//   width: 100%; // Full width of the container
+//   border-collapse: collapse; // Remove space between borders
+
+//   th.mat-header-cell {
+//     background-color: #f1f1f1; // Light background for header
+//     font-weight: bold;
+//   }
+
+//   td.mat-cell {
+//     padding: 8px; // Add padding for table cells
+//     border-bottom: 1px solid #ddd; // Light bottom border
+//   }
+
+//   // Highlight on row hover
+//   tr.mat-row:hover {
+//     background-color: #f5f5f5; // Light grey on hover
+//   }
+
+//   // Pagination styling
+//   mat-paginator {
+//     margin-top: 16px; // Spacing above paginator
+//   }
+// }
