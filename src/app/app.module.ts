@@ -4,9 +4,10 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
@@ -26,7 +27,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-//import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 //import { TransactionsComponent } from './orders/transactions/transactions.component';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -45,12 +45,20 @@ import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { MenuHomeComponent } from './menu/menu-home/menu-home.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ChangePasswordDialogComponent } from './profile/change-password-dialog/change-password-dialog.component';
+import { MemberComponent } from './member/member/member.component';
+import { AddMemberComponent } from './member/add-member/add-member.component';
+import { UpdateMemberComponent } from './member/update-member/update-member.component';
+import { RemoveMemberComponent } from './member/remove-member/remove-member.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({ declarations: [
         AppComponent,
         HomeComponent,
-        //ProfileComponent,
+        ProfileComponent,
         SettingsComponent,
        // TransactionsComponent,
         AddMenuComponent,
@@ -63,6 +71,12 @@ import { MenuHomeComponent } from './menu/menu-home/menu-home.component';
         MenuBarComponent,
         SideNavComponent,
         MenuHomeComponent,
+        ChangePasswordDialogComponent,
+        MemberComponent,
+        AddMemberComponent,
+        AddMemberComponent,
+        UpdateMemberComponent,
+        RemoveMemberComponent,
     ],
     bootstrap: [AppComponent],
     
@@ -75,19 +89,23 @@ import { MenuHomeComponent } from './menu/menu-home/menu-home.component';
         FormsModule,
         MatBadgeModule,
         MatButtonModule,
-        MatCardModule,
+        MatCardModule, 
+        MatCheckboxModule,       
         MatDialogModule,
         MatDividerModule,
+        MatFormFieldModule,
         MatGridListModule,
         MatListModule,
         MatLabel,
         MatMenuModule,
         MatIcon,
         MatInputModule,
+        MatPaginatorModule,
         MatSelectModule,
         MatSnackBarModule,        
         MatSliderModule,
         MatSidenavModule,
+        MatSortModule,
         MatTableModule,
         MatToolbarModule,
         MatTooltip,
