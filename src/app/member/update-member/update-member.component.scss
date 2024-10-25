@@ -1,0 +1,48 @@
+.user-details-container {
+    margin: 20px;
+    padding: 16px;
+  
+    mat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      .close-button {
+        margin-left: auto;
+      }
+    }
+  
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+  
+      strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+    }
+  
+    .account-status-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+  
+      mat-checkbox {
+        margin-top: 8px;
+      }
+    }
+  
+    h3 {
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+  
+    mat-card-actions {
+      justify-content: center;
+      margin-top: 16px;
+    }
+  }
+  
