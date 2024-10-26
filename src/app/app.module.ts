@@ -50,10 +50,10 @@ import { ChangePasswordDialogComponent } from './profile/change-password-dialog/
 import { MemberComponent } from './member/member/member.component';
 import { AddMemberComponent } from './member/add-member/add-member.component';
 import { UpdateMemberComponent } from './member/update-member/update-member.component';
-import { RemoveMemberComponent } from './member/remove-member/remove-member.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
+import { MatChipsModule } from '@angular/material/chips';
+import { VeiwRemoveMemberComponent } from './member/veiw-remove-member/veiw-remove-member.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -72,11 +72,10 @@ import { MatSortModule } from '@angular/material/sort';
         SideNavComponent,
         MenuHomeComponent,
         ChangePasswordDialogComponent,
-        MemberComponent,
+        MemberComponent,        
         AddMemberComponent,
-        AddMemberComponent,
+        VeiwRemoveMemberComponent,
         UpdateMemberComponent,
-        RemoveMemberComponent,
     ],
     bootstrap: [AppComponent],
     
@@ -90,7 +89,8 @@ import { MatSortModule } from '@angular/material/sort';
         MatBadgeModule,
         MatButtonModule,
         MatCardModule, 
-        MatCheckboxModule,       
+        MatCheckboxModule,
+        MatChipsModule,       
         MatDialogModule,
         MatDividerModule,
         MatFormFieldModule,
