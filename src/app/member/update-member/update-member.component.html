@@ -1,69 +1,181 @@
-<mat-card class="user-details-container" appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>User Details</mat-card-title>
-      <button mat-icon-button (click)="close()" class="close-button">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-card-header>
-  
-    <mat-card-content>
-      <div class="details-grid">
-        <div>
-          <strong>Username:</strong>
-          <p>{{ user.customUser.username }}</p>
+<h2 mat-dialog-title class="dialog-title">
+  Update User Information
+  <button mat-icon-button (click)="closeDialog()" class="close-button" aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+
+  <form [formGroup]="userForm">
+
+    <mat-grid-list cols="2" rowHeight="100px">
+
+      <!-- Personal Information -->
+      <mat-grid-tile colspan="2">
+        <h3>Personal Information</h3>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>person</mat-icon> Name</mat-label>
+          <input matInput formControlName="firstName" />
+          <mat-error *ngIf="userForm.get('firstName')?.hasError('required') && userForm.get('firstName')?.touched">
+            First name is required.
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>person</mat-icon> Middle Name</mat-label>
+          <input matInput formControlName="middleName" />
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>person</mat-icon> Last Name</mat-label>
+          <input matInput formControlName="lastName" />
+          <mat-error *ngIf="userForm.get('lastName')?.hasError('required') && userForm.get('lastName')?.touched">
+            Last name is required.
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>alternate_email</mat-icon> Email</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error *ngIf="userForm.get('email')?.hasError('required') && userForm.get('email')?.touched">
+            Email is required.
+          </mat-error>
+          <mat-error *ngIf="userForm.get('email')?.hasError('email') && userForm.get('email')?.touched">
+            Please enter a valid email.
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>call</mat-icon> Phone</mat-label>
+          <input matInput formControlName="phone" />
+          <mat-error *ngIf="userForm.get('phone')?.hasError('required') && userForm.get('phone')?.touched">
+            Address is required.
+          </mat-error>
+          <mat-error *ngIf="userForm.get('phone')?.hasError('minlength') && userForm.get('phone')?.touched">
+            Please enter a valid Phone Number.
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>contact_mail</mat-icon> Address</mat-label>
+          <input matInput formControlName="address" />
+          <mat-error *ngIf="userForm.get('address')?.hasError('required') && userForm.get('address')?.touched">
+            Address is required.
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>badge</mat-icon> SecurityNumber</mat-label>
+          <input matInput formControlName="securityNumber" />
+          <mat-error
+            *ngIf="userForm.get('securityNumber')?.hasError('required') && userForm.get('securityNumber')?.touched">
+            SecurityNumber is required.
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+
+      <!-- Account Information -->
+      <mat-grid-tile colspan="2">
+        <h3>Account Information</h3>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="2">
+        <mat-form-field appearance="fill">
+          <mat-label> <mat-icon>person_check</mat-icon> Username</mat-label>
+          <input matInput formControlName="username" readonly/>
+          <mat-error *ngIf="userForm.get('username')?.hasError('required') && userForm.get('username')?.touched">
+            Username is required.
+          </mat-error>
+          <mat-error *ngIf="userForm.get('username')?.hasError('minlength') && userForm.get('username')?.touched">
+            Username must be at least 6 characters.
+          </mat-error>
+        </mat-form-field>
+        <button class="generate-btn" mat-icon-button disabled="true">
+          <mat-icon>published_with_changes</mat-icon>
+        </button>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="2">
+        <mat-form-field appearance="fill">
+          <mat-label><mat-icon>key</mat-icon> Password</mat-label>
+          <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+          <button mat-icon-button (click)="showPassword = !showPassword" matSuffix
+            aria-label="Toggle Password Visibility">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched">
+            Password is required.
+          </mat-error>
+          <mat-error *ngIf="userForm.get('password')?.hasError('minlength') && userForm.get('password')?.touched">
+            Password must be at least 6 characters.
+          </mat-error>
+        </mat-form-field>
+        <button class="generate-btn" mat-icon-button (click)="generatePassword()">
+          <mat-icon>published_with_changes</mat-icon>
+        </button>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="2">
+        <mat-form-field appearance="fill">
+          <mat-label> <mat-icon>settings_accessibility</mat-icon> Roles</mat-label>
+          <mat-select (selectionChange)="updateSelectedRoles($event.value)" formControlName="roles" multiple>
+            <mat-option *ngFor="let role of availableRoles" [value]="role">{{ role }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="userForm.get('roles')?.hasError('required') && userForm.get('roles')?.touched">
+            At least one role is required.
+          </mat-error>
+        </mat-form-field>
+        <button class="generate-btn" mat-icon-button>
+          <mat-icon>groups_2</mat-icon>
+        </button>
+        <!-- <div class="selected-roles">
+                  {{ userForm.get('roles')?.value.join(', ') }} 
+              </div> -->
+
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-checkbox formControlName="accountNonExpired">Account Non Expired</mat-checkbox>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-checkbox formControlName="accountNonLocked">Account Non Locked</mat-checkbox>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-checkbox formControlName="credentialsNonExpired">Credentials Non Expired</mat-checkbox>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-checkbox formControlName="enabled">Enabled</mat-checkbox>
+      </mat-grid-tile>
+
+      <mat-grid-tile colspan="2">
+        <div class="button-container">
+          <button mat-raised-button color="accent" (click)="updateUser()">Update</button>
+          <button mat-button (click)="closeDialog()">Close</button>
         </div>
-        <div>
-          <strong>First Name:</strong>
-          <p>{{ user.customUserDetails.firstName }}</p>
-        </div>
-        <div>
-          <strong>Middle Name:</strong>
-          <p>{{ user.customUserDetails.middleName || 'N/A' }}</p>
-        </div>
-        <div>
-          <strong>Last Name:</strong>
-          <p>{{ user.customUserDetails.lastName }}</p>
-        </div>
-        <div>
-          <strong>Email:</strong>
-          <p>{{ user.customUserDetails.email }}</p>
-        </div>
-        <div>
-          <strong>Phone:</strong>
-          <p>{{ user.customUserDetails.phone || 'N/A' }}</p>
-        </div>
-        <div>
-          <strong>Address:</strong>
-          <p>{{ user.customUserDetails.address || 'N/A' }}</p>
-        </div>
-        <div>
-          <strong>Security Number:</strong>
-          <p>{{ user.customUserDetails.securityNumber || 'N/A' }}</p>
-        </div>
-      </div>
-  
-      <h3>Account Status</h3>
-      <div class="account-status-grid">
-        <div>
-          <mat-checkbox [(ngModel)]="user.customUser.accountNonExpired">Account Non Expired</mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox [(ngModel)]="user.customUser.accountNonLocked">Account Non Locked</mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox [(ngModel)]="user.customUser.credentialsNonExpired">Credentials Non Expired</mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox [(ngModel)]="user.customUser.enabled">Account Enabled</mat-checkbox>
-        </div>
-      </div>
-  
-      <h3>Roles</h3>
-      <p *ngFor="let role of getRoles()">{{ role }}</p>
-    </mat-card-content>
-  
-    <mat-card-actions>
-      <button mat-button (click)="close()">Close</button>
-    </mat-card-actions>
-  </mat-card>
-  
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+  </form>
+
+</mat-dialog-content>
