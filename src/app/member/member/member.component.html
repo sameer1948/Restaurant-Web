@@ -62,7 +62,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let element">
-          <button color="primary" mat-icon-button matTooltip="Open User" (click)="updateUser(element)">
+          <button color="primary" mat-icon-button matTooltip="Open User" (click)="openUser(element)">
             <mat-icon>open_in_new</mat-icon>
           </button>
           <button color="accent" mat-icon-button matTooltip="Edit User" (click)="updateUser(element)">

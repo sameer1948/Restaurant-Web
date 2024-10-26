@@ -4,7 +4,6 @@ import { MenuList } from '../../model/MenuList';
 import { AdminService } from '../../services/admin.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../common/notification.service';
-import e from 'express';
 
 @Component({
   selector: 'app-add-menu',

@@ -6,6 +6,8 @@ import { AdminService } from '../../services/admin.service';
 import { CustomUserDetails } from '../../model/CustomUserDetails';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateMemberComponent } from '../update-member/update-member.component';
+import { AddMemberComponent } from '../add-member/add-member.component';
+import { VeiwRemoveMemberComponent } from '../veiw-remove-member/veiw-remove-member.component';
 
 @Component({
   selector: 'app-member',
@@ -62,12 +64,30 @@ export class MemberComponent implements OnInit, AfterViewInit {
   }
 
   addNew() {
-    // Logic for adding a new CustomUserDetails
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.disableClose = true;
+    matDialogConfig.autoFocus = true;
+    matDialogConfig.width = "70%";    
+    matDialogConfig.height = "70%";    
+    this.matDialog.open(AddMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
+      if (response === 'success') {
+       console.log(response); // Reload items after addition
+      }
+    });
+  }
+
+  openUser(user: CustomUserDetails) {
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.autoFocus = true;
+    matDialogConfig.width = "60%";
+    matDialogConfig.data = user;
+    matDialogConfig.data = {customUserDetails: user, type: 'open'}
+    this.matDialog.open(VeiwRemoveMemberComponent, matDialogConfig)
   }
 
   updateUser(user: CustomUserDetails) {
     const matDialogConfig = new MatDialogConfig();
-    //matDialogConfig.disableClose = true;
+    matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "60%";
     matDialogConfig.data = user;
@@ -79,6 +99,15 @@ export class MemberComponent implements OnInit, AfterViewInit {
   }
 
   deleteUser(user: CustomUserDetails) {
-    // Logic for deleting the user
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.disableClose = true;
+    matDialogConfig.autoFocus = true;
+    matDialogConfig.width = "60%";
+    matDialogConfig.data = {customUserDetails: user, type: 'remove'}
+    this.matDialog.open(VeiwRemoveMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
+      if (response === 'success') {
+       console.log(response); // Reload items after addition
+      }
+    });
   }
 }

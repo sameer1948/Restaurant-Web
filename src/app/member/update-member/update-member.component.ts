@@ -11,8 +11,11 @@ import { UserDetails } from '../../model/UserDetails';
   styleUrl: './update-member.component.scss'
 })
 export class UpdateMemberComponent { 
-  
+
   userForm: FormGroup;
+  showPassword: boolean = false;
+  availableRoles : string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
+  availableGender: string[] = ['Male', 'Female']; // remove after clean up
 
   user: User = {
     username : '',
@@ -34,12 +37,6 @@ export class UpdateMemberComponent {
     address : '',
     securityNumber : ''
   };
-
-  availableRoles : string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
-  availableGender: string[] = ['Male', 'Female']; // remove after clean up
-  showPassword: boolean = false;
-  generatedUsername: string = '';  // remove after clean up
-  generatedPassword: string = ''; // remove after clean up
 
   constructor(private matDialogRef :  MatDialogRef<UpdateMemberComponent>,
     @Inject(MAT_DIALOG_DATA) data: CustomUserDetails,
@@ -69,10 +66,8 @@ export class UpdateMemberComponent {
 
   ngOnInit() {}
 
-  public generatePassword() : void {
-    
-    this.generatedPassword = Math.random().toString(36).slice(-8);
-    this.userForm.patchValue({ password: this.generatedPassword });
+  public generatePassword() : void {    
+    this.userForm.patchValue({ password: Math.random().toString(36).slice(-8) });
   }
 
   public updateSelectedRoles(selectedRoles: string[]) : void {
