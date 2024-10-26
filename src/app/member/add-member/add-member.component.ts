@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component} from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { User } from '../../model/User';
+import { CustomUserDetails } from '../../model/CustomUserDetails';
+import { UserDetails } from '../../model/UserDetails';
 
 @Component({
   selector: 'app-add-member',
@@ -6,5 +11,107 @@ import { Component } from '@angular/core';
   styleUrl: './add-member.component.scss'
 })
 export class AddMemberComponent {
+  
+  userForm: FormGroup;
 
+  user: User = {
+    username : '',
+    password : '',
+    roles : '',
+    accountNonExpired : true,
+    accountNonLocked : true,
+    credentialsNonExpired : true,
+    enabled : true
+  };
+
+  userDetails: UserDetails = {
+    username : '',
+    firstName : '',
+    middleName : '',
+    lastName : '',
+    email : '',
+    phone : '',
+    address : '',
+    securityNumber : ''
+  };
+
+  availableRoles : string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
+  availableGender: string[] = ['Male', 'Female']; // remove after clean up
+  showPassword: boolean = false;
+  generatedUsername: string = '';  // remove after clean up
+  generatedPassword: string = ''; // remove after clean up
+
+  constructor(private matDialogRef: MatDialogRef<AddMemberComponent>,
+    private formBuilder: FormBuilder) {
+
+    this.userForm = this.formBuilder.group(
+      {        
+        firstName : ['', Validators.required],
+        middleName : [''],
+        lastName : ['', Validators.required],
+        email : ['', [Validators.required, Validators.email]],
+        phone : ['', [Validators.required, Validators.maxLength(10)]],
+        address : ['', [Validators.required]],
+        securityNumber : ['', [Validators.required]],        
+
+        //username : [{ value: '', disabled: true }, [Validators.required, Validators.minLength(6)]],        
+        username : ['', [Validators.required, Validators.minLength(6)]],        
+        password : ['', [Validators.required, Validators.minLength(6)]],
+        roles : [[], Validators.required], 
+        accountNonExpired : [true],
+        accountNonLocked : [true],
+        credentialsNonExpired : [true],
+        enabled : [true]
+      }
+    );
+
+  }
+
+  ngOnInit() {}
+
+  public generateUsername() : void  {
+    const randomValue = Math.random().toString(36).substring(7);
+    this.generatedUsername = `${this.userDetails.firstName}.${this.userDetails.lastName}.${randomValue}`;
+    this.userForm.patchValue({ username: this.generatedUsername });
+  }
+
+  public generatePassword() : void {
+    this.generatedPassword = Math.random().toString(36).slice(-8);
+    this.userForm.patchValue({ password: this.generatedPassword });
+  }
+
+  public updateSelectedRoles(selectedRoles: string[]) : void {
+    this.userForm.patchValue({ roles: selectedRoles });
+  }
+
+  public createUser() : void{
+    if (this.userForm.valid) {
+      const userData = {
+        ...this.user,
+        username: this.userForm.value.username,
+        password: this.userForm.value.password,
+        roles: this.userForm.value.roles.join(', '), // Join selected roles into a string
+        details: {
+          ...this.userDetails,
+          firstName: this.userForm.value.firstName,
+          lastName: this.userForm.value.lastName,
+          email: this.userForm.value.email,
+          phone: this.userForm.value.phone,
+        }
+      };
+
+      console.log('User created:', userData);
+      // Call your service to save `userData` to the database here
+
+      this.matDialogRef.close('success');
+    } else {
+      this.userForm.markAllAsTouched();
+    }
+  }
+
+  public closeDialog() : void {
+    this.matDialogRef.close();
+  }
+
+  
 }
