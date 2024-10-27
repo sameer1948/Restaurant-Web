@@ -13,10 +13,12 @@ import { ProfileComponent } from './profile/profile.component';
 import { MenuHomeComponent } from './menu/menu-home/menu-home.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { MemberComponent } from './member/member/member.component';
+import { OrderHomeComponent } from './orders/order-home/order-home.component';
 
 const routes: Routes = [
   { path : '', component: UnauthorizedComponent },
   { path : 'home', component: HomeComponent },  
+  { path : 'order', component: OrderHomeComponent },  
   { path : 'menu', component:MenuHomeComponent, canActivate : [authGuard, roleAdminGuard],},
   { path : 'members', component:MemberComponent, canActivate : [authGuard, roleAdminGuard],},
   { path : 'profile', component: ProfileComponent,   canActivate : [authGuard] },

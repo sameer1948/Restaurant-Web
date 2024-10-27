@@ -54,6 +54,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
 import { VeiwRemoveMemberComponent } from './member/veiw-remove-member/veiw-remove-member.component';
+import { OrderHomeComponent } from './orders/order-home/order-home.component';
+import { MenuDescriptionComponent } from './menu/menu-description/menu-description.component';
+import { CreateOrderComponent } from './orders/create-order/create-order.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -76,6 +79,9 @@ import { VeiwRemoveMemberComponent } from './member/veiw-remove-member/veiw-remo
         AddMemberComponent,
         VeiwRemoveMemberComponent,
         UpdateMemberComponent,
+        OrderHomeComponent,
+        MenuDescriptionComponent,
+        CreateOrderComponent,
     ],
     bootstrap: [AppComponent],
     
