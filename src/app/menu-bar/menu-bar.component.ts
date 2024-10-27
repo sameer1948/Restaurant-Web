@@ -48,21 +48,21 @@ export class MenuBarComponent implements OnInit{
 
   }
 
-  checksize() {
-    window.addEventListener('resize', () => {
-      if (this.isMobileScreen()) {
-          this.drawer.mode = 'over';
-          this.drawer.close(); // Automatically close on smaller screens
-      } else {
-          this.drawer.mode = 'side';
-          this.drawer.open(); // Automatically open on larger screens
-      }
-  });
-  }
+  // checksize() {
+  //   window.addEventListener('resize', () => {
+  //     if (this.isMobileScreen()) {
+  //         this.drawer.mode = 'over';
+  //         this.drawer.close(); // Automatically close on smaller screens
+  //     } else {
+  //         this.drawer.mode = 'side';
+  //         this.drawer.open(); // Automatically open on larger screens
+  //     }
+  // });
+  // }
 
-  private toggleDrawer() : void{
-    this.drawer.toggle();
-  }
+  // private toggleDrawer() : void{
+  //   this.drawer.toggle();
+  // }
 
   private isMobileScreen() : boolean {
     return window.innerWidth < 600;
