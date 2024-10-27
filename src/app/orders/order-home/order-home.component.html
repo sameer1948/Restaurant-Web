@@ -1,0 +1,148 @@
+<mat-card class="home-container" appearance="outlined">
+
+  <mat-card-header>
+    <mat-card-title> <mat-icon>view_comfy_alt</mat-icon> Available Food Items</mat-card-title>
+  </mat-card-header>
+
+
+  <mat-grid-list cols="3" rowHeight="100px">
+
+    <mat-grid-tile>
+      <!-- Search Bar -->
+      <mat-form-field appearance="fill">
+
+        <mat-label> <mat-icon>search</mat-icon> Search Menu Items</mat-label>
+
+        <input matInput [(ngModel)]="searchQuery" (input)="updateFilteredItems()" />
+
+        <button mat-icon-button *ngIf="searchQuery" (click)="clearSearch()">
+          <mat-icon>clear</mat-icon>
+        </button>
+
+      </mat-form-field>
+
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <!-- Sort By Dropdown -->
+      <mat-form-field appearance="fill">
+
+        <mat-label> <mat-icon>swap_vert</mat-icon> Sort By</mat-label>
+
+        <mat-select [(ngModel)]="sortOrder" (selectionChange)="sortItems()">
+
+          <mat-option value="name"> <mat-icon>sort_by_alpha</mat-icon> Name</mat-option>
+          <mat-option value="price"> <mat-icon>currency_rupee</mat-icon> Price</mat-option>
+
+        </mat-select>
+
+      </mat-form-field>
+
+    </mat-grid-tile>
+
+  </mat-grid-list>
+
+  <div class="content-container">
+
+    <div class="row">
+      <div [ngClass]="{'menu-column': true, 'full-width': !itemsSelected, 'partial-width': itemsSelected}">
+
+        <mat-grid-list cols="3" rowHeight="350px" gutterSize="16px">
+
+          <mat-grid-tile *ngFor="let item of paginatedItems">
+
+            <mat-card class="menu-item">
+              <img mat-card-image [src]="item.itemPngPath" alt="{{ item.item }}" />
+
+              <mat-card-content>
+
+                <h3>{{ item.item }}</h3>
+                <p>Price: {{ item.price | currency }}</p>
+
+                <button mat-icon-button color="primary" (click)="openDesc(item)">
+                  <mat-icon>description</mat-icon>
+                </button>
+
+                <button mat-icon-button color="primary" (click)="addToOrder(item.id)">
+                  <mat-icon>add_shopping_cart</mat-icon>
+                </button>
+
+              </mat-card-content>
+
+            </mat-card>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+      </div>
+
+      <ng-container *ngIf="getSelectedItems().length > 0">
+
+        <div class="selection-column">
+
+          <h2><mat-icon>shopping_cart</mat-icon> Selected Food Items</h2>
+
+          <!-- Card for Headings -->
+          <mat-card class="heading-card">
+
+            <mat-card-content>
+              <h3>{{itemsSelectedHeader}}</h3>
+            </mat-card-content>
+
+          </mat-card>
+
+          <div *ngFor="let selectedItem of getSelectedItems()" class="selected-item-card">
+
+            <mat-card>
+
+              <mat-card-content class="card-content">
+
+                <h3>{{ selectedItem.item?.item }}</h3>
+                <p>{{ selectedItem.item?.price | currency }}</p>
+
+                <div class="card-action-buttons">
+
+                  <button mat-button (click)="decreaseQuantity(selectedItem.item!.id)">
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                  <span class="quantity">{{ selectedItem.quantity }}</span>
+
+                  <button mat-button (click)="increaseQuantity(selectedItem.item!.id)">
+                    <mat-icon>add</mat-icon>
+                  </button>
+
+                  <button mat-button color="warn" (click)="removeItem(selectedItem.item!.id)">
+                   <mat-icon>delete</mat-icon>
+                  </button>
+
+                </div>
+
+              </mat-card-content>
+
+            </mat-card>
+
+          </div>
+
+          <h3>Grand Total: {{ grandTotal | currency }}</h3>
+          <div class="action-buttons">
+            <button mat-raised-button color="primary" (click)="submitOrder()">Proceed</button>
+            <button mat-raised-button color="warn" (click)="clearOrder()">Clear</button>
+          </div>
+        </div>
+
+      </ng-container>
+
+    </div>
+
+    <div class="footer">
+
+      <mat-paginator [length]="filteredItems.length" [pageSize]="pageSize" [pageSizeOptions]="[9, 18, 27, 36, 45, 54, 63, 72, 81, 90, 99]"
+        (page)="changePage($event)">
+      </mat-paginator>
+
+    </div>
+
+  </div>
+
+</mat-card>
