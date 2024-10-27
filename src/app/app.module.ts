@@ -43,7 +43,6 @@ import { GlobalErrorHandler } from './services/global-error-handler';
 import { ErrorComponent } from './errors/error/error.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
-import { SideNavComponent } from './side-nav/side-nav.component';
 import { MenuHomeComponent } from './menu/menu-home/menu-home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ChangePasswordDialogComponent } from './profile/change-password-dialog/change-password-dialog.component';
@@ -71,8 +70,7 @@ import { CreateOrderComponent } from './orders/create-order/create-order.compone
         LoginComponent,
         ErrorComponent,
         UnauthorizedComponent,
-        MenuBarComponent,
-        SideNavComponent,
+        MenuBarComponent,        
         MenuHomeComponent,
         ChangePasswordDialogComponent,
         MemberComponent,        

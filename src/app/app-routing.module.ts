@@ -11,7 +11,6 @@ import { roleAdminGuard } from './guard/role-admin.guard';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MenuHomeComponent } from './menu/menu-home/menu-home.component';
-import { SideNavComponent } from './side-nav/side-nav.component';
 import { MemberComponent } from './member/member/member.component';
 import { OrderHomeComponent } from './orders/order-home/order-home.component';
 
@@ -29,8 +28,7 @@ const routes: Routes = [
                    data: { expectedRole: 'admin' } },
   { path :'login', component: LoginComponent },
   { path : 'error', component: ErrorComponent },
-  { path : 'unauthorized', component: UnauthorizedComponent },
-  { path : 'slider', component : SideNavComponent},
+  { path : 'unauthorized', component: UnauthorizedComponent },  
   { path: '**', component: ErrorComponent }
 ];
 
