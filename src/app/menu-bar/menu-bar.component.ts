@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenicationService } from '../services/authenication.service';
 import { Router } from '@angular/router';
 import { EncryptDecryptService } from '../services/encrypt-decrypt.service';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-menu-bar',
@@ -10,15 +11,13 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
   styleUrl: './menu-bar.component.scss'
 })
 export class MenuBarComponent implements OnInit{
+  //@ViewChild('drawer') drawer!: MatDrawer;
 
   readonly APPLICATION_NAME = 'My Restautant';
   readonly ROLE_ADMIN = 'ADMIN';
   readonly ROLE_USER = 'USER';
-
+  
   badgevisible : boolean = false;
-/*   isAuthenticated : boolean = false;
-  isAdmin : boolean = false;
-  isUser : boolean = false; */
   
   private isAuthenticated = new BehaviorSubject<boolean>(false);
   isAuthenticated$ = this.isAuthenticated.asObservable();
@@ -33,7 +32,8 @@ export class MenuBarComponent implements OnInit{
     private routerService : Router,
     private decrypt : EncryptDecryptService ) {}
   
-  ngOnInit() : void {
+  ngOnInit() : void {   
+    //this.checksize();
 
     this.isAuthenticated.next(this.authenticationService.isAuthenticated());  
     let role = this.authenticationService.getUserRole();
@@ -46,6 +46,26 @@ export class MenuBarComponent implements OnInit{
       this.isUser.next(true);
     }
 
+  }
+
+  checksize() {
+    window.addEventListener('resize', () => {
+      if (this.isMobileScreen()) {
+          this.drawer.mode = 'over';
+          this.drawer.close(); // Automatically close on smaller screens
+      } else {
+          this.drawer.mode = 'side';
+          this.drawer.open(); // Automatically open on larger screens
+      }
+  });
+  }
+
+  private toggleDrawer() : void{
+    this.drawer.toggle();
+  }
+
+  private isMobileScreen() : boolean {
+    return window.innerWidth < 600;
   }
 
   public badgevisibility() : void {

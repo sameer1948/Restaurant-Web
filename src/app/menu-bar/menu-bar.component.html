@@ -106,11 +106,11 @@
         <mat-nav-list *ngIf = "isAdmin$ | async">
 
             <mat-list-item>
-                <button routerLink="card" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
+                <button routerLink="order" mat-button><mat-icon>dashboard</mat-icon> Dashboard</button>
             </mat-list-item>         
 
             <mat-list-item>
-                <button routerLink="/ad-home" mat-button>
+                <button routerLink="menu" mat-button>
                     <mat-icon>
                         menu_book
                     </mat-icon> 
@@ -119,32 +119,38 @@
             </mat-list-item>
 
             <mat-list-item>
-                <button routerLink="slider" mat-button><mat-icon>explore</mat-icon> Slider</button>
+                <button routerLink="members" mat-button>
+                    <mat-icon>
+                        groups
+                    </mat-icon> 
+                    Members
+                </button>
             </mat-list-item>
 
             <mat-list-item>
-                <button routerLink="table" mat-button><mat-icon>table</mat-icon> Table</button>
-            </mat-list-item>
+                <button routerLink="settings" mat-button>
+                    <mat-icon>
+                        settings
+                    </mat-icon> 
+                    Settings
+                </button>
+            </mat-list-item>            
 
-            <mat-list-item>
-                <button mat-button><mat-icon>settings</mat-icon> Settings</button>
-            </mat-list-item>
-
-            <mat-list-item>
-                <button mat-button><mat-icon>help</mat-icon> Help</button>
-            </mat-list-item>
-            
             <mat-list-item>
                 <button mat-button><mat-icon>analytics</mat-icon> analytics</button>
             </mat-list-item>
 
+            <mat-list-item>
+                <button routerLink="about" mat-button><mat-icon>contact_mail</mat-icon> About</button>
+            </mat-list-item>          
+            
         </mat-nav-list>
 
     </mat-drawer>
 
     <mat-drawer-content>
 
-        <div style="text-align: center;min-height: 600px;">
+        <div style="text-align: center;">
         
             <router-outlet></router-outlet>
 
