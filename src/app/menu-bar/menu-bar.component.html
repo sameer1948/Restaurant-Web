@@ -51,9 +51,7 @@
     <button *ngIf="!(isAuthenticated$ | async)" routerLink="/login" matTooltip="Login" mat-icon-button> 
         <mat-icon>login</mat-icon> 
     </button>
-    <button *ngIf="!(isAuthenticated$ | async)" routerLink="/login" matTooltip="Login" mat-icon-button>
-        <mat-icon>login</mat-icon> 
-      </button>
+    
     <button mat-icon-button [matMenuTriggerFor]="loginMenu" *ngIf="isAuthenticated$ | async"> 
         <mat-icon>person</mat-icon> 
           <mat-menu #loginMenu="matMenu">
