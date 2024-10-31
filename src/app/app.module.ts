@@ -5,6 +5,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
@@ -56,6 +57,12 @@ import { VeiwRemoveMemberComponent } from './member/veiw-remove-member/veiw-remo
 import { OrderHomeComponent } from './orders/order-home/order-home.component';
 import { MenuDescriptionComponent } from './menu/menu-description/menu-description.component';
 import { CreateOrderComponent } from './orders/create-order/create-order.component';
+import { AboutComponent } from './about/about.component';
+import { CouponHomeComponent } from './coupon/coupon-home/coupon-home.component';
+import { CouponAddComponent } from './coupon/coupon-add/coupon-add.component';
+import { CouponViewRemoveComponent } from './coupon/coupon-view-remove/coupon-view-remove.component';
+import { CouponUpdateComponent } from './coupon/coupon-update/coupon-update.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -80,6 +87,11 @@ import { CreateOrderComponent } from './orders/create-order/create-order.compone
         OrderHomeComponent,
         MenuDescriptionComponent,
         CreateOrderComponent,
+        AboutComponent,
+        CouponHomeComponent,
+        CouponAddComponent,
+        CouponViewRemoveComponent,
+        CouponUpdateComponent,
     ],
     bootstrap: [AppComponent],
     
@@ -94,7 +106,9 @@ import { CreateOrderComponent } from './orders/create-order/create-order.compone
         MatButtonModule,
         MatCardModule, 
         MatCheckboxModule,
-        MatChipsModule,       
+        MatChipsModule,    
+        MatDatepickerModule,
+        MatNativeDateModule,   
         MatDialogModule,
         MatDividerModule,
         MatFormFieldModule,

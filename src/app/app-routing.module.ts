@@ -13,6 +13,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { MenuHomeComponent } from './menu/menu-home/menu-home.component';
 import { MemberComponent } from './member/member/member.component';
 import { OrderHomeComponent } from './orders/order-home/order-home.component';
+import { AboutComponent } from './about/about.component';
+import { CouponHomeComponent } from './coupon/coupon-home/coupon-home.component';
 
 const routes: Routes = [
   { path : '', component: UnauthorizedComponent },
@@ -26,8 +28,10 @@ const routes: Routes = [
   { path : 'ad-home', component: AdminHomeComponent, 
                    canActivate : [authGuard, roleAdminGuard], 
                    data: { expectedRole: 'admin' } },
-  { path :'login', component: LoginComponent },
+  { path : 'login', component: LoginComponent },
+  { path : 'about', component: AboutComponent },
   { path : 'error', component: ErrorComponent },
+  { path : 'coupon', component : CouponHomeComponent },
   { path : 'unauthorized', component: UnauthorizedComponent },  
   { path: '**', component: ErrorComponent }
 ];

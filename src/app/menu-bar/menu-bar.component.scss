@@ -48,3 +48,14 @@
 .menu-spacer {
   flex: 1 1 auto;
 }
+
+.mat-list-item {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mat-list-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}

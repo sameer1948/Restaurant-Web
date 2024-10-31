@@ -1,0 +1,140 @@
+<h2 mat-dialog-title class="dialog-title">
+    Add New Offer Coupon
+    <button mat-icon-button (click)="onClose()" class="close-button" aria-label="Close">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<mat-dialog-content>
+
+    <form [formGroup]="couponForm">
+
+        <mat-grid-list cols="2" rowHeight="100px">
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Coupon Code</mat-label>
+
+                    <input matInput formControlName="code"/>
+
+                    <button mat-icon-button matSuffix (click)="generateRandomCouponCode()">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+
+                    <mat-error *ngIf="couponForm.get('code')?.hasError('required') && couponForm.get('code')?.touched">
+                        Coupon code is required.
+                    </mat-error>
+
+                    <mat-error *ngIf="couponForm.get('code')?.hasError('minlength') && couponForm.get('code')?.touched">
+                        Coupon code must be at least 6 characters.
+                    </mat-error>
+
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Maximum Discount Amount</mat-label>
+                    <input matInput type="number" formControlName="maxAmount" />
+                    <mat-error *ngIf="couponForm.get('maxAmount')?.hasError('required')">Maximum amount is
+                        required.</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Discount Start Date</mat-label>
+                    <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="minDate" />
+                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                    <mat-error *ngIf="couponForm.get('startDate')?.hasError('required')">Start date is
+                        required.</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Discount End Date</mat-label>
+                    <input matInput [matDatepicker]="endPicker" formControlName="endDate" [min]="minDate" />
+                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                    <mat-error *ngIf="couponForm.get('endDate')?.hasError('required')">End date is required.</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+
+                <mat-checkbox formControlName="isAmount" (change)="onAmountChange()">
+                    Discount Type Is Amount
+                </mat-checkbox>
+
+                <mat-checkbox formControlName="isPercentage" (change)="onPercentageChange()">
+                    Discount Type Is Percentage
+                </mat-checkbox>
+                
+                <mat-error *ngIf="couponForm.hasError('atLeastOneRequired') && couponForm.touched">
+                    At least one discount type (Amount or Percentage) must be selected.
+                </mat-error>
+
+            </mat-grid-tile>
+
+            <mat-grid-tile *ngIf="couponForm.get('isAmount')?.value">
+                <mat-form-field appearance="fill">
+                    <mat-label>Amount</mat-label>
+                    <input matInput type="number" formControlName="amount" readonly="true" />
+                    <mat-error *ngIf="couponForm.get('amount')?.hasError('required')">Amount is required when
+                        selected.</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile *ngIf="couponForm.get('isPercentage')?.value">
+                <mat-form-field appearance="fill">
+                    <mat-label>Percentage</mat-label>
+                    <input matInput type="number" formControlName="percentage" />
+                    <mat-error *ngIf="couponForm.get('percentage')?.hasError('required')">Percentage is required when
+                        selected.</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="2">
+                <mat-form-field appearance="fill" style="width: 90%;">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description"></textarea>
+                    <div *ngIf="couponForm.get('description')?.value">
+                        <!-- Note: Maximum discount amount is {{ couponForm.get('maxAmount')?.value }} -->
+                    </div>
+                    <mat-error *ngIf="couponForm.get('description')?.hasError('required')">
+                        Description is required.
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status" (selectionChange)="updateStatus($event.value)">
+                        <mat-option [value]="'Enabled'">Enabled</mat-option>
+                        <mat-option [value]="'Disabled'">Disabled</mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="couponForm.get('status')?.hasError('required') && couponForm.get('status')?.touched">
+                        Status is required.
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Added By</mat-label>
+                    <input matInput type="text" formControlName="addedBy" readonly="true" />
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button [disabled]="couponForm.invalid" (click)="onSubmit()">Add</button>
+</mat-dialog-actions>

@@ -51,7 +51,9 @@
     <button *ngIf="!(isAuthenticated$ | async)" routerLink="/login" matTooltip="Login" mat-icon-button> 
         <mat-icon>login</mat-icon> 
     </button>
-
+    <button *ngIf="!(isAuthenticated$ | async)" routerLink="/login" matTooltip="Login" mat-icon-button>
+        <mat-icon>login</mat-icon> 
+      </button>
     <button mat-icon-button [matMenuTriggerFor]="loginMenu" *ngIf="isAuthenticated$ | async"> 
         <mat-icon>person</mat-icon> 
           <mat-menu #loginMenu="matMenu">
@@ -128,6 +130,24 @@
             </mat-list-item>
 
             <mat-list-item>
+                <button routerLink="tax" mat-button>
+                    <mat-icon>
+                        corporate_fare
+                    </mat-icon> 
+                    Tax & Services
+                </button>
+            </mat-list-item>
+
+            <mat-list-item>
+                <button routerLink="coupon" mat-button>
+                    <mat-icon>
+                        payments
+                    </mat-icon> 
+                    Coupons
+                </button>
+            </mat-list-item>
+
+            <mat-list-item>
                 <button routerLink="settings" mat-button>
                     <mat-icon>
                         settings
@@ -135,7 +155,7 @@
                     Settings
                 </button>
             </mat-list-item>            
-
+            
             <mat-list-item>
                 <button mat-button><mat-icon>analytics</mat-icon> analytics</button>
             </mat-list-item>
