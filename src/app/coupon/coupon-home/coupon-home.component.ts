@@ -70,24 +70,6 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
         console.log(response)
       }
     });
-
-    // const dialogRef = this.dialog.open(CouponAddComponent, {
-    //   data: { action, coupon }
-    // });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result) {
-    //     if (result.action === 'add') {
-    //       this.dataSource.data = [...this.dataSource.data, result.coupon];
-    //     } else if (result.action === 'edit') {
-    //       const index = this.dataSource.data.findIndex(c => c.id === result.coupon.id);
-    //       this.dataSource.data[index] = result.coupon;
-    //     } else if (result.action === 'delete') {
-    //       this.dataSource.data = this.dataSource.data.filter(c => c.id !== result.coupon.id);
-    //     }
-    //     this.dataSource._updateChangeSubscription(); // Refresh the table
-    //   }
-    // });
   }
 
 
