@@ -1,0 +1,26 @@
+.dialog-title {
+    background-color: #ca5323cc;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.close-button {
+    color: red;
+}
+
+
+h3 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+mat-form-field {
+    width: 80%;
+}
+
+.generate-btn {
+    margin: 20px;
+}

@@ -1,0 +1,71 @@
+<h2 mat-dialog-title class="dialog-title">
+    Discount Coupon Details
+    <button mat-icon-button (click)="onClose()" class="close-button" aria-label="Close">
+        <mat-icon>close</mat-icon>
+    </button>
+</h2>
+
+<mat-dialog-content>
+
+    <form [formGroup]="taxAndFeeForm">
+
+        <mat-grid-list cols="2" rowHeight="100px">
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Tax And Fee Type</mat-label>
+
+                    <input matInput formControlName="name" />
+                    
+                    <mat-error *ngIf="taxAndFeeForm.get('name')?.hasError('required') && taxAndFeeForm.get('name')?.touched">
+                        Coupon name is required.
+                    </mat-error>
+
+                    <mat-error *ngIf="taxAndFeeForm.get('name')?.hasError('minlength') && taxAndFeeForm.get('name')?.touched">
+                        Coupon name must be at least 4 characters.
+                    </mat-error>
+
+                </mat-form-field>
+            </mat-grid-tile>
+           
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Percentage</mat-label>
+                    <input matInput type="number" formControlName="percentage" />
+                    <mat-error *ngIf="taxAndFeeForm.get('percentage')?.hasError('required')">Percentage is required.</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="status" (selectionChange)="updateStatus($event.value)">
+                        <mat-option [value]="'Enabled'">Enabled</mat-option>
+                        <mat-option [value]="'Disabled'">Disabled</mat-option>
+                    </mat-select>
+                    <mat-error
+                        *ngIf="taxAndFeeForm.get('status')?.hasError('required') && taxAndFeeForm.get('status')?.touched">
+                        Status is required.
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Added By</mat-label>
+                    <input matInput type="text" formControlName="addedBy" readonly="true" />
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end"  *ngIf="!isRemove">
+    <button mat-button (click)="onCancel()">Cancel</button>    
+</mat-dialog-actions>
+
+<mat-dialog-actions align="end" *ngIf="isRemove">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button (click)="onSubmit()">Remove</button>
+</mat-dialog-actions>

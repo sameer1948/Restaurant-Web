@@ -63,6 +63,10 @@ import { CouponAddComponent } from './coupon/coupon-add/coupon-add.component';
 import { CouponViewRemoveComponent } from './coupon/coupon-view-remove/coupon-view-remove.component';
 import { CouponUpdateComponent } from './coupon/coupon-update/coupon-update.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { TaxFeeComponent } from './tax-fee/tax-fee/tax-fee.component';
+import { AddTaxFeeComponent } from './tax-fee/add-tax-fee/add-tax-fee.component';
+import { UpdateTaxFeeComponent } from './tax-fee/update-tax-fee/update-tax-fee.component';
+import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-remove-tax-fee.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -92,6 +96,10 @@ import { MatNativeDateModule } from '@angular/material/core';
         CouponAddComponent,
         CouponViewRemoveComponent,
         CouponUpdateComponent,
+        TaxFeeComponent,
+        AddTaxFeeComponent,
+        UpdateTaxFeeComponent,
+        VeiwRemoveTaxFeeComponent,
     ],
     bootstrap: [AppComponent],
     

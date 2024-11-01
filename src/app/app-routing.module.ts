@@ -15,6 +15,7 @@ import { MemberComponent } from './member/member/member.component';
 import { OrderHomeComponent } from './orders/order-home/order-home.component';
 import { AboutComponent } from './about/about.component';
 import { CouponHomeComponent } from './coupon/coupon-home/coupon-home.component';
+import { TaxFeeComponent } from './tax-fee/tax-fee/tax-fee.component';
 
 const routes: Routes = [
   { path : '', component: UnauthorizedComponent },
@@ -32,9 +33,11 @@ const routes: Routes = [
   { path : 'about', component: AboutComponent },
   { path : 'error', component: ErrorComponent },
   { path : 'coupon', component : CouponHomeComponent },
+  { path : 'tax', component : TaxFeeComponent },
   { path : 'unauthorized', component: UnauthorizedComponent },  
   { path: '**', component: ErrorComponent }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -45,6 +45,9 @@ export class AppComponent {
 
       case '/coupon':
         return 'Coupon';
+        
+      case '/tax':
+        return 'Tax & Fee';
 
       case '/unauthorized':
         return 'Unauthorized';
