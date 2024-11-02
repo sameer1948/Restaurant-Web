@@ -45,7 +45,10 @@ export class AppComponent {
 
       case '/coupon':
         return 'Coupon';
-        
+
+      case '/settings':
+        return 'Settings';
+
       case '/tax':
         return 'Tax & Fee';
 
