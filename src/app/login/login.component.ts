@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoginRequest } from '../model/LoginRequest';
 import { AuthenicationService } from '../services/authenication.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NotificationService } from '../common/notification.service';
 import { Router } from '@angular/router';
 
@@ -11,25 +11,31 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  
-  private readonly ADMIN_ROLE : string = 'ADMIN';
-  
+
+  private readonly ADMIN_ROLE: string = 'ADMIN';
+
   private readonly USER_HOME: string = '/home';
-  private readonly ADMIN_HOME : string = '/ad-home' ;
+  private readonly ADMIN_HOME: string = '/ad-home';
 
 
 
   showPassword: boolean = false; // Manage password visibility
+  loginForm: FormGroup;
 
-  loginForm : FormGroup = new FormGroup({ 
-    request: new FormGroup({ 
-      username : new FormControl('', Validators.required),       
-      password : new FormControl('', Validators.required),       
-    }) 
-  });
+  constructor(
+    private formBuilder: FormBuilder,
+    private _authenticationService: AuthenicationService,
+    private notificationService: NotificationService,
+    private router: Router) {
+    
+      this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
 
-  constructor(private _authenticationService : AuthenicationService,
-    private notificationService : NotificationService, private router : Router) {
+    if (this._authenticationService.isAuthenticated()) { // checking user is already loggedin  or not ?
+      this.router.navigate([this._authenticationService.redirectUrl || this.USER_HOME]);
+    }
 
   }
 
@@ -37,19 +43,19 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
+
   protected login() {
-    let loginRequest = new LoginRequest();
-    loginRequest.username = this.loginForm.value.request?.username;
-    loginRequest.key = this.loginForm.value.request?.password;
+    const { username, password } = this.loginForm.value;
+    const loginRequest = { username, key: password };
 
     console.log(loginRequest);
 
     this._authenticationService.authenticate(loginRequest).subscribe(
-      data => { 
+      data => {
         console.log(data);
-        if (data.statusCode === 202) {          
-          this.notificationService.successMessage(data.message);         
-          this.loginForm.reset();                    
+        if (data.statusCode === 202) {
+          this.notificationService.successMessage(data.message);
+          this.loginForm.reset();
           if (data.role.includes(this.ADMIN_ROLE)) {
             this.router.navigate([this._authenticationService.redirectUrl || this.ADMIN_HOME]);
           } else {
@@ -57,7 +63,7 @@ export class LoginComponent {
           }
         } else if (data.statusCode === 500) {
           this.notificationService.errorMessage(data.message);
-        }      
+        }
 
       }, error => {
         console.log(error)
