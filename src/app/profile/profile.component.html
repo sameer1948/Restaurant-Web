@@ -1,78 +1,80 @@
-<div class="container">
+<mat-card class="home-container" appearance="outlined">
+  <div class="container">
 
-  <h2><mat-icon>badges</mat-icon>Account Information</h2>
+    <h2><mat-icon>badges</mat-icon>Account Information</h2>
 
-  <mat-card>
-    <mat-card-content>
-      <div class="account-info-row">
-        <div class="account-info-item">
-          <p><strong>Username:</strong> {{ user.username }}</p>
-        </div>
-        <div class="account-info-item">
-          <p><strong>Password:</strong> ********</p>
-        </div>
-      </div>
-      <div class="account-info-row">
-        <div class="account-info-item">
-          <p><strong>Roles:</strong> {{ user.roles }}</p>
-        </div>
-        <div class="account-info-item">
-          <p><strong>Account Status:</strong> {{ user.isEnabled ? 'Enabled' : 'Disabled' }}</p>
-        </div>
-      </div>
-      <button mat-raised-button color="warn" (click)="openChangePasswordDialog()">Change Password</button>
-    </mat-card-content>
-  </mat-card>
-
-  <h2>Personal Information</h2>
-  <mat-card>
-    <form [formGroup]="personalInfoForm" (ngSubmit)="save()">
+    <mat-card>
       <mat-card-content>
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Middle Name</mat-label>
-            <input matInput formControlName="middleName">
-          </mat-form-field>
+        <div class="account-info-row">
+          <div class="account-info-item">
+            <p><strong>Username:</strong> {{ user.username }}</p>
+          </div>
+          <div class="account-info-item">
+            <p><strong>Password:</strong> ********</p>
+          </div>
         </div>
-
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Last Name</mat-label>
-            <input matInput formControlName="lastName">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email">
-          </mat-form-field>
+        <div class="account-info-row">
+          <div class="account-info-item">
+            <p><strong>Roles:</strong> {{ user.roles }}</p>
+          </div>
+          <div class="account-info-item">
+            <p><strong>Account Status:</strong> {{ user.isEnabled ? 'Enabled' : 'Disabled' }}</p>
+          </div>
         </div>
-
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Phone</mat-label>
-            <input matInput formControlName="phone">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Address</mat-label>
-            <input matInput formControlName="address">
-          </mat-form-field>
-        </div>
-
-        <div class="form-row">
-          <mat-form-field appearance="fill" class="form-field">
-            <mat-label>Security Number</mat-label>
-            <input matInput formControlName="securityNumber">
-          </mat-form-field>
-        </div>
-
-        <button mat-raised-button color="primary" type="submit">Save</button>
+        <button mat-raised-button color="warn" (click)="openChangePasswordDialog()">Change Password</button>
       </mat-card-content>
-    </form>
-  </mat-card>
-</div>
+    </mat-card>
+
+    <h2>Personal Information</h2>
+    <mat-card>
+      <form [formGroup]="personalInfoForm" (ngSubmit)="save()">
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>Middle Name</mat-label>
+              <input matInput formControlName="middleName">
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email">
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="phone">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>Address</mat-label>
+              <input matInput formControlName="address">
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>Security Number</mat-label>
+              <input matInput formControlName="securityNumber">
+            </mat-form-field>
+          </div>
+
+          <button mat-raised-button color="primary" type="submit">Save</button>
+        </mat-card-content>
+      </form>
+    </mat-card>
+  </div>
+</mat-card>
