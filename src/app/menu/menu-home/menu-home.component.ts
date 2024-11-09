@@ -47,9 +47,9 @@ export class MenuHomeComponent implements OnInit {
   searchItems(): void {
     this.filteredItems = this.items.filter(item => 
         item.item.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        (item.qty !== null && item.qty.toString().includes(this.searchTerm)) ||
+        (item.quantity !== null && item.quantity.toString().includes(this.searchTerm)) ||
         (item.price !== null && item.price.toString().includes(this.searchTerm)) ||
-        (item.itemPngPath && item.itemPngPath.toLowerCase().includes(this.searchTerm.toLowerCase()))
+        (item.imagePath && item.imagePath.toLowerCase().includes(this.searchTerm.toLowerCase()))
     );
     this.currentPage = 1; // Reset to first page after search
     this.updatePagination();

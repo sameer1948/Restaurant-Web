@@ -40,9 +40,9 @@ export class AddMenuComponent {
     const menuList = new MenuList();
 
     menuList.item = this.form.value.menuItem?.item;
-    menuList.qty = this.selectedQty;
+    menuList.quantity = this.selectedQty;
     menuList.price = this.form.value.menuItem?.price;
-    menuList.itemPngPath = this.form.value.menuItem?.path;
+    menuList.imagePath = this.form.value.menuItem?.path;
 
     this._adminService.addItemToMenu(menuList).subscribe(
       (data) => {

@@ -115,9 +115,9 @@
                         <div class="item-content">
                             <span class="item-number">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</span> <!-- S.No -->
                             <span class="item-name">{{ item.item }}</span>
-                            <span class="item-quantity">{{ item.qty }}</span>
+                            <span class="item-quantity">{{ item.quantity }}</span>
                             <span class="item-price">{{ item.price }}</span>
-                            <span class="item-path">{{ item.itemPngPath }}</span>
+                            <span class="item-path">{{ item.imagePath }}</span>
                             <div class="item-actions">
                                 <button color="primary" mat-icon-button matTooltip="Edit Menu" (click)="editItem(item)">
                                     <mat-icon>edit_note</mat-icon>

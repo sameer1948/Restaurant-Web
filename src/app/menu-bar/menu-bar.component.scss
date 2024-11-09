@@ -1,50 +1,22 @@
-
-// /* Toolbar styles */
-// .mat-toolbar {
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   flex-wrap: wrap; /* Allows items to wrap on smaller screens */
-// }
-
-// /* Drawer styles */
-// .mat-drawer-container {
-//   height: 100vh; /* Full height for the container */
-// }
-
-// /* Responsive adjustments */
-// @media (max-width: 600px) {
-//   .mat-toolbar {
-//       flex-direction: column; /* Stack items on small screens */
-//   }
-
-//   .menu-spacer {
-//       display: none; /* Hide spacer on smaller screens */
-//   }
-
-//   mat-nav-list {
-//       padding: 0; /* Remove padding for mobile */
-//   }
-
-//   .mat-drawer {
-//       width: 100%; /* Full width for small screens */
-//   }
-
-//   /* Optional: Adjust button styles */
-//   .mat-list-item button {
-//       width: 100%; /* Full-width buttons */
-//   }
-// }
-// .footer {
-//   padding: 16px;
-//   text-align: center;
-//   background-color: #f1f1f1; /* Adjust as needed */
-//   border-top: 1px solid #e0e0e0; /* Optional: border for separation */
-//   position: absolute;
-//   bottom: 0;
-//   width: 100%;
-// }
-
 .menu-spacer {
   flex: 1 1 auto;
+}
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+mat-drawer-container {
+  height: 100%;
+}
+
+mat-drawer {
+  width: 250px;
+}
+
+@media (max-width: 600px) {
+  mat-drawer {
+    width: 200px;
+  }
 }

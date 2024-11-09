@@ -20,9 +20,9 @@ export class ModifyMenuComponent {
     menuItem: new FormGroup({ 
       id : new FormControl(),
       item : new FormControl('', Validators.required),       
-      qty : new FormControl('', Validators.required),       
+      quantity : new FormControl('', Validators.required),       
       price : new FormControl('', Validators.required),       
-      itemPngPath : new FormControl() 
+      imagePath : new FormControl() 
     }) 
   }); 
 
@@ -48,12 +48,12 @@ export class ModifyMenuComponent {
       menuItem: {
         id : this.selected.id,
         item : this.selected.item,
-        qty : this.selected.qty,
+        quantity : this.selected.quantity,
         price : this.selected.price,
-        itemPngPath : this.selected.itemPngPath,
+        itemPngPath : this.selected.imagePath,
       }
     });
-    this.selectedQty = this.selected.qty;
+    this.selectedQty = this.selected.quantity;
   }
 
 
@@ -62,9 +62,9 @@ export class ModifyMenuComponent {
     const menuList = new MenuList();
 
     menuList.item = this.form.value.menuItem?.item;
-    menuList.qty = this.form.value.menuItem?.qty;
+    menuList.quantity = this.form.value.menuItem?.quantity;
     menuList.price = this.form.value.menuItem?.price;
-    menuList.itemPngPath = this.form.value.menuItem?.itemPngPath;
+    menuList.imagePath = this.form.value.menuItem?.imagePath;
 
     this.menuService.modifyItemInMenu(menuList).subscribe(
       (data) => {

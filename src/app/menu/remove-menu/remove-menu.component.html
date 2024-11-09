@@ -6,9 +6,9 @@
   <div class="item-details">
       <h3 class="item-title">{{ data.item }}</h3>
       <p><strong>ID:</strong> {{ data.id }}</p>
-      <p><strong>Quantity:</strong> {{ data.qty !== null ? data.qty : 'N/A' }}</p>
-      <p><strong>Price:</strong> {{ data.price | currency }}</p>
-      <img *ngIf="data.itemPngPath" [src]="data.itemPngPath" alt="{{ data.item }}" class="item-image" />
+      <p><strong>Quantity:</strong> {{ data.quantity !== null ? data.quantity : 'N/A' }}</p>
+      <p><strong>Price:</strong> {{ data.price |  currency:'INR':'symbol':'1.0-2' }}</p>
+      <img *ngIf="data.imagePath" [src]="data.imagePath" alt="{{ data.item }}" class="item-image" />
   </div>
 </mat-dialog-content>
 

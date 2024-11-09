@@ -17,7 +17,7 @@
 
       <mat-form-field floatLabel="always">
         <mat-label>Select Quantity</mat-label>
-        <mat-select formControlName="qty">          
+        <mat-select formControlName="quantity">          
           <mat-option *ngFor="let quantity of quantities" [value]="quantity">{{ quantity }}</mat-option>            
         </mat-select>
         <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
@@ -37,7 +37,7 @@
       <mat-form-field floatLabel="always">
         <mat-label>Item Image Path</mat-label>
         <input
-          formControlName="itemPngPath"
+          formControlName="imagePath"
           matInput
           placeholder="Your Image Path"
         />
