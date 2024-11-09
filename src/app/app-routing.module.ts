@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SettingsComponent } from './settings/settings.component';
-import { BranchComponent } from './admin/branch/branch.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './guard/auth.guard';
@@ -28,7 +27,6 @@ const routes: Routes = [
   { path : 'members', component:MemberComponent, canActivate : [authGuard, roleAdminGuard],},
   { path : 'profile', component: ProfileComponent,   canActivate : [authGuard] },
   { path : 'settings', component: SettingsComponent, canActivate : [authGuard] },
-  { path : 'services', component: BranchComponent },
   { path : 'ad-home', component: AdminHomeComponent, 
                    canActivate : [authGuard, roleAdminGuard], 
                    data: { expectedRole: 'admin' } },

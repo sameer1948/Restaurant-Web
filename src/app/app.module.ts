@@ -30,9 +30,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SettingsComponent } from './settings/settings.component';
-//import { TransactionsComponent } from './orders/transactions/transactions.component';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { AdminModule } from './admin/admin.module';
 import { AddMenuComponent } from './menu/add-menu/add-menu.component';
 import { ModifyMenuComponent } from './menu/modify-menu/modify-menu.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -74,7 +72,6 @@ import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-re
         HomeComponent,
         ProfileComponent,
         SettingsComponent,
-       // TransactionsComponent,
         AddMenuComponent,
         ModifyMenuComponent,
         RemoveMenuComponent,
@@ -106,7 +103,6 @@ import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-re
     
     imports: [
         BrowserModule,        
-        AdminModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         DialogModule,

@@ -15,16 +15,15 @@ import { VeiwRemoveMemberComponent } from '../veiw-remove-member/veiw-remove-mem
   styleUrls: ['./member.component.scss']
 })
 export class MemberComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['sno', 'username', 'roles', 'accountNonExpired', 'accountNonLocked', 'credentialsNonExpired', 'enabled', 'actions'];
-  dataSource = new MatTableDataSource<CustomUserDetails>();
-  searchTerm: string = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private adminService: AdminService,
-    private matDialog : MatDialog
-  ) {}
+  displayedColumns: string[] = ['sno', 'username', 'roles', 'accountNonExpired', 'accountNonLocked', 'credentialsNonExpired', 'enabled', 'actions'];
+  dataSource = new MatTableDataSource<CustomUserDetails>();
+  searchTerm: string = '';
+
+  constructor(private adminService: AdminService, private matDialog : MatDialog) {}
 
   ngOnInit() {
     this.adminService.getAllUsers().subscribe((data: CustomUserDetails[]) => {
