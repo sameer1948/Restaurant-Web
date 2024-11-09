@@ -7,20 +7,19 @@ import { MenuList } from '../../model/MenuList';
   templateUrl: './menu-description.component.html',
   styleUrl: './menu-description.component.scss'
 })
-export class MenuDescriptionComponent {
+export class MenuDescriptionComponent {  
 
-  id: number = 0;
-  item: string = '';
-  qty: string = '';
-  price: number = 0;
-  description: string = '';
-  itemPngPath: string = 'https://via.placeholder.com/150?text=Item';
-  
+  menu: MenuList = new MenuList;
+  localImagePath: any = 'assets/images/no-image.jpg';
+
   constructor(public dialogRef: MatDialogRef<MenuDescriptionComponent>,
-     @Inject(MAT_DIALOG_DATA) public data: MenuList) {}
+    @Inject(MAT_DIALOG_DATA) public data: MenuList) {
+    this.menu = data;
+    console.table(this.menu)
+  }
 
- 
-  onAdd(): void {    
+
+  onAdd(): void {
     this.dialogRef.close('success');
   }
 

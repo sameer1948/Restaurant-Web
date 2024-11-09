@@ -4,32 +4,24 @@
 
 <mat-dialog-content class="mat-typography">
     
+    <!-- Image Container -->
     <div class="image-container">
-        <img src="https://hungrygowhere.com/wp-content/uploads/2023/06/01-sc-what-to-eat-in-sydney-grounds-of-alexandria-hungrygowhere-rotated.jpg" 
-        alt="Sample Image" class="sample-image">
+        <img mat-card-image [src]="localImagePath" alt="{{ menu.item }}" 
+             class="menu-image" />
     </div>
     
-    <h3>Sample Description</h3>
-    <p>Learn one way to build applications with Angular and reuse your code and abilities to build
-        apps for any deployment target. For web, mobile web, native mobile, and native desktop.</p>
-
-    <h3>Speed &amp; Performance</h3>
-    <p>Achieve the maximum speed possible on the Web Platform today, and take it further, via Web
-        Workers and server-side rendering. Angular puts you in control over scalability. Meet huge
-        data requirements by building data models on RxJS, Immutable.js, or another push-model.</p>
-
-    <h3>Incredible tooling</h3>
-    <p>Build features quickly with simple, declarative templates. Extend the template language with
-        your own components and use a wide array of existing components. Get immediate Angular-specific
-        help and feedback with nearly every IDE and editor. All this comes together so you can focus
-        on building amazing apps rather than trying to make the code work.</p>
-
-    <h3>Loved by millions</h3>
-    <p>From prototype through global deployment, Angular delivers the productivity and scalable
-        infrastructure that supports Google's largest applications.</p>
+    <!-- Menu Item Details -->
+    <div class="menu-details">
+        <h3 class="menu-item-name">{{ menu.item }}</h3>
+        <div class="menu-quantity-price">
+            <span class="menu-quantity">Quantity: {{ menu.quantity }}</span>
+            <span class="menu-price">Price: {{ menu.price | currency:'INR':'symbol':'1.0-2' }}</span>
+        </div>
+        <p class="menu-description">{{ menu.description }}</p>
+    </div>
+    
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close cdkFocusInitial >Close</button>
-    <button mat-button (click)="onAdd()">Add</button>
+    <button mat-raised-button color="warn" mat-dialog-close cdkFocusInitial>Close</button>
 </mat-dialog-actions>
