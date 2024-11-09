@@ -122,8 +122,9 @@ function generateCoupons(count: number): Coupon[] {
   for (let i = 1; i <= count; i++) {
     const coupon: Coupon = {
       id: i,
-      code: `SAVE${getRandomInt(10, 99)}`, // e.g., SAVE10, SAVE25
+      couponName: `SAVE${getRandomInt(10, 99)}`, // e.g., SAVE10, SAVE25
       description: `Save ${getRandomInt(5, 50)}% on your next purchase!`,
+      minOrderAmount: getRandomInt(50, 1000), // Random amount between 5 and 100
       amount: getRandomInt(5, 100), // Random amount between 5 and 100
       percentage: getRandomInt(5, 50), // Random percentage between 5% and 50%
       maxAmount: getRandomInt(50, 200), // Maximum amount discount

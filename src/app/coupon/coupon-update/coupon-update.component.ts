@@ -22,7 +22,7 @@ export class CouponUpdateComponent {
       this.coupon = data;      
     this.couponForm = this.fb.group(
       {
-        code: [this.coupon.code, Validators.required],
+        code: [this.coupon.couponName, Validators.required],
         description: [this.coupon.description, Validators.required],
         amount: [{ value: this.coupon.amount, disabled: this.coupon.isAmount }],
         percentage: [{ value: this.coupon.percentage, disabled: this.coupon.ispercentage }],
