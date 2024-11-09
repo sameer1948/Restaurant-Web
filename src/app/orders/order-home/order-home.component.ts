@@ -3,13 +3,8 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MenuDescriptionComponent } from '../../menu/menu-description/menu-description.component';
 import { CreateOrderComponent } from '../create-order/create-order.component';
-
-interface MenuItem {
-  id: number;
-  item: string;
-  price: number;
-  itemPngPath: string;
-}
+import { MenuList } from '../../model/MenuList';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-order-home',
@@ -29,41 +24,54 @@ interface MenuItem {
 })
 export class OrderHomeComponent {
 
-  itemsSelectedHeader: string = 'Item      Price    Quantity      Actions';
-
-  menuItems: MenuItem[] = [];
-  filteredItems: MenuItem[] = [];
+  menuItems: MenuList[] = [];
+  filteredItems: MenuList[] = [];
   pageSize: number = 9;
   pageIndex: number = 0;
-  order: { [key: number]: number } = {};
+  order: { [key: string]: number } = {}; // Key is string (id)
   itemsSelected: boolean = false;
   searchQuery: string = '';
   sortOrder: string = 'name'; // Default sort order
+  
+  localImagePath: any = 'assets/images/no-image.jpg';
 
-  constructor(private matDialog: MatDialog) { }
+  constructor(private matDialog : MatDialog, private menuService : MenuService) {}
 
   ngOnInit() {
-    this.menuItems = this.generateSampleMenuItems(250);
-    this.filteredItems = [...this.menuItems]; // Initialize filtered items
+    //this.menuItems = this.generateSampleMenuItems(250);
+    //this.filteredItems = [...this.menuItems];  // Initialize filteredItems
+    this.menuService.getAllItems().subscribe(
+      (menuList: MenuList[]) => {
+        this.menuItems = menuList;
+        this.filteredItems = [...this.menuItems];  // Initialize filteredItems
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
-
-  generateSampleMenuItems(count: number): MenuItem[] {
-    const items: MenuItem[] = [];
+  
+  // Generates sample menu items
+  generateSampleMenuItems(count: number): MenuList[] {
+    const items: MenuList[] = [];
     for (let i = 1; i <= count; i++) {
       items.push({
-        id: i,
+        id: `MENU${String(i).padStart(5, '0')}`, // Ensure IDs are like MENU00001, MENU00002, etc.
         item: `Item ${i}`,
+        description: `ORDER ${i}`,
         price: Math.floor(Math.random() * 100) + 10,
-        itemPngPath: `https://via.placeholder.com/150?text=Item+${i}`
+        imagePath: `https://via.placeholder.com/150?text=Item+${i}`,
+        quantity: 1
       });
     }
     return items;
   }
 
+  // Update filtered items based on search query
   updateFilteredItems() {
     const query = this.searchQuery.toLowerCase();
     this.filteredItems = this.menuItems.filter(item =>
-      item.item.toLowerCase().includes(query)
+      item.item.toLowerCase().includes(query) || item.id.toLowerCase().includes(query)  // Search by item name or ID
     );
     this.sortItems(); // Sort after filtering
     this.pageIndex = 0; // Reset to first page after filtering
@@ -71,9 +79,10 @@ export class OrderHomeComponent {
 
   clearSearch() {
     this.searchQuery = ''; // Reset the search term
-    this.updateFilteredItems(); // Show all users
+    this.updateFilteredItems(); // Show all items
   }
 
+  // Sort items based on the selected sort order (name or price)
   sortItems() {
     if (this.sortOrder === 'name') {
       this.filteredItems.sort((a, b) => a.item.localeCompare(b.item));
@@ -82,27 +91,33 @@ export class OrderHomeComponent {
     }
   }
 
+  // Handle pagination change (page size, page index)
   changePage(event: any) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
   }
 
-  get paginatedItems(): MenuItem[] {
+  // Get paginated items for display
+  get paginatedItems(): MenuList[] {
     const start = this.pageIndex * this.pageSize;
     return this.filteredItems.slice(start, start + this.pageSize);
   }
 
+  // Get selected items from the order
   getSelectedItems() {
     const selectedItems = Object.keys(this.order)
-      .filter(key => this.order[+key] > 0)
-      .map(key => ({
-        item: this.menuItems.find(item => item.id === +key),
-        quantity: this.order[+key],
-      }));
-    console.log(selectedItems); // Add this line
+      .filter(key => this.order[key] > 0)
+      .map(key => {
+        const item = this.menuItems.find(item => item.id === key); // key is string, so comparison works
+        return item ? { item, quantity: this.order[key] } : null;
+      })
+      .filter(item => item !== null);
+
+    //console.log(selectedItems); // For debugging
     return selectedItems;
   }
 
+  // Submit the order and calculate the total
   submitOrder() {
     const selectedItems = this.getSelectedItems();
 
@@ -112,47 +127,51 @@ export class OrderHomeComponent {
     }
 
     // Create an array to store the order output with menu item details
-    const orderOutput = selectedItems.map(item => ({
+    const orderOutput = selectedItems
+    .filter(item => item !== null)  // Filter out any null items
+    .map(item => ({
       menuItem: {
-        id: item.item!.id,
-        name: item.item!.item,
-        price: item.item!.price,
-        imagePath: item.item!.itemPngPath
+        id: item?.item.id,  // Optional chaining to avoid null error
+        name: item?.item.item,
+        price: item?.item.price,
       },
-      quantity: item.quantity
-    }));
+      quantity: item?.quantity,  // Optional chaining for quantity
+    })); 
 
-    const totalAmount = orderOutput.reduce(
-      (total, order) => {
-        return total + (order.menuItem.price * order.quantity);
-      }, 0);
+    const totalAmount = orderOutput.reduce((total, order) => total + (order.menuItem?.price ?? 0) * (order?.quantity ?? 0), 0);
+    
 
-    // Log the order output and total amount to the console
     console.log('Order submitted:', orderOutput);
     console.log('Total Amount:', totalAmount);
+
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "70%";
+    matDialogConfig.width = '70%';
     matDialogConfig.data = orderOutput;
-    this.matDialog.open(CreateOrderComponent, matDialogConfig).afterClosed().subscribe(response => {
-      if (response === 'success') {
-        console.log(response)
+
+    this.matDialog.open(CreateOrderComponent, matDialogConfig)
+    .afterClosed()
+    .subscribe(response => {
+      if (response.status === 'success') {
+        console.log(response);
+        this.clearOrder()
       }
     });
   }
 
-
-  addToOrder(itemId: number) {
+  // Add or update item quantity in the order
+  addToOrder(itemId: string) {
     this.order[itemId] = (this.order[itemId] || 0) + 1;
     this.itemsSelected = true;
   }
 
-  openDesc(menuList: MenuItem) {
+  // Open the description dialog for a menu item
+  openDesc(menuList: MenuList) {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "70%";
+    matDialogConfig.width = '70%';
     matDialogConfig.data = menuList;
     this.matDialog.open(MenuDescriptionComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
@@ -161,32 +180,44 @@ export class OrderHomeComponent {
     });
   }
 
-  increaseQuantity(itemId: number) {
+  // Increase the quantity of an item
+  increaseQuantity(itemId: string) {
     this.order[itemId] = (this.order[itemId] || 0) + 1;
   }
 
-  decreaseQuantity(itemId: number) {
+  // Decrease the quantity of an item
+  decreaseQuantity(itemId: string) {
     if (this.order[itemId] > 1) {
       this.order[itemId]--;
     } else {
       delete this.order[itemId];
       if (Object.keys(this.order).length < 1) {
-        this.clearOrder()
+        this.clearOrder();
       }
     }
   }
 
-  removeItem(itemId: number) {
+  // Remove an item from the order
+  removeItem(itemId: string) {
     delete this.order[itemId];
     if (Object.keys(this.order).length < 1) {
-      this.clearOrder()
+      this.clearOrder();
     }
   }
 
   get grandTotal() {
-    return this.getSelectedItems().reduce((total, { item, quantity }) => total + (item!.price * quantity), 0);
+    return this.getSelectedItems()
+      .filter(order => order !== null)  // Ensure we only work with valid orders
+      .reduce((total, order) => {
+        if (order?.item && order.quantity) {  // Check that order and order.item are not null
+          return total + (order.item.price ?? 0) * order.quantity;  // Use nullish coalescing for price
+        }
+        return total;  // If order or order.item is null, skip this iteration
+      }, 0);
   }
+  
 
+  // Clear the order (reset the cart)
   clearOrder() {
     this.order = {};
     this.itemsSelected = false;

@@ -1,10 +1,10 @@
 .full-viewport {
-  height: 85vh; /* Full viewport height */
+  height: 80vh; /* Full viewport height */
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Space between elements */
   align-items: center;
-  overflow: hidden; /* Prevent scrollbars */
+  overflow-x: hidden; /* Prevent scrollbars */
 }
 
 .marquee {

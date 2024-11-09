@@ -41,6 +41,8 @@ mat-form-field {
 
 .menu-column {
   flex: 1; /* Allow it to grow */
+  border: 1px solid #ddd;
+  padding: 16px;  
   min-height: 600px; /* Set minimum height */
   max-height: 600px; /* Set maximum height to enable scrolling */
   overflow-y: auto; /* Enable vertical scrolling for the menu list */
@@ -49,8 +51,8 @@ mat-form-field {
 
 .selection-column {
   flex: 0 0 30%; /* Fixed width for selected items */
-  border-left: 1px solid #ddd;
-  padding-left: 16px;  
+  border: 1px solid #ddd;
+  padding: 16px;  
   min-height: 600px; /* Set minimum height */
   max-height: 600px; /* Set maximum height to enable scrolling */
   overflow-y: auto; /* Enable vertical scrolling for the menu list */
@@ -77,6 +79,20 @@ mat-form-field {
   margin-bottom: 16px; /* Space below the heading card */
 }
 
+.card-header {
+  display: flex;
+  justify-content: space-between; /* Space out the columns */
+  margin: 0;
+  padding: 0;
+}
+
+.card-header .header-item {
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0 16px; /* Add some padding for spacing between columns */
+}
+
+
 .card-content {
   display: flex;
   align-items: center; /* Center items vertically */
@@ -90,10 +106,11 @@ mat-form-field {
 }
 
 .action-buttons {
-    display: flex;
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Distribute space between buttons */
-    gap: 20px; /* Optional: adjust gap size as needed */
+  padding: 10px;
+  display: flex;
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Distribute space between buttons */
+  gap: 20px; /* Optional: adjust gap size as needed */
 }
 
 .quantity {

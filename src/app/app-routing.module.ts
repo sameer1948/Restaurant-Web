@@ -21,7 +21,10 @@ const routes: Routes = [
   { path : '', component: UnauthorizedComponent },
   { path : 'home', component: HomeComponent },  
   { path : 'order', component: OrderHomeComponent },  
+  { path : 'coupon', component : CouponHomeComponent },
+  { path : 'tax', component : TaxFeeComponent },
   { path : 'menu', component:MenuHomeComponent, canActivate : [authGuard, roleAdminGuard],},
+  { path : 'login', component: LoginComponent },
   { path : 'members', component:MemberComponent, canActivate : [authGuard, roleAdminGuard],},
   { path : 'profile', component: ProfileComponent,   canActivate : [authGuard] },
   { path : 'settings', component: SettingsComponent, canActivate : [authGuard] },
@@ -29,11 +32,8 @@ const routes: Routes = [
   { path : 'ad-home', component: AdminHomeComponent, 
                    canActivate : [authGuard, roleAdminGuard], 
                    data: { expectedRole: 'admin' } },
-  { path : 'login', component: LoginComponent },
   { path : 'about', component: AboutComponent },
-  { path : 'error', component: ErrorComponent },
-  { path : 'coupon', component : CouponHomeComponent },
-  { path : 'tax', component : TaxFeeComponent },
+  { path : 'error', component: ErrorComponent },  
   { path : 'unauthorized', component: UnauthorizedComponent },  
   { path: '**', component: ErrorComponent }
 ];

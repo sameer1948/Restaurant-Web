@@ -13,6 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
@@ -127,11 +128,12 @@ import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-re
         MatIcon,
         MatInputModule,
         MatPaginatorModule,
+        MatProgressSpinnerModule,
         MatSelectModule,
         MatSnackBarModule,        
         MatSliderModule,
         MatSidenavModule,
-        MatSortModule,
+        MatSortModule,        
         MatTableModule,
         MatToolbarModule,
         MatTooltip,

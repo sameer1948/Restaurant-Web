@@ -8,22 +8,16 @@ import { AuthenicationService } from '../services/authenication.service';
 })
 export class SettingsComponent {
 
-  data : any;
   role : any;
   token : any;
 
   constructor(private _authenticationService : AuthenicationService,) { }
 
-  getData() {
-    this._authenticationService.getItem().subscribe(
-      (response) => {
-        this.data = response;
-      }
-    );
+  getData() {   
 
     this.role = this._authenticationService.getUserRole();
 
-    this.token = this._authenticationService.getRefreshToken();
+    //this.token = this._authenticationService.getRefreshToken();
   }
-
+  
 }
