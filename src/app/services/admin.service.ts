@@ -10,7 +10,6 @@ import { CustomUserDetails } from '../model/CustomUserDetails';
 export class AdminService {  
   
   private MENU_API_URL: string = 'http://localhost:8080/admin/';
-  private API_URL: string = 'http://localhost:8877/';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -32,14 +31,10 @@ export class AdminService {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<MenuList[]>(this.MENU_API_URL + 'fetch-all-menu', null, {headers : headers});
   }
-  getEmployees(): Observable<Branch[]> {
-    return this.httpClient.get<Branch[]>(this.API_URL + 'getbranchs');
-    
-  }
 
   getAllUsers() : Observable<CustomUserDetails[]> {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-all-user', null, {headers : headers});
+    return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-users', null, {headers : headers});
   }
   
   
@@ -59,13 +54,6 @@ export class AdminService {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-all-user', null, {headers : headers});
   }
-
   
 
-}
-
-export interface Branch {
-  branchId: number;
-  branchName: string;
-  branchLocation: string;
 }
