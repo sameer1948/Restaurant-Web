@@ -7,7 +7,7 @@
 
 <mat-dialog-content>
 
-    <form [formGroup]="taxAndFeeForm">
+    <form [formGroup]="taxAndDetailsForm">
 
         <mat-grid-list cols="2" rowHeight="100px">
 
@@ -15,15 +15,15 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Tax And Fee Type</mat-label>
 
-                    <input matInput formControlName="name" />
+                    <input matInput formControlName="taxType" />
 
                     <mat-error
-                        *ngIf="taxAndFeeForm.get('name')?.hasError('required') && taxAndFeeForm.get('name')?.touched">
+                        *ngIf="taxAndDetailsForm.get('taxType')?.hasError('required') && taxAndDetailsForm.get('taxType')?.touched">
                         Coupon code is required.
                     </mat-error>
 
                     <mat-error
-                        *ngIf="taxAndFeeForm.get('name')?.hasError('minlength') && taxAndFeeForm.get('name')?.touched">
+                        *ngIf="taxAndDetailsForm.get('taxType')?.hasError('minlength') && taxAndDetailsForm.get('taxType')?.touched">
                         Coupon code must be at least 4 characters.
                     </mat-error>
 
@@ -33,8 +33,8 @@
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Percentage</mat-label>
-                    <input matInput type="number" formControlName="percentage" />
-                    <mat-error *ngIf="taxAndFeeForm.get('percentage')?.hasError('required')">Percentage is
+                    <input matInput type="number" formControlName="value" />
+                    <mat-error *ngIf="taxAndDetailsForm.get('value')?.hasError('required')">Percentage is
                         required.</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
@@ -47,7 +47,7 @@
                         <mat-option [value]="'Disabled'">Disabled</mat-option>
                     </mat-select>
                     <mat-error
-                        *ngIf="taxAndFeeForm.get('status')?.hasError('required') && taxAndFeeForm.get('status')?.touched">
+                        *ngIf="taxAndDetailsForm.get('status')?.hasError('required') && taxAndDetailsForm.get('status')?.touched">
                         Status is required.
                     </mat-error>
                 </mat-form-field>
@@ -56,7 +56,14 @@
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Added By</mat-label>
-                    <input matInput type="text" formControlName="addedBy" readonly="true" />
+                    <input matInput type="text" formControlName="memberName" readonly="true" />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="2">
+                <mat-form-field appearance="fill" style="width: 95%;">
+                    <mat-label>Added By</mat-label>
+                    <input matInput type="text" formControlName="message" readonly="true" />
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -66,5 +73,5 @@
 
 <mat-dialog-actions align="end">
     <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button [disabled]="taxAndFeeForm.invalid" (click)="onSubmit()">Add</button>
+    <button mat-button [disabled]="taxAndDetailsForm.invalid" (click)="onSubmit()">Add</button>
 </mat-dialog-actions>

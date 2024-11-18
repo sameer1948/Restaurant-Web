@@ -3,10 +3,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { TaxAndFee } from '../../model/TaxAndFee';
 import { AddTaxFeeComponent } from '../add-tax-fee/add-tax-fee.component';
 import { VeiwRemoveTaxFeeComponent } from '../veiw-remove-tax-fee/veiw-remove-tax-fee.component';
 import { UpdateTaxFeeComponent } from '../update-tax-fee/update-tax-fee.component';
+import { TaxService } from '../../services/tax.service';
+import { Tax } from '../../model/Tax';
+import { TaxAndDetails } from '../../model/TaxAndDetails';
+import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
 
 @Component({
   selector: 'app-tax-fee',
@@ -14,6 +17,9 @@ import { UpdateTaxFeeComponent } from '../update-tax-fee/update-tax-fee.componen
   styleUrl: './tax-fee.component.scss'
 })
 export class TaxFeeComponent implements OnInit , AfterViewInit {
+
+  private readonly USER_NAME: string = 'USERNAME';
+  readonly userName : string = 'N/A';
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -23,22 +29,33 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
 
   searchQuery: string = '';  
 
-  displayedColumns: string[] = ['name', 'percentage', 'addedBy', 'status', 'actions'];
-  dataSource = new MatTableDataSource<TaxAndFee>();
-  
-  TaxAndFeeList: TaxAndFee[] = generateTaxAndFees(5); // Need Update To fetch it from data Base.
+  displayedColumns: string[] = ['taxId', 'taxType', 'value', 'status', 'actions'];
+  dataSource = new MatTableDataSource<TaxAndDetails>();
 
-  constructor(private matDialog: MatDialog) { }
+  constructor(private matDialog: MatDialog, 
+    private taxService : TaxService, 
+    private decryptService : EncryptDecryptService) {
 
-  ngOnInit(): void {
-    this.dataSource.data = this.TaxAndFeeList;
+    const encryptedUserName = sessionStorage.getItem(decryptService.encrypt(this.USER_NAME));
+    this.userName = decryptService.decrypt(encryptedUserName ?? '') ?? 'N/A';
+    console.log(this.userName)
+  }
+
+  ngOnInit(): void {        
+    this.taxService.getTaxes().subscribe(
+      (response : TaxAndDetails[]) => {
+        this.dataSource.data = response;
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      }
+    );
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  
 
   applyFilter() {
     const query = this.searchQuery.toLowerCase();
@@ -64,54 +81,30 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
   }
 
 
-  viewTaxAndFeeDialog(taxAndFee: TaxAndFee) {
+  viewTaxAndFeeDialog(taxAndDetails: TaxAndDetails) {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "40%";
-    matDialogConfig.data = {taxAndFee : taxAndFee, type : 'open'}
+    matDialogConfig.data = {taxAndDetails : taxAndDetails, type : 'open'}
     this.matDialog.open(VeiwRemoveTaxFeeComponent, matDialogConfig)
   }
 
-  updateTaxAndFeeDialog(taxAndFee: TaxAndFee) {
+  updateTaxAndFeeDialog(taxAndDetails: TaxAndDetails) {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.autoFocus = true;
     matDialogConfig.disableClose = true;
     matDialogConfig.width = "40%";
-    matDialogConfig.data = taxAndFee;
+    matDialogConfig.data = taxAndDetails;
     this.matDialog.open(UpdateTaxFeeComponent, matDialogConfig)
   }
 
-  deleteTaxAndFeeDialog(taxAndFee: TaxAndFee) {
+  deleteTaxAndFeeDialog(taxAndDetails: TaxAndDetails) {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "40%";
-    matDialogConfig.data = {taxAndFee : taxAndFee, type : 'remove'}
+    matDialogConfig.data = {taxAndDetails : taxAndDetails, type : 'remove'}
     this.matDialog.open(VeiwRemoveTaxFeeComponent, matDialogConfig)
   }
 
 
-}
-
-
-function getRandomInt(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-
-function generateTaxAndFees(count: number): TaxAndFee[] {
-  const taxAndFees: TaxAndFee[] = [];
-
-  for (let i = 1; i <= count; i++) {
-    const taxAndFee: TaxAndFee = {
-      id: i,
-      name: `GST${getRandomInt(10, 99)}`, // e.g., SAVE10, SAVE25      
-      percentage: getRandomInt(5, 50), // Random percentage between 5% and 50%
-      status: true, // Set active for all generated coupons
-      addedBy:'Sameer'
-    };
-
-    taxAndFees.push(taxAndFee);
-  }
-
-  return taxAndFees;
 }

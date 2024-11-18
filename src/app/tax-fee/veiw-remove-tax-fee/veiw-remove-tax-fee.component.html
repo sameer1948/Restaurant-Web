@@ -15,13 +15,13 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Tax And Fee Type</mat-label>
 
-                    <input matInput formControlName="name" />
+                    <input matInput formControlName="taxType" readonly="true"/>
                     
-                    <mat-error *ngIf="taxAndFeeForm.get('name')?.hasError('required') && taxAndFeeForm.get('name')?.touched">
+                    <mat-error *ngIf="taxAndFeeForm.get('taxType')?.hasError('required') && taxAndFeeForm.get('taxType')?.touched">
                         Coupon name is required.
                     </mat-error>
 
-                    <mat-error *ngIf="taxAndFeeForm.get('name')?.hasError('minlength') && taxAndFeeForm.get('name')?.touched">
+                    <mat-error *ngIf="taxAndFeeForm.get('taxType')?.hasError('minlength') && taxAndFeeForm.get('taxType')?.touched">
                         Coupon name must be at least 4 characters.
                     </mat-error>
 
@@ -31,15 +31,15 @@
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Percentage</mat-label>
-                    <input matInput type="number" formControlName="percentage" />
-                    <mat-error *ngIf="taxAndFeeForm.get('percentage')?.hasError('required')">Percentage is required.</mat-error>
+                    <input matInput type="number" formControlName="value" readonly="true"/>
+                    <mat-error *ngIf="taxAndFeeForm.get('value')?.hasError('required')">Percentage is required.</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
 
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Status</mat-label>
-                    <mat-select formControlName="status" (selectionChange)="updateStatus($event.value)">
+                    <mat-select formControlName="status" (selectionChange)="updateStatus($event.value)" >
                         <mat-option [value]="'Enabled'">Enabled</mat-option>
                         <mat-option [value]="'Disabled'">Disabled</mat-option>
                     </mat-select>
@@ -53,7 +53,14 @@
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Added By</mat-label>
-                    <input matInput type="text" formControlName="addedBy" readonly="true" />
+                    <input matInput type="text" formControlName="memberName" readonly="true" />
+                </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile colspan="2">
+                <mat-form-field appearance="fill" style="width: 95%;">
+                    <mat-label>Added By</mat-label>
+                    <input matInput type="text" formControlName="message" readonly="true" />
                 </mat-form-field>
             </mat-grid-tile>
 

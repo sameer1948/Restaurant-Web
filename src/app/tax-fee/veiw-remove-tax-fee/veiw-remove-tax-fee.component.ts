@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { TaxAndFee } from '../../model/TaxAndFee';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TaxAndDetails } from '../../model/TaxAndDetails';
+import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
 
 @Component({
   selector: 'app-veiw-remove-tax-fee',
@@ -9,23 +10,32 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrl: './veiw-remove-tax-fee.component.scss'
 })
 export class VeiwRemoveTaxFeeComponent {
+  private readonly USER_NAME: string = 'USERNAME';
+  readonly userName: string = 'N/A';
 
   isRemove : boolean = false;
-  taxAndFee !: TaxAndFee;  
+  taxAndDetails !: TaxAndDetails;  
   taxAndFeeForm : FormGroup;
-  userName : string = 'NA';
 
   constructor(private fb: FormBuilder,
     private dialogRef: MatDialogRef<VeiwRemoveTaxFeeComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any) {
-      this.taxAndFee = data.taxAndFee;
+    @Inject(MAT_DIALOG_DATA) data: any,
+    private decryptService: EncryptDecryptService) {
+
+      const encryptedUserName = sessionStorage.getItem(decryptService.encrypt(this.USER_NAME));
+      this.userName = decryptService.decrypt(encryptedUserName ?? '') ?? 'N/A';
+      
+      const message = ` ; This is Removed By ${this.userName}`;
+      this.taxAndDetails = data.taxAndDetails;
       this.isRemove = data.type == 'remove';
+
     this.taxAndFeeForm = this.fb.group(
       {
-        name: [this.taxAndFee.name, Validators.required],       
-        percentage: [this.taxAndFee.percentage, Validators.required],         
-        status: [this.taxAndFee.status? 'Enabled' : 'Disabled', Validators.required],
-        addedBy: [this.taxAndFee.addedBy, Validators.required],
+        taxType: [this.taxAndDetails.tax.taxType, Validators.required],       
+        value: [this.taxAndDetails.tax.value, Validators.required],         
+        status: [this.taxAndDetails.tax.status? 'Enabled' : 'Disabled', Validators.required],
+        memberName: [this.userName, Validators.required],
+        message: [this.taxAndDetails.taxDetails.message + message, Validators.required],
       }
     );
   }
