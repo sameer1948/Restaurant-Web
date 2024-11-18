@@ -1,12 +1,10 @@
-import { MenuList } from "./MenuList";
+import { OrderDetails } from "./OrderDetails";
 
-export interface Order {
-    
-    id : number;
-    menuItems : MenuList[]; 
-    totalPrice : number;    
-    orderedDate : Date;
-    orderStatus : string;
-    orderBy : string;
-    
+export class Order {
+    id!: string;
+    totalPrice!: number;
+    orderDate?: string;  
+    orderStatus!: string;
+    orderBy!: string;
+    orderDetails!: OrderDetails;  
 }
