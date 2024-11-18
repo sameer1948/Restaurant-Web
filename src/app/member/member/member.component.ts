@@ -26,7 +26,18 @@ export class MemberComponent implements OnInit, AfterViewInit {
   constructor(private adminService: AdminService, private matDialog : MatDialog) {}
 
   ngOnInit() {
-    this.adminService.getAllUsers().subscribe((data: CustomUserDetails[]) => {
+    this.initialize();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+
+  initialize() {
+    this.adminService.getMembers().subscribe((data: CustomUserDetails[]) => {
+      console.table(data);
       this.dataSource.data = data;
       this.dataSource.sortingDataAccessor = (item, property) => {
         switch (property) {
@@ -42,10 +53,6 @@ export class MemberComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
 
   applyFilter() {
     const filterValue = this.searchTerm.trim().toLowerCase();
@@ -71,6 +78,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     this.matDialog.open(AddMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
        console.log(response); // Reload items after addition
+       this.initialize();
       }
     });
   }
@@ -93,6 +101,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     this.matDialog.open(UpdateMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
        console.log(response); // Reload items after addition
+       this.initialize();
       }
     });
   }
@@ -106,6 +115,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     this.matDialog.open(VeiwRemoveMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
        console.log(response); // Reload items after addition
+       this.initialize();
       }
     });
   }

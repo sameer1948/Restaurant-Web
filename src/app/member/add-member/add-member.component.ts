@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../model/User';
 import { CustomUserDetails } from '../../model/CustomUserDetails';
 import { UserDetails } from '../../model/UserDetails';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-add-member',
@@ -42,7 +43,7 @@ export class AddMemberComponent {
   generatedPassword: string = ''; // remove after clean up
 
   constructor(private matDialogRef: MatDialogRef<AddMemberComponent>,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder, private userService : UserService) {
 
     this.userForm = this.formBuilder.group(
       {        
@@ -86,24 +87,64 @@ export class AddMemberComponent {
 
   public createUser() : void{
     if (this.userForm.valid) {
-      const userData = {
-        ...this.user,
-        username: this.userForm.value.username,
-        password: this.userForm.value.password,
-        roles: this.userForm.value.roles.join(', '), // Join selected roles into a string
-        details: {
-          ...this.userDetails,
+
+      const customUser : CustomUserDetails = {
+        customUser: {
+          username: this.userForm.value.username,
+          password: this.userForm.value.password,
+          roles: this.userForm.value.roles.join(', '),
+          accountNonExpired: this.userForm.value.accountNonExpired,
+          accountNonLocked: this.userForm.value.accountNonLocked,
+          credentialsNonExpired: this.userForm.value.credentialsNonExpired,
+          enabled: this.userForm.value.enabled,
+        },
+        customUserDetails: {
+          username: this.userForm.value.username,
           firstName: this.userForm.value.firstName,
+          middleName: this.userForm.value.middleName,
           lastName: this.userForm.value.lastName,
           email: this.userForm.value.email,
           phone: this.userForm.value.phone,
+          address: this.userForm.value.address,
+          securityNumber: this.userForm.value.securityNumber,
         }
       };
 
-      console.log('User created:', userData);
-      // Call your service to save `userData` to the database here
+      console.log('User customUser:', customUser);
 
-      this.matDialogRef.close('success');
+      this.userService.newUser(customUser).subscribe(
+        (response) => {
+          console.log(response);
+          this.matDialogRef.close('success');
+        }, (error) => {}
+      );
+
+
+
+
+
+
+
+      // const userData = {
+      //   ...this.user,
+      //   username: this.userForm.value.username,
+      //   password: this.userForm.value.password,
+      //   roles: this.userForm.value.roles.join(', '), // Join selected roles into a string
+      //   details: {
+      //     ...this.userDetails,
+      //     firstName: this.userForm.value.firstName,
+      //     lastName: this.userForm.value.lastName,
+      //     email: this.userForm.value.email,
+      //     phone: this.userForm.value.phone,
+      //     address: this.userForm.value.address,
+      //     securityNumber: this.userForm.value.securityNumber,
+      //   }
+      // };
+
+      // console.log('User created:', userData);
+      // // Call your service to save `userData` to the database here
+
+      
     } else {
       this.userForm.markAllAsTouched();
     }
