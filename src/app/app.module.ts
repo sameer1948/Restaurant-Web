@@ -66,6 +66,8 @@ import { TaxFeeComponent } from './tax-fee/tax-fee/tax-fee.component';
 import { AddTaxFeeComponent } from './tax-fee/add-tax-fee/add-tax-fee.component';
 import { UpdateTaxFeeComponent } from './tax-fee/update-tax-fee/update-tax-fee.component';
 import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-remove-tax-fee.component';
+import { ErrorDialogComponent } from './common/error-dialog/error-dialog.component';
+import { ViewCancelOrderComponent } from './orders/view-cancel-order/view-cancel-order.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -98,6 +100,8 @@ import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-re
         AddTaxFeeComponent,
         UpdateTaxFeeComponent,
         VeiwRemoveTaxFeeComponent,
+        ErrorDialogComponent,
+        ViewCancelOrderComponent,
     ],
     bootstrap: [AppComponent],
     
@@ -140,7 +144,7 @@ import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-re
             withInterceptors([authInterceptor]), // Register your interceptor here
             withFetch() // Enable Fetch API support
           ),
-        { provide: ErrorHandler, useClass: GlobalErrorHandler }
+        //{ provide: ErrorHandler, useClass: GlobalErrorHandler }
     ] ,
 })
 export class AppModule { }

@@ -15,11 +15,13 @@ import { OrderHomeComponent } from './orders/order-home/order-home.component';
 import { AboutComponent } from './about/about.component';
 import { CouponHomeComponent } from './coupon/coupon-home/coupon-home.component';
 import { TaxFeeComponent } from './tax-fee/tax-fee/tax-fee.component';
+import { NewOrderComponent } from './orders/new-order/new-order.component';
 
 const routes: Routes = [
   { path : '', component: UnauthorizedComponent },
   { path : 'home', component: HomeComponent },  
-  { path : 'order', component: OrderHomeComponent },  
+  { path : 'new-order', component: NewOrderComponent },  
+  { path : 'order', component: OrderHomeComponent },
   { path : 'coupon', component : CouponHomeComponent },
   { path : 'tax', component : TaxFeeComponent },
   { path : 'menu', component:MenuHomeComponent, canActivate : [authGuard, roleAdminGuard],},

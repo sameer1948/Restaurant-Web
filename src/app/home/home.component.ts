@@ -9,7 +9,7 @@ export class HomeComponent {
   
   title : string = 'Welcome to RestartUApp';
   description : string = 'Your journey to learning and restarting begins here!';
-  link : string = '/order';
+  link : string = '/new-order';
 
   images = [
     { src: 'assets/images/web-home-1.jpg', alt: 'Image 1 Description', link: this.link },
