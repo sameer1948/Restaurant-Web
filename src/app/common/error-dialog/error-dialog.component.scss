@@ -1,0 +1,17 @@
+.message{
+  width: 500px;
+  height: 50px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+  height: 100%;           
+}
+
+
+button {
+  background-color: #f44336;
+  color: white;
+}
