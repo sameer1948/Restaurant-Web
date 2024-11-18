@@ -10,6 +10,8 @@ import { MenuService } from '../../services/menu.service';
   styleUrl: './remove-menu.component.scss'
 })
 export class RemoveMenuComponent {
+  
+  localImagePath: any = 'assets/images/no-image.jpg';
 
   constructor(private notificationService : NotificationService,
     private menuService : MenuService,
@@ -18,7 +20,7 @@ export class RemoveMenuComponent {
 
   
   public onRemove() : void {
-    this.menuService.removeItemInMenu(this.data.id).subscribe(
+    this.menuService.removeItemInMenu(this.data.id ?? '').subscribe(
       (response) => {
         this.notificationService.successMessage(this.data.item + " Removed Successfully");
         this.matDialogRef.close('success');

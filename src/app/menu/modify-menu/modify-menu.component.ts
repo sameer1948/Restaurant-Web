@@ -22,13 +22,14 @@ export class ModifyMenuComponent {
       item : new FormControl('', Validators.required),       
       quantity : new FormControl('', Validators.required),       
       price : new FormControl('', Validators.required),       
+      description : new FormControl('', Validators.required),
       imagePath : new FormControl() 
     }) 
   }); 
 
   menuItems: Array<MenuList> = [];
   quantities : string[] = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"];
-  selectedQty: any;
+  selectedQty: number = 1;
 
   constructor(private _notificationService : NotificationService,
     private menuService : MenuService, 
@@ -50,7 +51,8 @@ export class ModifyMenuComponent {
         item : this.selected.item,
         quantity : this.selected.quantity,
         price : this.selected.price,
-        itemPngPath : this.selected.imagePath,
+        description : this.selected.description,
+        imagePath : this.selected.imagePath,
       }
     });
     this.selectedQty = this.selected.quantity;
@@ -64,6 +66,7 @@ export class ModifyMenuComponent {
     menuList.item = this.form.value.menuItem?.item;
     menuList.quantity = this.form.value.menuItem?.quantity;
     menuList.price = this.form.value.menuItem?.price;
+    menuList.description = this.form.value.menuItem?.description;
     menuList.imagePath = this.form.value.menuItem?.imagePath;
 
     this.menuService.modifyItemInMenu(menuList).subscribe(

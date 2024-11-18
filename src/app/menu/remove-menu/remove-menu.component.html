@@ -1,18 +1,33 @@
-<h2 mat-dialog-title>Do you want remove the Item  ?</h2>
-<mat-dialog-content class="dialog-content">
-  <button mat-icon-button class="close-button" (click)="onCancel()" aria-label="Close">
-      <mat-icon>close</mat-icon>
+<h2 mat-dialog-title>
+  Do you want remove the Item ?
+  <button mat-icon-button (click)="onCancel()" style="float: right;">
+    <mat-icon>close</mat-icon>
   </button>
-  <div class="item-details">
-      <h3 class="item-title">{{ data.item }}</h3>
-      <p><strong>ID:</strong> {{ data.id }}</p>
-      <p><strong>Quantity:</strong> {{ data.quantity !== null ? data.quantity : 'N/A' }}</p>
-      <p><strong>Price:</strong> {{ data.price |  currency:'INR':'symbol':'1.0-2' }}</p>
-      <img *ngIf="data.imagePath" [src]="data.imagePath" alt="{{ data.item }}" class="item-image" />
-  </div>
+</h2>
+
+
+<mat-dialog-content class="dialog-content">
+
+  <mat-card class="menu-item">
+    <!-- <img mat-card-image [src]="item.imagePath" alt="{{ item.item }}" /> -->
+    <!-- Image card component with a fixed size -->
+    <img mat-card-image [src]="localImagePath" alt="{{ data.item }}"
+      style="width: 350px; height: 350px; object-fit: cover;" />
+
+    <mat-card-content>
+
+      <p><strong>Menu Id :</strong> {{ data.id }}</p>
+      <p><strong>Quantity :</strong> {{ data.quantity !== null ? data.quantity : 'N/A' }}</p>
+      <p><strong>Price :</strong> {{ data.price | currency:'INR':'symbol':'1.0-2' }}</p>
+      <p><strong>Description :</strong> {{ data.description }}</p>
+
+    </mat-card-content>
+
+  </mat-card>
+
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button color="warn" (click)="onRemove()" aria-label="Remove item">Remove</button>
-  <button mat-button (click)="onCancel()" aria-label="Cancel">Cancel</button>
+  <button mat-raised-button color="warn" (click)="onRemove()" aria-label="Remove item">Remove</button>
+  <button mat-raised-button (click)="onCancel()" aria-label="Cancel">Cancel</button>
 </mat-dialog-actions>

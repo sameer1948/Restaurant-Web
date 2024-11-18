@@ -17,9 +17,10 @@ export class AddMenuComponent {
   form : FormGroup = new FormGroup({ 
     menuItem: new FormGroup({ 
       item : new FormControl('', Validators.required),       
-      qty : new FormControl('', Validators.required),       
+      quantity : new FormControl('', Validators.required),       
       price : new FormControl('', Validators.required),       
-      path : new FormControl() 
+      description : new FormControl('', Validators.required),
+      imagePath : new FormControl() 
     }) 
   }); 
 
@@ -42,7 +43,8 @@ export class AddMenuComponent {
     menuList.item = this.form.value.menuItem?.item;
     menuList.quantity = this.selectedQty;
     menuList.price = this.form.value.menuItem?.price;
-    menuList.imagePath = this.form.value.menuItem?.path;
+    menuList.description = this.form.value.menuItem?.description;
+    menuList.imagePath = this.form.value.menuItem?.imagePath;
 
     this._adminService.addItemToMenu(menuList).subscribe(
       (data) => {
@@ -60,10 +62,10 @@ export class AddMenuComponent {
   onClose() {
     this.form.reset({
       menuItem: {
-        item: '',
-        qty: '',
-        price: 0,
-        path: ''
+        item : '',
+        quantity : '',
+        price : 0,
+        imagePath : ''
       }
     });
     this._matDialogRef.close();

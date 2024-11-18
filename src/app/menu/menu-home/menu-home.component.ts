@@ -117,7 +117,7 @@ export class MenuHomeComponent implements OnInit {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "25%";
+    matDialogConfig.width = "50%";
     matDialogConfig.data = item;    
     this.matDialog.open(RemoveMenuComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
