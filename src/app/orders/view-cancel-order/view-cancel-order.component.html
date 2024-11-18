@@ -1,0 +1,184 @@
+<h2 mat-dialog-title>
+    Order Summary
+    <button mat-icon-button (click)="onClose()" style="float: right;">
+      <mat-icon>close</mat-icon>
+    </button>
+  </h2>
+
+<div mat-dialog-content>
+    <!-- Order Data Section -->
+    <mat-card class="order-details-section">
+
+        <mat-card-header>
+            <mat-card-title>Order Details</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form [formGroup]="orderForm">
+                <mat-grid-list cols="2" rowHeight="80px">
+
+                    <mat-grid-tile>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Order Id</mat-label>
+                            <input matInput type="text" formControlName="orderId" readonly />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Order By</mat-label>
+                            <input matInput type="text" formControlName="orderBy" readonly />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Total Amount </mat-label>
+                            <input matInput type="number" formControlName="totalPrice" readonly />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Order Date</mat-label>
+                            <input matInput type="text" formControlName="orderDate" readonly />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                    <mat-grid-tile>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Order Status</mat-label>
+                            <input matInput type="text" formControlName="orderStatus" readonly />
+                        </mat-form-field>
+                    </mat-grid-tile>
+
+                </mat-grid-list>
+            </form>
+        </mat-card-content>
+
+    </mat-card>
+
+    <!-- Menu List Section (3 cards per row) -->
+    <mat-card class="menu-details-section">
+
+        <mat-card-header>
+            <mat-card-title>Ordered Menu</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <mat-grid-list cols="3" rowHeight="350px" gutterSize="16px">
+
+                <mat-grid-tile *ngFor="let item of orderedMenu">
+
+                    <mat-card class="menu-card">
+                        <!-- <img mat-card-image [src]="item.imagePath" alt="{{ item.item }}" /> -->
+                        <!-- Image card component with a fixed size -->
+                        <img mat-card-image [src]="localImagePath" alt="{{ item.item }}"
+                            style="width: 100px; height: 100px; object-fit: cover;" />
+
+                        <mat-card-content>
+
+                            <p><strong>Name : </strong>{{ item.item }}</p>
+
+                            <p><strong>Price: </strong>{{ item.price | currency:'INR':'symbol':'1.0-2' }}</p>
+
+                            <p><strong>Item Quantity : </strong>{{ item.quantity }}</p>
+
+                            <p><strong>Ordered Quantity : {{getCount(item)}}</strong></p>
+
+                        </mat-card-content>
+
+                    </mat-card>
+
+                </mat-grid-tile>
+
+            </mat-grid-list>
+
+        </mat-card-content>
+
+    </mat-card>
+
+    <!-- Taxes Section (2 cards per row) -->
+    <mat-card class="tax-details-section">
+        <mat-card-header>
+            <mat-card-title>Applied Taxes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-grid-list cols="2" rowHeight="150px" gutterSize="16px">
+
+                <mat-grid-tile *ngFor="let tax of order.orderDetails.taxList">
+
+                    <mat-card class="tax-card">
+
+                        <mat-card-content>
+
+                            <h3><strong> Tax Name : </strong> {{ tax.taxType }}</h3>
+
+                            <h3><strong> Tax Rate : </strong> {{ tax.value }} %</h3>
+
+                        </mat-card-content>
+
+                    </mat-card>
+
+                </mat-grid-tile>
+
+            </mat-grid-list>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Coupons Section (2 cards per row) -->
+    <mat-card class="coupon-details-section">
+
+        <mat-card-header>
+            <mat-card-title>Applied Coupons</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <mat-grid-list cols="1" rowHeight="250px" gutterSize="16px">
+
+                <mat-grid-tile *ngFor="let coupon of order.orderDetails.coupons" colspan="1">
+
+                    <mat-card class="coupon-card">
+
+                        <mat-card-content>
+
+                            <p><strong>Coupon Name : </strong> {{ coupon.couponName }}</p>
+
+                            <p><strong>Coupon Description : </strong> {{ coupon.description }}</p>
+
+                            <p><strong>Discount:</strong>
+                                <ng-container *ngIf="coupon.isAmount">
+                                    {{ coupon.amount | currency }}
+                                </ng-container>
+                                <ng-container *ngIf="coupon.ispercentage">
+                                    {{ coupon.percentage }}%
+                                </ng-container>
+                            </p>
+
+                            <p><strong>Valid From:</strong> {{ coupon.startDate | date }}</p>
+                            <p><strong>Valid Until:</strong> {{ coupon.endtDate | date }}</p>
+
+
+                        </mat-card-content>
+
+                    </mat-card>
+
+                </mat-grid-tile>
+
+            </mat-grid-list>
+        </mat-card-content>
+    </mat-card>
+
+
+
+</div>
+
+<div mat-dialog-actions align="end" *ngIf="!isCancel">
+    <button mat-raised-button mat-dialog-close color="warn">Close</button>
+</div>
+
+<div mat-dialog-actions align="end" *ngIf="isCancel">
+    <button mat-raised-button color="primary" (click)="cancelOrder()">Cancel Order</button>
+    <button mat-raised-button mat-dialog-close color="warn">Close</button>
+</div>

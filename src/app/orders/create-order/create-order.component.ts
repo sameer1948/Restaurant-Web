@@ -5,17 +5,10 @@ import { Tax } from '../../model/Tax';
 import { CouponService } from '../../services/coupon.service';
 import { Coupon } from '../../model/Coupon';
 import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
-
-interface MenuItem {
-  id: number;
-  name: string;
-  price: number;  
-}
-
-interface OrderItem {
-  menuItem: MenuItem;
-  quantity: number;
-}
+import { OrderService } from '../../services/order.service';
+import { Order } from '../../model/Order';
+import { NotificationService } from '../../common/notification.service';
+import { TaxAndDetails } from '../../model/TaxAndDetails';
 
 @Component({
   selector: 'app-create-order',
@@ -23,9 +16,9 @@ interface OrderItem {
   styleUrls: ['./create-order.component.scss'],
 })
 export class CreateOrderComponent implements OnInit {
-  
+
   private readonly USER_NAME: string = 'USERNAME';
-  userName : any ;
+  userName: any;
 
   orderItems: OrderItem[] = [];
   taxes: Tax[] = [];
@@ -40,21 +33,23 @@ export class CreateOrderComponent implements OnInit {
   couponErrorMessage: string = '';
 
   constructor(
+    private orderService: OrderService,
+    private notificationService: NotificationService,
     public dialogRef: MatDialogRef<CreateOrderComponent>,
     private taxService: TaxService,
     private couponService: CouponService,
-    private decryptServices : EncryptDecryptService,
-    @Inject(MAT_DIALOG_DATA) public data: OrderItem[] ) {
-    this.orderItems = data;    
+    private decryptServices: EncryptDecryptService,
+    @Inject(MAT_DIALOG_DATA) public data: OrderItem[]) {
+    this.orderItems = data;
     this.userName = this.decryptServices.decrypt(sessionStorage.getItem(this.decryptServices.encrypt(this.USER_NAME)) ?? '');
   }
 
   ngOnInit(): void {
-    
+
     // Fetch taxes
-    this.taxService.getAllTaxes().subscribe(
-      (taxList: Tax[]) => {
-        this.taxes = taxList.filter(tax => tax.status === true);
+    this.taxService.getTaxes().subscribe(
+      (taxList: TaxAndDetails[]) => {        
+        this.taxes = taxList.map(tax => tax.tax).filter(tax => tax.status === true);
         //console.table(this.taxes);
       },
       (error) => {
@@ -64,9 +59,9 @@ export class CreateOrderComponent implements OnInit {
 
     // Fetch applicable coupons
     this.couponService.getAllCoupons().subscribe(
-      (response: any[]) => {     
+      (response: any[]) => {
         const coupons = response.map(item => item.coupon);  // Extract only the `coupon` part of each object        
-        this.applicableCoupons =   coupons; //this.filterCoupons(coupons);
+        this.applicableCoupons = coupons; //this.filterCoupons(coupons);
         console.table(this.applicableCoupons);
       },
       (error) => {
@@ -79,7 +74,7 @@ export class CreateOrderComponent implements OnInit {
   filterCoupons(coupons: Coupon[]): Coupon[] {
     const currentDate = new Date();
     return coupons.filter(coupon =>
-      coupon.status === true && coupon.minOrderAmount <= this.calculateTotal() && 
+      coupon.status === true && coupon.minOrderAmount <= this.calculateTotal() &&
       new Date(coupon.endtDate) >= currentDate);
   }
 
@@ -128,13 +123,13 @@ export class CreateOrderComponent implements OnInit {
   }
 
   // Apply coupon discount logic
-  applyCoupon() {   
+  applyCoupon() {
 
     const trimmedCouponCode = this.couponCode.trim().toLowerCase();
-    
+
     const coupon = this.applicableCoupons.find(
-      c => c.couponName?.trim().toLowerCase() === trimmedCouponCode);  
-    
+      c => c.couponName?.trim().toLowerCase() === trimmedCouponCode);
+
     if (coupon) {
       // Check if coupon meets the conditions
       if (coupon.minOrderAmount > this.calculateTotal()) {
@@ -155,8 +150,10 @@ export class CreateOrderComponent implements OnInit {
       } else {
         // Apply coupon
         if (coupon.isAmount) {
+          console.log('coupon.isAmount : ' + coupon.isAmount );
           this.discount = coupon.amount ?? 0; // Apply the fixed amount
         } else if (coupon.ispercentage) {
+          console.log('coupon.ispercentage : ' + coupon.ispercentage );
           this.discount = (this.calculateTotal() * (coupon.percentage ?? 0)) / 100; // Apply the percentage discount
         }
         this.couponApplied = true;
@@ -169,6 +166,7 @@ export class CreateOrderComponent implements OnInit {
       this.discount = 0;
       this.couponApplied = false;
     }
+    console.log('discount : ' + this.discount );
   }
 
   // Clear coupon error feedback
@@ -187,66 +185,108 @@ export class CreateOrderComponent implements OnInit {
 
   // Close dialog on complete
   onComplete() {
-    // Prepare the order object structure
-    const order = {
+    // Prepare the order object structure  
+    const order: Order = {
       orderBy: this.userName, // This should USERNAME
       totalPrice: parseFloat(this.grandTotal.toFixed(2)),
-      orderDate: new Date().toLocaleString(), 
-      orderStatus: "PENDING", 
+      orderStatus: "PENDING",
       orderDetails: {
-        menuLists: this.getMenuList(), 
-        taxList: this.getTaxList(),  
-        coupons: this.getCoupons()   
-      }
+        menuLists: this.getMenuList(),
+        taxList: this.getTaxList(),
+        coupons: this.getCoupons(),
+        id: ''
+      },
+      id: ''
     };
+    
     console.log(order);
     console.dir(order);
-  
-    // Close the dialog with the generated order object
-    this.dialogRef.close({ status: 'success', data: order });
+    this.orderService.newOrder(order).subscribe(
+      (response) => {
+        console.log('Order placed successfully:', response);
+        // Close the dialog with the generated order object
+        this.dialogRef.close({ status: 'success', data: order });
+      },
+      (error) => {
+        // Check if the error has a response or status (depends on how your backend sends errors)
+        if (error.error) {
+          // The server error body (for example, JSON error response)
+          console.error('Error placing order (server error body):', JSON.stringify(error.error, null, 2));
+          this.notificationService.errorMessage('Error placing order (server error body)');
+        } else {
+          // The HTTP error (status, message, etc.)
+          console.error('Error placing order (HTTP error):', JSON.stringify(error, null, 2));
+          this.notificationService.errorMessage('Error placing order (HTTP error)');
+        }
+      }
+    );
+
   }
-  
-  
+
+
   getMenuList() {
-    return this.orderItems.flatMap(item => {  
+    return this.orderItems.flatMap(item => {
       return Array(item.quantity).fill({
         id: item.menuItem.id,
-        item: item.menuItem.name,        
+        item: item.menuItem.name,
         price: item.menuItem.price
       });
     });
   }
-  
+
   getTaxList() {
     return this.taxes.map(tax => ({
-      taxId: tax.taxId, 
-      taxType: tax.taxType, 
-      value: tax.value,  
-      status: tax.status 
+      taxId: tax.taxId,
+      taxType: tax.taxType,
+      value: tax.value,
+      status: tax.status
     }));
   }
-  
-  
+
+
   getCoupons() {
     if (this.couponApplied) {
       const appliedCoupon = this.applicableCoupons.find(
-        coupon => coupon.couponName === this.couponCode.trim());
+        coupon => coupon.couponName.trim().toLowerCase() === this.couponCode.trim().toLowerCase()
+      );
       if (appliedCoupon) {
+        // Returning the full coupon object with all fields
         return [{
-          couponId: appliedCoupon.id,  
+          id: appliedCoupon.id,
           couponName: appliedCoupon.couponName,
+          description: appliedCoupon.description,
           isAmount: appliedCoupon.isAmount,
-          isPercentage: appliedCoupon.ispercentage,
-          percentage: appliedCoupon.percentage
+          amount: appliedCoupon.amount,
+          ispercentage: appliedCoupon.ispercentage,
+          percentage: appliedCoupon.percentage,
+          maxAmount: appliedCoupon.maxAmount,
+          minOrderAmount: appliedCoupon.minOrderAmount,
+          status: appliedCoupon.status,
+          startDate: appliedCoupon.startDate,
+          endtDate: appliedCoupon.endtDate,
+          addedBy: appliedCoupon.addedBy        // Who added the coupon (optional)
         }];
       }
     }
     return []; // If no coupon is applied, return an empty array
   }
-  
+
 
   // Close dialog on cancel
   onCancel() {
     this.dialogRef.close({ status: 'canceled' });
   }
+
+}
+
+
+interface MenuItem {
+  id: number;
+  name: string;
+  price: number;
+}
+
+interface OrderItem {
+  menuItem: MenuItem;
+  quantity: number;
 }

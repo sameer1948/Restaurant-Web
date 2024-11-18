@@ -1,160 +1,134 @@
-<mat-card class="home-container" appearance="outlined">
+<mat-card class="order-container" appearance="outlined">
 
-  <mat-card-header>
-    <mat-card-title> <mat-icon>view_comfy_alt</mat-icon> Available Food Items</mat-card-title>
+  <mat-card-header class="order-header">
+    <mat-card-title> <mat-icon>view_comfy_alt</mat-icon> Orders </mat-card-title>
   </mat-card-header>
 
+  <mat-card-content>
 
-  <mat-grid-list cols="3" rowHeight="100px">
+    <div class="last-orders-section">
+      <div>
+        <h2>Last 5 Orders</h2>
 
-    <mat-grid-tile>
-      <!-- Search Bar -->
-      <mat-form-field appearance="fill">
+        <div class="order-grid">
 
-        <mat-label> <mat-icon>search</mat-icon> Search Menu Items</mat-label>
+          <mat-card *ngFor="let order of lastFiveOrders " class="order-card">
 
-        <input matInput [(ngModel)]="searchQuery" (input)="updateFilteredItems()" />
+            <mat-card-header> <mat-card-title>{{ order.id }}</mat-card-title> </mat-card-header>
 
-        <button mat-icon-button *ngIf="searchQuery" (click)="clearSearch()">
-          <mat-icon>clear</mat-icon>
-        </button>
+            <mat-card-content>
+              <p> <strong> Price : </strong> {{ order.totalPrice | currency:'INR':'symbol':'1.0-2' }} </p>
+              <p> <strong> Order By : </strong> {{order.orderBy}} </p>
+              <p> <strong> Order Status : </strong> {{order.orderStatus}} </p>
+              <p> <strong> Order Date : </strong> {{order.orderDate | date: 'd MMM yyyy, h:mm a' }} </p>             
+              <div class="last-five-actions">
+                <button mat-raised-button color="primary"  (click)="viewOrderDialog(order)"> View </button>
+                <button mat-raised-button color="warn" (click)="updateOrderDialog(order)"> Cancel </button>
+              </div>
 
-      </mat-form-field>
+            </mat-card-content>
 
-    </mat-grid-tile>
+          </mat-card>
 
-    <mat-grid-tile>
-      <!-- Sort By Dropdown -->
-      <mat-form-field appearance="fill">
+        </div>
 
-        <mat-label> <mat-icon>swap_vert</mat-icon> Sort By</mat-label>
+      </div>
 
-        <mat-select [(ngModel)]="sortOrder" (selectionChange)="sortItems()">
+    </div>
 
-          <mat-option value="name"> <mat-icon>sort_by_alpha</mat-icon> Name</mat-option>
-          <mat-option value="price"> <mat-icon>currency_rupee</mat-icon> Price</mat-option>
 
-        </mat-select>
+    <mat-card class="all-orders-section" appearance="outlined">
 
-      </mat-form-field>
+      <mat-card-content>
 
-    </mat-grid-tile>
+        <h2>Order Services</h2>
 
-  </mat-grid-list>
+        <mat-grid-list cols="1" rowHeight="100px">
 
-  <div class="content-container">
+          <!-- Search Bar -->
+          <mat-grid-tile>
 
-    <div class="row">
-      <div [ngClass]="{'menu-column': true, 'full-width': !itemsSelected, 'partial-width': itemsSelected}">
+            <mat-form-field appearance="fill" style="width: 100%;">
 
-        <mat-grid-list cols="3" rowHeight="350px" gutterSize="16px">
+              <mat-icon matPrefix>search</mat-icon>
+              <mat-label>Search Coupon</mat-label>
 
-          <mat-grid-tile *ngFor="let item of paginatedItems">
+              <input matInput [(ngModel)]="searchQuery" (input)="applyFilter()" />
 
-            <mat-card class="menu-item">
-              <!-- <img mat-card-image [src]="item.imagePath" alt="{{ item.item }}" /> -->
-              <!-- Image card component with a fixed size -->
-              <img mat-card-image [src]="localImagePath" alt="{{ item.item }}" 
-              style="width: 150px; height: 150px; object-fit: cover;" />
+              <button mat-icon-button *ngIf="searchQuery" matSuffix (click)="clearSearch()">
+                <mat-icon>clear</mat-icon>
+              </button>
 
-              
-
-              <mat-card-content>
-
-                <h3>{{ item.item }}</h3>              
-
-                <p>Price: {{ item.price | currency:'INR':'symbol':'1.0-2' }}</p>
-
-                <button mat-icon-button color="primary" (click)="openDesc(item)">
-                  <mat-icon>description</mat-icon>
-                </button>
-
-                <button mat-icon-button color="primary" (click)="addToOrder(item.id)">
-                  <mat-icon>add_shopping_cart</mat-icon>
-                </button>
-
-              </mat-card-content>
-
-            </mat-card>
+            </mat-form-field>
 
           </mat-grid-tile>
 
         </mat-grid-list>
 
-      </div>
+        <!-- <button mat-button (click)="sortData()">Sort by Usage Count</button> -->
+        <mat-card appearance="outlined">
 
-      <ng-container *ngIf="getSelectedItems().length > 0">
+          <mat-card-content class="order-table-continer">
 
-        <div class="selection-column">
+            <mat-table [dataSource]="dataSource" matSort>
 
-          <h2 style="margin: 15px 15px;"><mat-icon>shopping_cart</mat-icon> Selected Food Items</h2>
+              <ng-container matColumnDef="orderId">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Order Id </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+              </ng-container>
 
-          <!-- Card for Headings -->
-          <mat-card class="heading-card">
+              <ng-container matColumnDef="orderDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Order Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.orderDate | date: 'd MMM yyyy, h:mm a'}} </mat-cell>
+              </ng-container>
 
-            <mat-card-content>
-              <h2 class="card-header">
-                <span class="header-item">Item</span>
-                <span class="header-item">Price</span>
-                <span class="header-item">Quantity</span>
-                <span class="header-item">Actions</span>
-              </h2>
-            </mat-card-content>            
+              <ng-container matColumnDef="totalPrice">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Total Price </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.totalPrice | currency:'INR':'symbol':'1.0-2' }}
+                </mat-cell>
+              </ng-container>
 
-          </mat-card>
+              <ng-container matColumnDef="orderBy">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Order By </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.orderBy}} </mat-cell>
+              </ng-container>
 
-          <div *ngFor="let selectedItem of getSelectedItems(); let i = index;" class="selected-item-card">
+              <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element"
+                  [ngClass]="{'completed-status': element.orderStatus === 'COMPLETED', 'cancel-status': !(element.orderStatus === 'COMPLETED')}">
+                  {{ element.orderStatus }} </mat-cell>
+              </ng-container>
 
-            <mat-card>
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
 
-              <mat-card-content class="card-content">  
-                              
-                <h3 class="itemName">{{ selectedItem!.item.item }}</h3>
-                <p>{{ selectedItem!.item.price | currency:'INR':'symbol':'1.0-2' }}</p>
+                <mat-cell *matCellDef="let element">
 
-                <div class="card-action-buttons">
-
-                  <button mat-button (click)="decreaseQuantity(selectedItem!.item.id)">
-                    <mat-icon>remove</mat-icon>
-                  </button>
-                  <span class="quantity">{{ selectedItem!.quantity }}</span>
-
-                  <button mat-button (click)="increaseQuantity(selectedItem!.item.id)">
-                    <mat-icon>add</mat-icon>
-                  </button>
-
-                  <button mat-button color="warn" (click)="removeItem(selectedItem!.item.id)">
-                    <mat-icon>delete</mat-icon>
+                  <button color="primary" mat-icon-button matTooltip="View Order" (click)="viewOrderDialog(element)">
+                    <mat-icon>open_in_new</mat-icon>
                   </button>
 
-                </div>
+                  <button color="accent" mat-icon-button matTooltip="Cancel Order" (click)="updateOrderDialog(element)">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
 
-              </mat-card-content>
+                </mat-cell>
+              </ng-container>
 
-            </mat-card>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-          </div>
+            </mat-table>
 
-          <strong>Grand Total: {{ grandTotal | currency:'INR':'symbol':'1.0-2' }}</strong>
+            <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizes"></mat-paginator>
 
-          <div class="action-buttons">
-            <button mat-raised-button color="primary" (click)="submitOrder()">Proceed</button>
-            <button mat-raised-button color="warn" (click)="clearOrder()">Clear</button>
-          </div>
-        </div>
+          </mat-card-content>
 
-      </ng-container>
+        </mat-card>
+      </mat-card-content>
+    </mat-card>
 
-    </div>
-
-    <div class="footer">
-
-      <mat-paginator [length]="filteredItems.length" [pageSize]="pageSize"
-        [pageSizeOptions]="[9, 18, 27, 36, 45, 54, 63, 72, 81, 90, 99]" (page)="changePage($event)">
-      </mat-paginator>
-
-    </div>
-
-  </div>
+  </mat-card-content>
 
 </mat-card>

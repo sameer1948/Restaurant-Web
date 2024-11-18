@@ -1,0 +1,47 @@
+.order-details-section,
+.menu-details-section,
+.tax-details-section,
+.coupon-details-section {
+    margin: 20px;
+
+}
+
+mat-form-field {
+    width: 80%;
+}
+
+.menu-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    transition: transform 0.5s;
+}
+
+.menu-card:hover {
+    transform: scale(1.20);
+}
+
+.tax-card {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 16px;
+    transition: transform 0.5s;
+}
+
+.tax-card:hover {
+    transform: scale(1.20);
+}
+
+.coupon-card {
+    display: flex;    
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    transition: transform 0.5s;
+}
+
+.coupon-card:hover {
+    transform: scale(1.20);
+}
