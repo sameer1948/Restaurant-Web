@@ -1,11 +1,12 @@
 import { Component, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Coupon } from '../../model/Coupon';
 import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
 import { CouponAndDetails } from '../../model/CouponAndDetails';
 import { CouponService } from '../../services/coupon.service';
 import { error } from 'console';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-coupon-update',
@@ -28,7 +29,8 @@ export class CouponUpdateComponent {
     private dialogRef: MatDialogRef<CouponUpdateComponent>,
     @Inject(MAT_DIALOG_DATA) data: Coupon,
     private decryptServices: EncryptDecryptService,
-    private couponService : CouponService) {
+    private couponService : CouponService,
+    private dialog: MatDialog) {
       this.userName = this.decryptServices.decrypt(sessionStorage.getItem(this.decryptServices.encrypt(this.USER_NAME)) ?? '');
       this.coupon = data;      
     
@@ -129,6 +131,12 @@ export class CouponUpdateComponent {
           console.log(response);
           this.clearForm();
           this.dialogRef.close('success');
+          const data = {
+            title : `Updated ${response.coupon.couponName}`,
+            message : `Coupon ${response.coupon.couponName} Was Updated Successfully.`,
+            action : 'update'
+          }
+          this.dialog.open(SuccessDialogComponent, {data: data});
         },(error) => {
           console.log(error)
         }

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
 import { CouponService } from '../../services/coupon.service';
 import { CouponAndDetails } from '../../model/CouponAndDetails';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
+import { title } from 'process';
 
 @Component({
   selector: 'app-coupon-add',
@@ -23,7 +25,8 @@ export class CouponAddComponent {
   constructor(private fb: FormBuilder,
     private dialogRef: MatDialogRef<CouponAddComponent>,
     private decryptServices: EncryptDecryptService,
-    private couponService : CouponService) {
+    private couponService : CouponService,
+    private dialog: MatDialog) {
       this.userName = this.decryptServices.decrypt(sessionStorage.getItem(this.decryptServices.encrypt(this.USER_NAME)) ?? '');
     this.couponForm = this.fb.group(
       {
@@ -111,6 +114,12 @@ export class CouponAddComponent {
         (response : CouponAndDetails) => {
           console.log(response);
           if (response != null) {
+            const data = {
+              title : 'Added Coupon Successfully',
+              message :   `Coupon Id : ${response.coupon.couponId}  and Coupon ${response.coupon.couponName} Added.`
+            }
+
+            this.dialog.open(SuccessDialogComponent, {data: data});
             this.dialogRef.close('success');
           }          
         }
