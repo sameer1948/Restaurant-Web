@@ -68,6 +68,7 @@ import { UpdateTaxFeeComponent } from './tax-fee/update-tax-fee/update-tax-fee.c
 import { VeiwRemoveTaxFeeComponent } from './tax-fee/veiw-remove-tax-fee/veiw-remove-tax-fee.component';
 import { ErrorDialogComponent } from './common/error-dialog/error-dialog.component';
 import { ViewCancelOrderComponent } from './orders/view-cancel-order/view-cancel-order.component';
+import { SuccessDialogComponent } from './common/success-dialog/success-dialog.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -102,6 +103,7 @@ import { ViewCancelOrderComponent } from './orders/view-cancel-order/view-cancel
         VeiwRemoveTaxFeeComponent,
         ErrorDialogComponent,
         ViewCancelOrderComponent,
+        SuccessDialogComponent,
     ],
     bootstrap: [AppComponent],
     

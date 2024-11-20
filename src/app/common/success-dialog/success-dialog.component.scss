@@ -1,0 +1,27 @@
+.message {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 90%;
+    height: auto;
+    padding: 8px;
+}
+
+.message mat-icon {
+    margin-right: 8px;
+    vertical-align: middle;
+    color: rgb(26, 226, 19);
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 16px;
+}
+
+
+.actions button {
+    margin: 0 8px;
+}
