@@ -12,21 +12,20 @@
 
         <div class="coupon-grid">
 
-          <mat-card *ngFor="let coupon of popularCoupons " class="coupon-card">
+          <button mat-raised-button *ngFor="let coupon of popularCoupons" class="coupon-card" (click)="onCardClick(coupon)">
 
             <mat-card-header>
-
-              <mat-card-title>{{ coupon.couponName }}</mat-card-title>
-
-              <mat-card-subtitle>Usage Count: {{ coupon.amount }}</mat-card-subtitle>
-
+    
+              <mat-card-title>{{ coupon.couponName }}</mat-card-title> 
+              
+    
             </mat-card-header>
-
+    
             <mat-card-content>
               <p>{{ coupon.description }}</p>
             </mat-card-content>
-
-          </mat-card>
+    
+          </button>
 
         </div>
 
@@ -44,7 +43,7 @@
         <mat-grid-list cols="3" rowHeight="100px">
 
           <mat-grid-tile>
-            <button mat-raised-button color="primary" (click)="openDialog('add')">Add Coupon</button>
+            <button mat-raised-button color="primary" (click)="newCouponDialog()">Add Coupon</button>
           </mat-grid-tile>
 
           <!-- Search Bar -->
@@ -66,8 +65,7 @@
           </mat-grid-tile>
 
         </mat-grid-list>
-
-        <!-- <button mat-button (click)="sortData()">Sort by Usage Count</button> -->
+        
         <mat-card appearance="outlined">
 
           <mat-card-content class="coupon-table-continer">
@@ -76,7 +74,7 @@
 
               <ng-container matColumnDef="code">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Code </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.code}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.couponName}} </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="description">
@@ -86,24 +84,29 @@
 
               <ng-container matColumnDef="amount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Amount </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.amount}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.amount | currency:'INR':'symbol':'1.0-2'}} </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="percentage">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Percentage </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.percentage}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.percentage}}  %</mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="endDate">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> End Date </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.endtDate | date}} </mat-cell>
+              <ng-container matColumnDef="minOrderAmount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Min Order Amount </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.minOrderAmount | currency:'INR':'symbol':'1.0-2'}} </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="maxDiscountAmount">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Max Discount </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.maxDiscountAmount | currency:'INR':'symbol':'1.0-2'}} </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="status">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
                 <mat-cell *matCellDef="let element"
-                  [ngClass]="{'active-status': element.isActive, 'expired-status': !element.isActive}">
-                  {{ element.isActive ? 'Active' : 'Expired' }}
+                  [ngClass]="{'active-status': element.status, 'expired-status': !element.status}">
+                  {{ element.status ? 'Active' : 'Expired' }}
                 </mat-cell>
               </ng-container>
 

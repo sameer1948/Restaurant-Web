@@ -27,15 +27,16 @@
                     <mat-error *ngIf="couponForm.get('code')?.hasError('minlength') && couponForm.get('code')?.touched">
                         Coupon code must be at least 6 characters.
                     </mat-error>
-
+                    <mat-hint align="end">Generate Discount Coupon Name^</mat-hint>
                 </mat-form-field>
             </mat-grid-tile>
 
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Maximum Discount Amount</mat-label>
-                    <input matInput type="number" formControlName="maxAmount" />
-                    <mat-error *ngIf="couponForm.get('maxAmount')?.hasError('required')">Maximum amount is
+                    <input matInput type="number" formControlName="maxDiscountAmount" />
+                    <mat-hint align="end">Maximun Discount can Applied by Coupon ^</mat-hint>
+                    <mat-error *ngIf="couponForm.get('maxDiscountAmount')?.hasError('required')">Maximum amount is
                         required.</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
@@ -43,9 +44,10 @@
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Discount Start Date</mat-label>
-                    <input matInput [matDatepicker]="startPicker" formControlName="startDate" [min]="minDate" />
+                    <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
                     <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                     <mat-datepicker #startPicker></mat-datepicker>
+                    <mat-hint align="end">Discount Coupon Start Date^</mat-hint>
                     <mat-error *ngIf="couponForm.get('startDate')?.hasError('required')">Start date is
                         required.</mat-error>
                 </mat-form-field>
@@ -54,9 +56,10 @@
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <mat-label>Discount End Date</mat-label>
-                    <input matInput [matDatepicker]="endPicker" formControlName="endDate" [min]="minDate" />
+                    <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
                     <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                     <mat-datepicker #endPicker></mat-datepicker>
+                    <mat-hint align="end">Discount Coupon End Date^</mat-hint>
                     <mat-error *ngIf="couponForm.get('endDate')?.hasError('required')">End date is required.</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
@@ -95,16 +98,13 @@
                 </mat-form-field>
             </mat-grid-tile>
 
-            <mat-grid-tile colspan="2">
-                <mat-form-field appearance="fill" style="width: 90%;">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput formControlName="description"></textarea>
-                    <div *ngIf="couponForm.get('description')?.value">
-                        <!-- Note: Maximum discount amount is {{ couponForm.get('maxAmount')?.value }} -->
-                    </div>
-                    <mat-error *ngIf="couponForm.get('description')?.hasError('required')">
-                        Description is required.
-                    </mat-error>
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Minimum Order Amount</mat-label>
+                    <input matInput type="number" formControlName="minOrderAmount" />
+                    <mat-hint align="end">Minimun Order Amount to Apply Discount Coupon^</mat-hint>
+                    <mat-error *ngIf="couponForm.get('minOrderAmount')?.hasError('required')">Maximum amount is
+                        required.</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -115,6 +115,7 @@
                         <mat-option [value]="'Enabled'">Enabled</mat-option>
                         <mat-option [value]="'Disabled'">Disabled</mat-option>
                     </mat-select>
+                    <mat-hint align="end">Discount Coupon is Available or Not ?^</mat-hint>
                     <mat-error
                         *ngIf="couponForm.get('status')?.hasError('required') && couponForm.get('status')?.touched">
                         Status is required.
@@ -122,10 +123,25 @@
                 </mat-form-field>
             </mat-grid-tile>
 
+            <mat-grid-tile >
+                <mat-form-field appearance="fill" >
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description"></textarea>
+                    <div *ngIf="couponForm.get('description')?.value">
+                        <!-- Note: Maximum discount amount is {{ couponForm.get('maxDiscountAmount')?.value }} -->
+                    </div>
+                    <mat-hint align="end">Discount Coupon Short Description^</mat-hint>
+                    <mat-error *ngIf="couponForm.get('description')?.hasError('required')">
+                        Description is required.
+                    </mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
-                    <mat-label>Added By</mat-label>
-                    <input matInput type="text" formControlName="addedBy" readonly="true" />
+                    <mat-label>Modified By</mat-label>
+                    <input matInput type="text" formControlName="modifiedBy" readonly="true" />
+                    <mat-hint align="end">Discount Coupon Modified By ^</mat-hint>
                 </mat-form-field>
             </mat-grid-tile>
 
@@ -134,6 +150,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button [disabled]="couponForm.invalid" (click)="onSubmit()">Update</button>
+    <button mat-raised-button (click)="resetForm()" color="primary">Reset</button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button [disabled]="couponForm.invalid || !couponForm.touched" color="warn" (click)="onSubmit()">Update</button>
 </mat-dialog-actions>

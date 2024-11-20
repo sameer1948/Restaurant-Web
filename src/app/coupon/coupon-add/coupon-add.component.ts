@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Coupon } from '../../model/Coupon';
+import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
+import { CouponService } from '../../services/coupon.service';
+import { CouponAndDetails } from '../../model/CouponAndDetails';
 
 @Component({
   selector: 'app-coupon-add',
@@ -9,21 +11,28 @@ import { Coupon } from '../../model/Coupon';
   styleUrl: './coupon-add.component.scss'
 })
 export class CouponAddComponent {
+  
+  private readonly USER_NAME: string = 'USERNAME';
+  userName : any = 'NA';
 
   readonly minDate : Date = new Date(); 
 
   couponForm : FormGroup;
-  userName : string = 'NA';
+
 
   constructor(private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CouponAddComponent>) {
+    private dialogRef: MatDialogRef<CouponAddComponent>,
+    private decryptServices: EncryptDecryptService,
+    private couponService : CouponService) {
+      this.userName = this.decryptServices.decrypt(sessionStorage.getItem(this.decryptServices.encrypt(this.USER_NAME)) ?? '');
     this.couponForm = this.fb.group(
       {
         code: ['', [Validators.required, Validators.minLength(6)]],
         description: ['', Validators.required],
         amount: [{ value: '', disabled: true }],
         percentage: [{ value: '', disabled: true }],
-        maxAmount: ['', Validators.required],
+        maxDiscountAmount: ['', Validators.required],
+        minOrderAmount:['', Validators.required],
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],
         isAmount: [false],
@@ -45,9 +54,9 @@ export class CouponAddComponent {
   }
 
   onAmountChange(): void {
-    const maxAmount = this.couponForm.get('maxAmount')?.value;
+    const maxDiscountAmount = this.couponForm.get('maxDiscountAmount')?.value;
     if (this.couponForm.get('isAmount')?.value) {
-      this.couponForm.get('amount')?.setValue(maxAmount);
+      this.couponForm.get('amount')?.setValue(maxDiscountAmount);
       this.couponForm.get('amount')?.enable();
       this.couponForm.get('percentage')?.disable();
       this.couponForm.get('isPercentage')?.setValue(false);
@@ -73,19 +82,73 @@ export class CouponAddComponent {
   }
   
   onSubmit(): void {
-    if (this.couponForm.valid) {
-      // Submit the form data to the database
+    if (this.couponForm.valid) {      
       console.log(this.couponForm.value);
-      this.dialogRef.close(this.couponForm.value);
+      const couponAndDetails: CouponAndDetails = {
+        coupon: {
+          couponName: this.couponForm.value.code,
+          description: this.couponForm.value.description,
+          isAmount: this.couponForm.value.isAmount ?? false,
+          amount: this.couponForm.value.isAmount ? this.couponForm.value.amount ?? 0 : 0,  
+          isPercentage: this.couponForm.value.isPercentage ?? false,
+          percentage: this.couponForm.value.isPercentage ? this.couponForm.value.percentage ?? 0 : 0,  
+          maxDiscountAmount: this.couponForm.value.maxDiscountAmount,
+          minOrderAmount: this.couponForm.value.minOrderAmount,
+          status: this.couponForm.value.status == 'Enabled' ? true : false,
+          startDate: this.couponForm.value.startDate,
+          endDate: this.couponForm.value.endDate,
+        },
+        couponDetails: {
+          memberName: this.userName,
+          message: `This is Added By ${this.userName}`,          
+          timeStamp: new Date()
+        }
+      };
+      
+      console.log(couponAndDetails);
+
+      this.couponService.addCoupon(couponAndDetails).subscribe(
+        (response : CouponAndDetails) => {
+          console.log(response);
+          if (response != null) {
+            this.dialogRef.close('success');
+          }          
+        }
+      );
+
+      
     }
   }
 
   onCancel(): void {
+    this.clearForm();
     this.dialogRef.close();
   }
 
   onClose(): void {
+    this.clearForm();
     this.dialogRef.close();
+  }
+
+  clearForm(): void {
+    this.couponForm.reset({
+      code: '',
+      description: '',
+      amount: '',
+      percentage: '',
+      maxDiscountAmount: '',
+      minOrderAmount: '',
+      startDate: '',
+      endDate: '',
+      isAmount: '',
+      isPercentage: '',
+      status: '',
+      addedBy: `${this.userName}`
+    });
+    
+    // Re-enable any controls that were disabled based on the reset values
+    this.onAmountChange();
+    this.onPercentageChange();
   }
 
 }

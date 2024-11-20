@@ -7,6 +7,8 @@ import { Coupon } from '../../model/Coupon';
 import { CouponAddComponent } from '../coupon-add/coupon-add.component';
 import { CouponViewRemoveComponent } from '../coupon-view-remove/coupon-view-remove.component';
 import { CouponUpdateComponent } from '../coupon-update/coupon-update.component';
+import { CouponService } from '../../services/coupon.service';
+import { CouponAndDetails } from '../../model/CouponAndDetails';
 
 @Component({
   selector: 'app-coupon-home',
@@ -14,37 +16,68 @@ import { CouponUpdateComponent } from '../coupon-update/coupon-update.component'
   styleUrl: './coupon-home.component.scss'
 })
 export class CouponHomeComponent implements OnInit , AfterViewInit {
+  
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   readonly pageSize : number = 5;
   readonly pageSizes : number[] = [5, 10, 20, 25];
 
   searchQuery: string = '';
-  
 
-  displayedColumns: string[] = ['code', 'description', 'amount', 'percentage', 'endDate', 'status', 'actions'];
+  displayedColumns: string[] = ['code', 'description', 'amount', 'percentage', 'minOrderAmount', 'maxDiscountAmount', 'status', 'actions'];
   dataSource = new MatTableDataSource<Coupon>();
-  
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
-  coupons: Coupon[] = generateCoupons(50);
-  popularCoupons: Coupon[] = generateCoupons(10);  
 
-  constructor(private matDialog: MatDialog) { }
+  popularCoupons: Coupon[] = [];
+
+  constructor(private matDialog: MatDialog, private couponService : CouponService) { }
 
   ngOnInit(): void {
-    this.dataSource.data = this.coupons;
-   
+    this.initialize();
+  }
+
+  initialize() {
+    let coupons : Coupon[] = [];
+    this.couponService.getAllCoupons().subscribe(
+
+      (response : CouponAndDetails[]) => {
+        console.log(response)
+        response.forEach(couponAndDetails => {    
+          coupons.push({
+            couponId: couponAndDetails.coupon.couponId,
+            couponName: couponAndDetails.coupon.couponName,
+            description: couponAndDetails.coupon.description,
+            isAmount: couponAndDetails.coupon.isAmount,
+            amount: couponAndDetails.coupon.amount,
+            isPercentage: couponAndDetails.coupon.isPercentage,
+            percentage: couponAndDetails.coupon.percentage,
+            maxDiscountAmount: couponAndDetails.coupon.maxDiscountAmount,
+            minOrderAmount: couponAndDetails.coupon.minOrderAmount,
+            status: couponAndDetails.coupon.status,
+            startDate: couponAndDetails.coupon.startDate,
+            endDate: couponAndDetails.coupon.endDate,  
+            addedBy: couponAndDetails.couponDetails.memberName,         
+            message: couponAndDetails.couponDetails.message  
+            
+          });
+          
+        });  
+        console.log(coupons)      
+        this.dataSource.data = coupons;
+        this.popularCoupons = coupons.length > 5 ? coupons.slice(0, 5) : coupons;
+        
+        
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-  
-  sortData() {
-    this.dataSource.data = this.dataSource.data.sort((a, b) => a.amount - b.amount);
-  } 
 
 
   applyFilter() {
@@ -57,16 +90,19 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     this.applyFilter(); 
   }
 
+  onCardClick(coupon: Coupon) {
+    this.viewCouponDialog(coupon);
+  }
 
-  openDialog(action: string, coupon?: Coupon): void {
+  newCouponDialog(): void {
 
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "70%";
-    //matDialogConfig.data = coupon;
     this.matDialog.open(CouponAddComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
+        this.initialize();
         console.log(response)
       }
     });
@@ -86,8 +122,13 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     matDialogConfig.autoFocus = true;
     matDialogConfig.disableClose = true;
     matDialogConfig.width = "70%";
-    matDialogConfig.data = coupon;
-    this.matDialog.open(CouponUpdateComponent, matDialogConfig)
+    matDialogConfig.data = coupon
+    this.matDialog.open(CouponUpdateComponent, matDialogConfig).afterClosed().subscribe(response => {
+      if (response === 'success') {
+        this.initialize();
+        console.log(response)
+      }
+    });
   }
 
   deleteCouponDialog(coupon: Coupon) {
@@ -95,7 +136,12 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "70%";
     matDialogConfig.data = {coupon : coupon, type : 'remove'}
-    this.matDialog.open(CouponViewRemoveComponent, matDialogConfig)
+    this.matDialog.open(CouponViewRemoveComponent, matDialogConfig).afterClosed().subscribe(response => {
+      if (response === 'success') {
+        this.initialize();
+        console.log(response)
+      }
+    });
   }
 
 
@@ -121,17 +167,17 @@ function generateCoupons(count: number): Coupon[] {
 
   for (let i = 1; i <= count; i++) {
     const coupon: Coupon = {
-      id: i,
+      couponId: i + '',
       couponName: `SAVE${getRandomInt(10, 99)}`, // e.g., SAVE10, SAVE25
       description: `Save ${getRandomInt(5, 50)}% on your next purchase!`,
       minOrderAmount: getRandomInt(50, 1000), // Random amount between 5 and 100
       amount: getRandomInt(5, 100), // Random amount between 5 and 100
       percentage: getRandomInt(5, 50), // Random percentage between 5% and 50%
-      maxAmount: getRandomInt(50, 200), // Maximum amount discount
+      maxDiscountAmount: getRandomInt(50, 200), // Maximum amount discount
       startDate: getRandomDate(new Date(now.getFullYear(), now.getMonth(), 1), now), // Random date in the current month
-      endtDate: getRandomDate(now, new Date(now.getFullYear(), now.getMonth() + 1, 30)), // Random date in the next month
+      endDate: getRandomDate(now, new Date(now.getFullYear(), now.getMonth() + 1, 30)), // Random date in the next month
       isAmount: getRandomBoolean(),
-      ispercentage: getRandomBoolean(),
+      isPercentage: getRandomBoolean(),
       status: true, // Set active for all generated coupons
       addedBy:'Sameer'
     };

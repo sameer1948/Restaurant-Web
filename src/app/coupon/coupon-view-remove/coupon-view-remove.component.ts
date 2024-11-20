@@ -27,12 +27,13 @@ export class CouponViewRemoveComponent {
         code: [this.coupon.couponName, Validators.required],
         description: [this.coupon.description, Validators.required],
         amount: [{ value: this.coupon.amount, disabled: this.coupon.isAmount }],
-        percentage: [{ value: this.coupon.percentage, disabled: this.coupon.ispercentage }],
-        maxAmount: [this.coupon.maxAmount, Validators.required],
+        percentage: [{ value: this.coupon.percentage, disabled: this.coupon.isPercentage }],
+        maxDiscountAmount: [this.coupon.maxDiscountAmount, Validators.required],
+        minOrderAmount: [this.coupon.minOrderAmount, Validators.required],
         startDate: [this.coupon.startDate, Validators.required],
-        endDate: [this.coupon.endtDate, Validators.required],
+        endDate: [this.coupon.endDate, Validators.required],
         isAmount: [this.coupon.isAmount],
-        isPercentage: [this.coupon.ispercentage],
+        isPercentage: [this.coupon.isPercentage],
         status: [this.coupon.status? 'Enabled' : 'Disabled', Validators.required],
         addedBy: [this.coupon.addedBy, Validators.required],
       },
@@ -45,9 +46,9 @@ export class CouponViewRemoveComponent {
   }
 
   onAmountChange(): void {
-    const maxAmount = this.couponForm.get('maxAmount')?.value;
+    const maxDiscountAmount = this.couponForm.get('maxDiscountAmount')?.value;
     if (this.couponForm.get('isAmount')?.value) {
-      this.couponForm.get('amount')?.setValue(maxAmount);
+      this.couponForm.get('amount')?.setValue(maxDiscountAmount);
       this.couponForm.get('amount')?.enable();
       this.couponForm.get('percentage')?.disable();
       this.couponForm.get('isPercentage')?.setValue(false);

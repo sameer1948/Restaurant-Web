@@ -75,7 +75,7 @@ export class CreateOrderComponent implements OnInit {
     const currentDate = new Date();
     return coupons.filter(coupon =>
       coupon.status === true && coupon.minOrderAmount <= this.calculateTotal() &&
-      new Date(coupon.endtDate) >= currentDate);
+      new Date(coupon.endDate) >= currentDate);
   }
 
   // Calculate the total amount (sum of all order item prices)
@@ -137,7 +137,7 @@ export class CreateOrderComponent implements OnInit {
         this.couponErrorMessage = `Coupon requires a minimum order of ${coupon.minOrderAmount} to apply.`;
         this.discount = 0;
         this.couponApplied = false;
-      } else if (new Date(coupon.endtDate) < new Date()) {
+      } else if (new Date(coupon.endDate) < new Date()) {
         this.couponError = true;
         this.couponErrorMessage = 'Coupon has expired.';
         this.discount = 0;
@@ -152,8 +152,8 @@ export class CreateOrderComponent implements OnInit {
         if (coupon.isAmount) {
           console.log('coupon.isAmount : ' + coupon.isAmount );
           this.discount = coupon.amount ?? 0; // Apply the fixed amount
-        } else if (coupon.ispercentage) {
-          console.log('coupon.ispercentage : ' + coupon.ispercentage );
+        } else if (coupon.isPercentage) {
+          console.log('coupon.isPercentage : ' + coupon.isPercentage );
           this.discount = (this.calculateTotal() * (coupon.percentage ?? 0)) / 100; // Apply the percentage discount
         }
         this.couponApplied = true;
@@ -252,18 +252,18 @@ export class CreateOrderComponent implements OnInit {
       if (appliedCoupon) {
         // Returning the full coupon object with all fields
         return [{
-          id: appliedCoupon.id,
+          couponId: appliedCoupon.couponId,
           couponName: appliedCoupon.couponName,
           description: appliedCoupon.description,
           isAmount: appliedCoupon.isAmount,
           amount: appliedCoupon.amount,
-          ispercentage: appliedCoupon.ispercentage,
+          isPercentage: appliedCoupon.isPercentage,
           percentage: appliedCoupon.percentage,
-          maxAmount: appliedCoupon.maxAmount,
+          maxDiscountAmount: appliedCoupon.maxDiscountAmount,
           minOrderAmount: appliedCoupon.minOrderAmount,
           status: appliedCoupon.status,
           startDate: appliedCoupon.startDate,
-          endtDate: appliedCoupon.endtDate,
+          endDate: appliedCoupon.endDate,
           addedBy: appliedCoupon.addedBy        // Who added the coupon (optional)
         }];
       }

@@ -151,13 +151,13 @@
                                 <ng-container *ngIf="coupon.isAmount">
                                     {{ coupon.amount | currency }}
                                 </ng-container>
-                                <ng-container *ngIf="coupon.ispercentage">
+                                <ng-container *ngIf="coupon.isPercentage">
                                     {{ coupon.percentage }}%
                                 </ng-container>
                             </p>
 
-                            <p><strong>Valid From:</strong> {{ coupon.startDate | date }}</p>
-                            <p><strong>Valid Until:</strong> {{ coupon.endtDate | date }}</p>
+                            <p><strong>Valid From:</strong> {{ coupon.startDate | date: 'd MMM yyyy, h:mm a' }}</p>
+                            <p><strong>Valid Until:</strong> {{ coupon.endDate | date: 'd MMM yyyy, h:mm a' }}</p>
 
 
                         </mat-card-content>

@@ -1,6 +1,6 @@
 
 export interface Coupon {
-    id : number;
+    couponId ? : string;
 
     couponName : string;
     description : string;
@@ -8,16 +8,17 @@ export interface Coupon {
     isAmount : boolean;
     amount : number;
 
-    ispercentage : boolean;
+    isPercentage : boolean;
     percentage : number;
 
-    maxAmount : number;
+    maxDiscountAmount : number;
     minOrderAmount : number;
     status : boolean;
 
     startDate: Date;
-    endtDate: Date;
+    endDate: Date;
 
-    addedBy? : string;
+    addedBy ? : string;
+    message ? : string;
     
 }
