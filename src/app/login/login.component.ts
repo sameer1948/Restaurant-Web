@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { LoginRequest } from '../model/LoginRequest';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthenicationService } from '../services/authenication.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NotificationService } from '../common/notification.service';
 import { Router } from '@angular/router';
+import { ErrorDialogComponent } from '../common/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +17,7 @@ export class LoginComponent {
   private readonly ADMIN_ROLE: string = 'ADMIN';
 
   private readonly USER_HOME: string = '/home';
-  private readonly ADMIN_HOME: string = '/ad-home';
+  private readonly ADMIN_HOME: string = '/order';
 
 
 
@@ -26,11 +28,11 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private _authenticationService: AuthenicationService,
     private notificationService: NotificationService,
-    private router: Router) {
+    private router: Router, private dialog: MatDialog) {
     
       this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(6)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      username: ['sameer', [Validators.required, Validators.minLength(6)]],
+      password: ['sameer', [Validators.required, Validators.minLength(6)]],
     });
 
     if (this._authenticationService.isAuthenticated()) { // checking user is already loggedin  or not ?
@@ -62,7 +64,9 @@ export class LoginComponent {
             this.router.navigate([this._authenticationService.redirectUrl || this.USER_HOME]);
           }
         } else if (data.statusCode === 500) {
-          this.notificationService.errorMessage(data.message);
+          //this.notificationService.errorMessage(data.message);
+          const message = `Error; ${data.message}`
+          this.dialog.open(ErrorDialogComponent, {data: message});
         }
 
       }, error => {

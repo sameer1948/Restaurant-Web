@@ -2,13 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Order } from '../model/Order';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
 
-  private readonly ORDER_API_URL: string = 'http://localhost:8080/orders/';
+  private readonly ORDER_API_URL: string = `${environment.apiUrl}orders/`;
   
   readonly headers = new HttpHeaders({
     'Content-Type': 'application/json',

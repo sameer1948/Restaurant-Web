@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { MenuList } from '../model/MenuList';
+import { environment } from '../../environments/environment';
 import { error } from 'console';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { error } from 'console';
 })
 export class MenuService {
 
-  private MENU_API_URL: string = 'http://localhost:8080/menu/';
+  private MENU_API_URL: string = `${environment.apiUrl}menu/`;
 
 
   constructor(private httpClient: HttpClient) { }

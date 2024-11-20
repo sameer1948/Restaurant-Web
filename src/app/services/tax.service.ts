@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { Tax } from '../model/Tax';
 import { Observable } from 'rxjs';
 import { TaxAndDetails } from '../model/TaxAndDetails';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaxService {
 
-  private TAX_API_URL: string = 'http://localhost:8080/taxes/';
+  private TAX_API_URL: string = `${environment.apiUrl}taxes/`;
 
   constructor(private httpClient: HttpClient) { }
 

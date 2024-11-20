@@ -5,6 +5,7 @@ import { LoginRequest } from '../model/LoginRequest';
 import { LoginResponse } from '../model/LoginResponse';
 import { EncryptDecryptService } from './encrypt-decrypt.service';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class AuthenicationService {
   private readonly REFRESH_TOKEN: string = 'REFRESH_TOKEN';
   private readonly USER_NAME: string = 'USERNAME';
 
-  private readonly AUTHENTICATION_API_URL: string = 'http://localhost:8080/auth/';
+  private readonly AUTHENTICATION_API_URL: string = `${environment.apiUrl}auth/`;
   private readonly CONTENT_TYPE = { 'content-type': 'application/json' };
 
   public redirectUrl: string | null = null;
