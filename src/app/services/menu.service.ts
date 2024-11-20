@@ -9,7 +9,7 @@ import { error } from 'console';
 })
 export class MenuService {
 
-  private MENU_API_URL: string = 'http://localhost:8080/admin/';
+  private MENU_API_URL: string = 'http://localhost:8080/menu/';
 
 
   constructor(private httpClient: HttpClient) { }

@@ -1,4 +1,3 @@
-
 export class MenuList {
 
   id ?: string ;

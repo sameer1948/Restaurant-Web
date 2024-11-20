@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MenuList } from '../model/MenuList';
 import { CustomUserDetails } from '../model/CustomUserDetails';
 
 @Injectable({
@@ -9,55 +8,35 @@ import { CustomUserDetails } from '../model/CustomUserDetails';
 })
 export class AdminService {  
   
-  private MENU_API_URL: string = 'http://localhost:8080/admin/';
+  private USER_API_URL: string = 'http://localhost:8080/user/';
 
   constructor(private httpClient: HttpClient) { }
 
-  addItemToMenu(menu : MenuList) : Observable<MenuList> {
-    const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<MenuList>(this.MENU_API_URL + 'add-menu', menu, {headers : headers});
-  }
-  
-  modifyItemInMenu(menu : MenuList) : Observable<MenuList> {
-    const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.patch<MenuList>(this.MENU_API_URL + 'update-menu', menu, {headers : headers});
-  }
-
-  removeItemInMenu(id: number) : Observable<string> {    
-    return this.httpClient.delete<string>(this.MENU_API_URL + 'delete-menu/' + id);
-  }
-  
-  getAllItems() : Observable<MenuList[]> {
-    const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<MenuList[]>(this.MENU_API_URL + 'fetch-all-menu', null, {headers : headers});
-  }
-
   getAllUsers() : Observable<CustomUserDetails[]> {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-users', null, {headers : headers});
+    return this.httpClient.post<CustomUserDetails[]>(this.USER_API_URL + 'fetch-users', null, {headers : headers});
   }
 
-  public getMembers() : Observable<CustomUserDetails[]> {
-    const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-users', null, {headers : headers});
+  public getMembers() : Observable<CustomUserDetails[]> {    
+    return this.httpClient.get<CustomUserDetails[]>(this.USER_API_URL + 'fetch-users');
   }
   
   
   addUser(newUser: CustomUserDetails) {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-all-user', null, {headers : headers});
+    return this.httpClient.post<CustomUserDetails[]>(this.USER_API_URL + 'fetch-all-user', null, {headers : headers});
   }
 
 
   deleteUser(username: any) {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-all-user', null, {headers : headers});
+    return this.httpClient.post<CustomUserDetails[]>(this.USER_API_URL + 'fetch-all-user', null, {headers : headers});
   }
   
   
   updateUser(user: CustomUserDetails) {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails[]>(this.MENU_API_URL + 'fetch-all-user', null, {headers : headers});
+    return this.httpClient.post<CustomUserDetails[]>(this.USER_API_URL + 'fetch-all-user', null, {headers : headers});
   }
   
 

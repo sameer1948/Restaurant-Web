@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MenuList } from '../../model/MenuList';
-import { AdminService } from '../../services/admin.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NotificationService } from '../../common/notification.service';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-add-menu',
@@ -28,7 +28,7 @@ export class AddMenuComponent {
   
   selectedQty: any;
 
-  constructor(private _adminService : AdminService,
+  constructor(private menuService : MenuService,
     private _matDialogRef :  MatDialogRef<AddMenuComponent>,
     private _notificationService : NotificationService) {}
   
@@ -46,7 +46,7 @@ export class AddMenuComponent {
     menuList.description = this.form.value.menuItem?.description;
     menuList.imagePath = this.form.value.menuItem?.imagePath;
 
-    this._adminService.addItemToMenu(menuList).subscribe(
+    this.menuService.addItemToMenu(menuList).subscribe(
       (data) => {
         console.log(data);        
         this._notificationService.successMessage("Sucess");

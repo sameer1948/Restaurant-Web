@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AdminService } from '../../services/admin.service';
+
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AddMenuComponent } from '../../menu/add-menu/add-menu.component';
 import { ModifyMenuComponent } from '../../menu/modify-menu/modify-menu.component';
 import { RemoveMenuComponent } from '../../menu/remove-menu/remove-menu.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MenuList } from '../../model/MenuList';
-import { ArrayDataSource } from '@angular/cdk/collections';
+import { AdminService } from '../../services/admin.service';
 
 
 @Component({
@@ -93,14 +93,14 @@ applyFilter() {
     private _matDialog : MatDialog,){}
 
   ngOnInit(): void {
-    this._adminService.getAllItems().subscribe(
-      (data) => {
-        this.menu(data);
-        console.log(data);
-      }, (error) => {
-        console.log(error);
-      }
-    );
+    // this._adminService.getAllItems().subscribe(
+    //   (data) => {
+    //     this.menu(data);
+    //     console.log(data);
+    //   }, (error) => {
+    //     console.log(error);
+    //   }
+    // );
   }
 
 menu(menuItems : Array<MenuList>) {
