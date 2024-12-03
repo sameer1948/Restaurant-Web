@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TaxService } from '../../services/tax.service';
 import { Tax } from '../../model/Tax';
 import { CouponService } from '../../services/coupon.service';
@@ -9,6 +9,7 @@ import { OrderService } from '../../services/order.service';
 import { Order } from '../../model/Order';
 import { NotificationService } from '../../common/notification.service';
 import { TaxAndDetails } from '../../model/TaxAndDetails';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-create-order',
@@ -36,6 +37,7 @@ export class CreateOrderComponent implements OnInit {
     private orderService: OrderService,
     private notificationService: NotificationService,
     public dialogRef: MatDialogRef<CreateOrderComponent>,
+    private dialog: MatDialog,
     private taxService: TaxService,
     private couponService: CouponService,
     private decryptServices: EncryptDecryptService,
@@ -204,18 +206,23 @@ export class CreateOrderComponent implements OnInit {
     this.orderService.newOrder(order).subscribe(
       (response) => {
         console.log('Order placed successfully:', response);
-        // Close the dialog with the generated order object
-        this.dialogRef.close({ status: 'success', data: order });
+        // Close the dialog with the generated order object        
+        const data = {
+          title : 'Order Created successfully',
+          message :   `Order Id : ${response.id}  <br> Total Price ${response.totalPrice}.`,
+          action : 'success'
+        }
+
+        this.dialog.open(SuccessDialogComponent, {data: data});
+        this.dialogRef.close('success');
       },
       (error) => {
         // Check if the error has a response or status (depends on how your backend sends errors)
-        if (error.error) {
-          // The server error body (for example, JSON error response)
-          console.error('Error placing order (server error body):', JSON.stringify(error.error, null, 2));
-          this.notificationService.errorMessage('Error placing order (server error body)');
+        if (error.status == 403) {        
+          this.notificationService.errorMessage('You don\'t have Authorization to complete The Order');
         } else {
           // The HTTP error (status, message, etc.)
-          console.error('Error placing order (HTTP error):', JSON.stringify(error, null, 2));
+          console.error('Error placing order (HTTP error):', JSON.stringify(error, null, 2));          
           this.notificationService.errorMessage('Error placing order (HTTP error)');
         }
       }

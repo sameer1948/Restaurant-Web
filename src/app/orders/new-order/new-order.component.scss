@@ -119,4 +119,20 @@
     text-align: center; /* Center the quantity */
   }
   
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 150px; /* Adjust as needed */
+    text-align: center;
+    font-size: 18px;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+    padding: 10px;  
+    margin: 20px;
+  }
   

@@ -18,6 +18,10 @@ export class MenuHomeComponent implements OnInit {
   itemsPerPage: number = 5;  
   items: MenuList[] = [];
   filteredItems: MenuList[] = [];
+  
+  isLoading: boolean = true;  
+  isError: boolean = false;  
+  errorMessage: string = '';  
 
   constructor(private menuService: MenuService, private matDialog: MatDialog) {}
 
@@ -26,16 +30,35 @@ export class MenuHomeComponent implements OnInit {
   }
 
   loadMenuItems(): void {
+    
+    this.isLoading = true;  
+    this.isError = false;
+    this.errorMessage = ''; 
+
     this.menuService.getAllItems().subscribe(
       (menuList: MenuList[]) => {
-        this.items = menuList;
-        this.filteredItems = menuList; // Initialize filtered items
-        this.updatePagination();
+        this.isLoading = false;  
+        if (menuList.length === 0) {
+          this.isError = true;
+          this.errorMessage = 'No data found';
+        } else {
+          this.items = menuList;
+          this.filteredItems = menuList;
+          this.updatePagination();
+        }
       },
       (error) => {
-        console.error('Failed to load menu items', error);
+        this.isLoading = false;  
+        this.isError = true;
+        if (error.status === 404) {
+          this.errorMessage = 'Menu items not found (404)';
+        } else if (error.status === 403) {
+          this.errorMessage = 'Access denied (403)';
+        } else {
+          this.errorMessage = 'Failed to load menu items. Please try again later.';
+        }
       }
-    );   
+    );
   }
 
   setItemsPerPage(value: number): void {

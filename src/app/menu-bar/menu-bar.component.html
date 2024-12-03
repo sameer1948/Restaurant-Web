@@ -29,7 +29,7 @@
 </mat-toolbar>
 
 <mat-drawer-container autosize>
-    <mat-drawer #drawer opened="true" mode="side" position="start">
+    <mat-drawer #drawer opened="false" mode="side" position="start">
         
         <mat-nav-list *ngIf="(userRole$ | async) === 'USER'">
             <!-- User menu items -->

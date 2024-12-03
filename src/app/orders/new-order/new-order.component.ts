@@ -35,18 +35,45 @@ export class NewOrderComponent {
   
   localImagePath: any = 'assets/images/no-image.jpg';
 
+  isLoading: boolean = true;  
+  isError: boolean = false;  
+  errorMessage: string = ''; 
+
   constructor(private matDialog : MatDialog, private menuService : MenuService) {}
 
   ngOnInit() {
     //this.menuItems = this.generateSampleMenuItems(250);
     //this.filteredItems = [...this.menuItems];  // Initialize filteredItems
+
+    this.initialize();
+  }
+
+  initialize() {
+    this.isLoading = true;  
+    this.isError = false;
+    this.errorMessage = ''; 
+
     this.menuService.getAllItems().subscribe(
       (menuList: MenuList[]) => {
-        this.menuItems = menuList;
-        this.filteredItems = [...this.menuItems];  // Initialize filteredItems
+        this.isLoading = false;  
+        if (menuList.length === 0) {
+          this.isError = true;
+          this.errorMessage = 'No data found';
+        } else {
+          this.menuItems = menuList;
+          this.filteredItems = [...this.menuItems];  // Initialize filteredItems
+        }
       },
       (error) => {
-        console.log(error);
+        this.isLoading = false;  
+        this.isError = true;
+        if (error.status === 404) {
+          this.errorMessage = 'Menu items not found (404)';
+        } else if (error.status === 403) {
+          this.errorMessage = 'Access denied (403)';
+        } else {
+          this.errorMessage = 'Failed to load menu items. Please try again later.';
+        }
       }
     );
   }

@@ -1,27 +1,109 @@
+/* General styles for the dialog */
+mat-dialog-content {
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Dialog title styles (h2) */
+h2[mat-dialog-title] {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 0 16px 0;
+    color: #333;
+    padding-right: 40px; 
+}
+
+/* Close button styles */
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: absolute;
+    right: 10px; 
+    top: 50%;
+    transform: translateY(-50%); 
+}
+
+.close-button:hover {
+    color: #f44336; 
+}
+
+/* Message box styles */
 .message {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 90%;
-    height: auto;
-    padding: 8px;
+    padding: 12px 16px;
+    background-color: #e8f5e9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 85%;
 }
 
 .message mat-icon {
-    margin-right: 8px;
-    vertical-align: middle;
-    color: rgb(26, 226, 19);
+    font-size: 32px; 
+    margin-right: 12px;
+    padding: 20px 20px;
+    color: #4caf50; 
 }
 
+.message h2 {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0;
+    flex: 1;
+}
+
+/* Action buttons */
 .actions {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100%;
+    gap: 16px;
     padding: 16px;
 }
 
-
 .actions button {
-    margin: 0 8px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.actions button:hover {
+    transform: translateY(-2px);
+}
+
+.actions button:focus {
+    outline: none;
+}
+
+.actions button.mat-raised-button {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Styles for primary button (success) */
+.actions button[color="primary"] {
+    background-color: #4caf50;
+    color: white;
+}
+
+.actions button[color="primary"]:hover {
+    background-color: #45a049;
+}
+
+/* Styles for warn button (update) */
+.actions button[color="warn"] {
+    background-color: #f44336;
+    color: white;
+}
+
+.actions button[color="warn"]:hover {
+    background-color: #e53935;
 }

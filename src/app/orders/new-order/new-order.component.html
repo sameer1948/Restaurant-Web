@@ -46,6 +46,16 @@
   
       <div class="row">
         <div [ngClass]="{'menu-column': true, 'full-width': !itemsSelected, 'partial-width': itemsSelected}">
+
+          <div *ngIf="isLoading" class="loading-container">
+            <mat-spinner></mat-spinner>
+            <p>Loading menu items...</p>
+          </div>
+      
+          <!-- Show Error Message if there's an error -->
+          <div *ngIf="errorMessage" class="error-message">
+            <p>{{ errorMessage }}</p>
+          </div>
   
           <mat-grid-list cols="3" rowHeight="350px" gutterSize="16px">
   

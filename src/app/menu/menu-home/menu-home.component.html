@@ -99,6 +99,7 @@
         </div>
 
         <div class="item-list-container">
+             
             <h2>Item List (Total: {{ filteredItems.length }})</h2>
             <ul>
                 <li class="headings">
@@ -109,6 +110,12 @@
                     <span class="item-path"><strong>Path</strong></span>
                     <span class="item-name"><strong>Actions</strong></span>
                 </li>
+
+                <!-- Loading Spinner - Show when isLoading is true -->
+                <div *ngIf="isLoading" class="loading-container">
+                    <mat-spinner></mat-spinner>
+                    <p>Loading menu items...</p>
+                </div>
 
                 <li *ngFor="let item of getPaginatedItems(); let i = index">
                     <mat-card class="item-card">
@@ -129,6 +136,10 @@
                         </div>
                     </mat-card>
                 </li>
+                 <!-- Show Error Message if there's an error -->
+                <div *ngIf="isError" class="error-message">
+                    <p>{{ errorMessage }}</p>
+                </div>
             </ul>           
         </div>
     </mat-card-content>
