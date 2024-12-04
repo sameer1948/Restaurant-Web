@@ -195,16 +195,11 @@ export class NewOrderComponent {
 
   // Open the description dialog for a menu item
   openDesc(menuList: MenuList) {
-    const matDialogConfig = new MatDialogConfig();
-    matDialogConfig.disableClose = true;
+    const matDialogConfig = new MatDialogConfig();    
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = '70%';
     matDialogConfig.data = menuList;
-    this.matDialog.open(MenuDescriptionComponent, matDialogConfig).afterClosed().subscribe(response => {
-      if (response === 'success') {
-        this.addToOrder(menuList.id ?? '');
-      }
-    });
+    this.matDialog.open(MenuDescriptionComponent, matDialogConfig)
   }
 
   // Increase the quantity of an item

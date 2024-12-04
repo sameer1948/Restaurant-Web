@@ -18,8 +18,7 @@ import { TaxFeeComponent } from './tax-fee/tax-fee/tax-fee.component';
 import { NewOrderComponent } from './orders/new-order/new-order.component';
 
 const routes: Routes = [
-  { path : '', component: UnauthorizedComponent },
-  { path : 'home', component: HomeComponent },  
+  { path : '', component: HomeComponent },
   { path : 'new-order', component: NewOrderComponent },  
   { path : 'order', component: OrderHomeComponent },
   { path : 'coupon', component : CouponHomeComponent },

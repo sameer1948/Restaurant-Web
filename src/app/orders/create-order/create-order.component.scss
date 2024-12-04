@@ -1,42 +1,67 @@
 .table-container {
-    max-height: 400px; // Adjust as needed
-    overflow-y: auto;  // Enable scrolling
-  }
-  
-  .summary-grid {
-    margin-top: 20px;  // Keep some space between table and grid
-  }
-  
-  .coupon-section {
-    padding: 10px;  // Adjust as needed for aesthetics
-    transition: background-color 0.3s ease;
-  }
-  
-  .coupon-details {
-    margin-top: 10px; // Provide space for the input and buttons
-  }
-  
-  .summary {
-    text-align: right;
-    padding: 10px; // Ensure this is minimal
-  }
-  
-  .success {
-    background-color: #d4edda; // Light green background for success
-    color: #155724; // Dark green text
-  }
-  
-  .error {
-    background-color: #f8d7da; // Light red background for error
-    color: #721c24; // Dark red text
-  }
-  
-  .coupon-feedback {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
+  max-height: 400px; // Adjust as needed
+  overflow-y: auto; // Enable scrolling
+}
 
-  
+h2[mat-dialog-title] {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0 0 16px 0;
+  color: #333;
+  padding-right: 40px;
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.close-button:hover {
+  color: #f44336;
+}
+
+
+.summary-grid {
+  margin-top: 20px; // Keep some space between table and grid
+}
+
+.coupon-section {
+  padding: 10px; // Adjust as needed for aesthetics
+  transition: background-color 0.3s ease;
+}
+
+.coupon-details {
+  margin-top: 10px; // Provide space for the input and buttons
+}
+
+.summary {
+  text-align: right;
+  padding: 10px; // Ensure this is minimal
+}
+
+.success {
+  background-color: #d4edda; // Light green background for success
+  color: #155724; // Dark green text
+}
+
+.error {
+  background-color: #f8d7da; // Light red background for error
+  color: #721c24; // Dark red text
+}
+
+.coupon-feedback {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

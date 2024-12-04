@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>
   Order Summary
-  <button mat-icon-button (click)="onCancel()" style="float: right;">
-    <mat-icon>close</mat-icon>
+  <button mat-icon-button (click)="onCancel()" class="close-button" aria-label="Close">
+      <mat-icon>close</mat-icon>
   </button>
 </h2>
 
@@ -71,9 +71,9 @@
         <div *ngIf="couponApplied || couponError" class="coupon-feedback">
           <span *ngIf="couponApplied">Coupon applied successfully!</span>
           <span *ngIf="couponError">{{ couponErrorMessage }}</span>
-          <button mat-icon-button (click)="clearCouponFeedback()">
+          <!-- <button mat-icon-button (click)="clearCouponFeedback()">
             <mat-icon>clear</mat-icon>
-          </button>
+          </button> -->
         </div>
       </div>
     </mat-grid-tile>
@@ -99,6 +99,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions style="justify-content: flex-end;">
-  <button mat-button (click)="onCancel()">Cancel</button>
-  <button mat-button (click)="onComplete()">Complete</button>
+  <button mat-raised-button  color="warn" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onComplete()">Complete</button>
 </mat-dialog-actions>

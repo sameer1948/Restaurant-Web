@@ -1,6 +1,9 @@
 <h2 mat-dialog-title>
-    <span>Description</span>    
-</h2>
+    <mat-icon>menu</mat-icon>  Menu Details
+    <button mat-icon-button (click)="onClose()" class="close-button" aria-label="Close">
+        <mat-icon>close</mat-icon>
+    </button>
+  </h2>
 
 <mat-dialog-content class="mat-typography">
     
@@ -17,6 +20,8 @@
             <span class="menu-quantity">Quantity: {{ menu.quantity }}</span>
             <span class="menu-price">Price: {{ menu.price | currency:'INR':'symbol':'1.0-2' }}</span>
         </div>
+        <p class="menu-description">{{ menu.description }}</p>
+        <p class="menu-description">{{ menu.description }}</p>
         <p class="menu-description">{{ menu.description }}</p>
     </div>
     

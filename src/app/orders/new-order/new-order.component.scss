@@ -42,9 +42,9 @@
   .menu-column {
     flex: 1; /* Allow it to grow */
     border: 1px solid #ddd;
-    padding: 16px;  
-    min-height: 600px; /* Set minimum height */
-    max-height: 600px; /* Set maximum height to enable scrolling */
+    //padding: 16px;  
+    min-height: 350px; /* Set minimum height */
+    max-height: 550px; /* Set maximum height to enable scrolling */
     overflow-y: auto; /* Enable vertical scrolling for the menu list */
     background-color: rgba(217, 255, 0, 0.034);
   }
@@ -52,9 +52,9 @@
   .selection-column {
     flex: 0 0 30%; /* Fixed width for selected items */
     border: 1px solid #ddd;
-    padding: 16px;  
-    min-height: 600px; /* Set minimum height */
-    max-height: 600px; /* Set maximum height to enable scrolling */
+    //padding: 16px;  
+    min-height: 350px; /* Set minimum height */
+    max-height: 550px; /* Set maximum height to enable scrolling */
     overflow-y: auto; /* Enable vertical scrolling for the menu list */
     background-color: rgba(0, 247, 255, 0.082);
   }
@@ -65,9 +65,11 @@
   
   .menu-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px;
+    justify-content: space-around;    
+    width: 200px;
+    height: 250px;
+    //padding: 16px;
+    background-color:beige;
     transition: transform 0.5s; 
   }
   
@@ -102,7 +104,7 @@
   .card-action-buttons {
     display: flex;
     align-items: center; /* Align buttons and quantity */
-    gap: 16px; /* Space between buttons and quantity */
+    //gap: 16px; /* Space between buttons and quantity */
   }
   
   .action-buttons {
@@ -115,7 +117,7 @@
   
   .quantity {
     font-weight: bold; /* Optional: make quantity text bold */
-    width: 30px; /* Fixed width for quantity display */
+    width: auto; /* Fixed width for quantity display */
     text-align: center; /* Center the quantity */
   }
   
