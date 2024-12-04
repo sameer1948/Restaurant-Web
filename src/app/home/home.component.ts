@@ -12,11 +12,17 @@ export class HomeComponent {
   link : string = '/new-order';
 
   images = [
-    { src: 'assets/images/web-home-1.jpg', alt: 'Image 1 Description', link: this.link },
-    { src: 'assets/images/web-home-2.jpg', alt: 'Image 2 Description', link: this.link },
-    { src: 'assets/images/web-home-3.jpg', alt: 'Image 3 Description', link: this.link },
-    { src: 'assets/images/web-home-4.jpg', alt: 'Image 4 Description', link: this.link },
-    { src: 'assets/images/web-home-5.jpg', alt: 'Image 5 Description', link: this.link },
+    { src: 'assets/images/web-home-11.jpg', alt: 'Image 1 Description', link: this.link },
+    { src: 'assets/images/web-home-12.jpg', alt: 'Image 2 Description', link: this.link },
+    { src: 'assets/images/web-home-13.jpg', alt: 'Image 3 Description', link: this.link },
+    { src: 'assets/images/web-home-14.jpg', alt: 'Image 4 Description', link: this.link },
+    { src: 'assets/images/web-home-15.jpg', alt: 'Image 5 Description', link: this.link },
+    { src: 'assets/images/web-home-16.jpg', alt: 'Image 6 Description', link: this.link },
+    { src: 'assets/images/web-home-17.jpg', alt: 'Image 7 Description', link: this.link },
+    { src: 'assets/images/web-home-18.jpg', alt: 'Image 8 Description', link: this.link },
+    { src: 'assets/images/web-home-19.jpg', alt: 'Image 9 Description', link: this.link },
+    { src: 'assets/images/web-home-20.jpg', alt: 'Image 10 Description', link: this.link },
+    
   ];
  
      
