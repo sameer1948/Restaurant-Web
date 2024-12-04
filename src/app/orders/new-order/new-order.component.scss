@@ -65,11 +65,11 @@
   
   .menu-item {
     display: flex;
-    justify-content: space-around;    
+    //justify-content: space-around;    
+    padding: 0px;
     width: 200px;
-    height: 250px;
-    //padding: 16px;
-    background-color:beige;
+    height: 275px;
+    //background-color:beige;
     transition: transform 0.5s; 
   }
   

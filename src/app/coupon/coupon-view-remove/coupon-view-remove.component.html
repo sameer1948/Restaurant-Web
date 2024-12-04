@@ -150,10 +150,10 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end"  *ngIf="!isRemove">
-    <button mat-button (click)="onCancel()">Cancel</button>    
+    <button mat-raised-button (click)="onCancel()">Cancel</button>    
 </mat-dialog-actions>
 
 <mat-dialog-actions align="end" *ngIf="isRemove">
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button (click)="onSubmit()">Remove</button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="warn" (click)="onSubmit()">Remove</button>
 </mat-dialog-actions>

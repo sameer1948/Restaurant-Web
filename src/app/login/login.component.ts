@@ -16,11 +16,6 @@ export class LoginComponent {
 
   private readonly ADMIN_ROLE: string = 'ADMIN';
 
-  private readonly USER_HOME: string = '/home';
-  private readonly ADMIN_HOME: string = '/order';
-
-
-
   showPassword: boolean = false; // Manage password visibility
   loginForm: FormGroup;
 
@@ -31,12 +26,12 @@ export class LoginComponent {
     private router: Router, private dialog: MatDialog) {
     
       this.loginForm = this.formBuilder.group({
-      username: ['sameer', [Validators.required, Validators.minLength(6)]],
-      password: ['sameer', [Validators.required, Validators.minLength(6)]],
+      username: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
     if (this._authenticationService.isAuthenticated()) { // checking user is already loggedin  or not ?
-      this.router.navigate([this._authenticationService.redirectUrl || this.USER_HOME]);
+      this.router.navigate([this._authenticationService.redirectUrl || '']);
     }
 
   }
@@ -48,9 +43,7 @@ export class LoginComponent {
 
   protected login() {
     const { username, password } = this.loginForm.value;
-    const loginRequest = { username, key: password };
-
-    console.log(loginRequest);
+    const loginRequest = { username, key: password };    
 
     this._authenticationService.authenticate(loginRequest).subscribe(
       data => {
@@ -59,19 +52,27 @@ export class LoginComponent {
           this.notificationService.successMessage(data.message);
           this.loginForm.reset();
           if (data.role.includes(this.ADMIN_ROLE)) {
-            this.router.navigate([this._authenticationService.redirectUrl || this.ADMIN_HOME]);
+            this.router.navigate([this._authenticationService.redirectUrl || '']);
           } else {
-            this.router.navigate([this._authenticationService.redirectUrl || this.USER_HOME]);
+            this.router.navigate([this._authenticationService.redirectUrl || '']);
           }
         } else if (data.statusCode === 500) {
-          //this.notificationService.errorMessage(data.message);
-          const message = `Error; ${data.message}`
-          this.dialog.open(ErrorDialogComponent, {data: message});
+          const input = {
+            title : `Error `,
+            message : `${data.message}.`,
+            action : 'close'
+          }
+          this.dialog.open(ErrorDialogComponent, {data: input});
         }
 
       }, error => {
         console.log(error)
-        this.notificationService.errorMessage("Something Went Wrong while Login...!");
+        const data = {
+          title : `Error `,
+          message : `Something Went Wrong...! <br>Please try Later`,
+          action : 'close'
+        }
+        this.dialog.open(ErrorDialogComponent, {data: data});
       });
   }
 

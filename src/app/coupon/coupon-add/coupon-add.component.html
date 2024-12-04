@@ -151,6 +151,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button [disabled]="couponForm.invalid" (click)="onSubmit()">Add</button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="couponForm.invalid" (click)="onSubmit()">Add</button>
 </mat-dialog-actions>

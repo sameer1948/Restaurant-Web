@@ -2,3 +2,7 @@ mat-form-field {
   width: 90%; // Full width for inputs
   margin-bottom: 20px; // Increased spacing between fields
 }
+
+mat-dialog-content, mat-dialog-actions {
+  background: linear-gradient(to top right, #e3f2fd, #f5f5f5); // Gradient background
+ }

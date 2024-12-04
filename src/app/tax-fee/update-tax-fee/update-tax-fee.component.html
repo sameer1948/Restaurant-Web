@@ -72,6 +72,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-button (click)="onCancel()">Cancel</button>
-    <button mat-button [disabled]="taxAndDetailsForm.invalid" (click)="onSubmit()">Update</button>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="accent" [disabled]="taxAndDetailsForm.invalid" (click)="onSubmit()">Update</button>
 </mat-dialog-actions>

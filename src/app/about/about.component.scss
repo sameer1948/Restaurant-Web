@@ -1,19 +1,19 @@
 mat-card {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-  }
-  
-  h2 {
-    margin-top: 20px;
-  }
-  
-  mat-form-field {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  button {
-    margin-top: 10px;
-  }
-  
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: linear-gradient(to top right, #e3f2fd, #f5f5f5); // Gradient background
+}
+
+h2 {
+  margin-top: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+button {
+  margin-top: 10px;
+}

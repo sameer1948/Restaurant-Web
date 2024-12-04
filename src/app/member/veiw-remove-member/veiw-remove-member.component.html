@@ -65,12 +65,12 @@
     <mat-card-actions>
       
       <div class="remove" *ngIf="isRemove">
-        <button mat-button color="warn" (click)="remove()">Remove</button>
-        <button mat-button (click)="close()">Close</button>
+        <button mat-raised-button color="warn" (click)="remove()">Remove</button>
+        <button mat-raised-button (click)="close()">Close</button>
       </div>
 
       <div class="open" *ngIf="!isRemove">
-        <button mat-button (click)="close()">Close</button>
+        <button mat-raised-button (click)="close()">Close</button>
       </div>
       
     </mat-card-actions>

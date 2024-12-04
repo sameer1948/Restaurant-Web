@@ -21,7 +21,7 @@ export class ChangePasswordDialogComponent {
     });
   }
 
-  onNoClick(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 

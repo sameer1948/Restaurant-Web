@@ -4,11 +4,12 @@
 
         <form [formGroup]="loginForm" (ngSubmit)="login()">
 
-            <h2>Login</h2>
+            <h2><mat-icon matPrefix>lock_open</mat-icon> Login</h2>
 
             <mat-form-field appearance="fill">
-
-                <mat-label matPrefix><mat-icon>person</mat-icon> Username</mat-label>                
+                
+                <mat-icon matPrefix class="login-icon">person</mat-icon>                
+                <mat-label>Username </mat-label>
                 <input matInput formControlName="username" required />
 
                 <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
@@ -22,17 +23,23 @@
             </mat-form-field>
 
             <mat-form-field appearance="fill">
-                <mat-label matPrefix><mat-icon>key</mat-icon> Password</mat-label>
+                <mat-icon matPrefix class="login-icon">key</mat-icon>
+                <mat-label> Password</mat-label>
+
                 <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" required />
+                
                 <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()">
-                    <mat-icon>{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                    <mat-icon class="login-show-icon">{{ showPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
                 </button>
+
                 <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
                     Password is required.
                 </mat-error>
+
                 <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
                     Minimum length is 6 characters.
                 </mat-error>
+
             </mat-form-field>
             
             <div class="button-container">

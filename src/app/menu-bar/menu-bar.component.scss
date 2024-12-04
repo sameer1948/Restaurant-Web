@@ -9,10 +9,12 @@ mat-toolbar {
 
 mat-drawer-container {
   height: 100%;
+  background: linear-gradient(to top left, #f5f5f5, #e3f2fd); 
 }
 
 mat-drawer {
   width: 250px;
+  background: linear-gradient(to bottom right, #e3f2fd, #f5f5f5); // Gradient background
 }
 
 @media (max-width: 600px) {

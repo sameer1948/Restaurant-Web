@@ -1,8 +1,17 @@
 .login-card {
-  width: 100%; // Make mat-card take full width
+  width: 95%; // Make mat-card take full width
   border-radius: 10px; // Round corners
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); // Enhance shadow
   background: linear-gradient(to bottom right, #f5f5f5, #e3f2fd); // Gradient background
+  margin: 20px;
+}
+
+.login-icon {
+  color: #853de4;
+}
+
+.login-show-icon {
+  color: #67f515;
 }
 
 .login-container {
@@ -10,8 +19,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 85vh; // Center vertically
-  padding: 20px;
+  height: 80vh; // Center vertically  
 
   form {
     width: 100%; // Full width for the form
@@ -46,7 +54,7 @@
       display: flex;
       justify-content: space-between;
       width: 100%;
-
+      
       button {
         width: 48%; // Equal width buttons
       }

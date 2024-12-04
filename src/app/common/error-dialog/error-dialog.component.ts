@@ -11,10 +11,10 @@ export class ErrorDialogComponent {
   title ?: string;
   message ?: string;
 
-  constructor(public dialogRef: MatDialogRef<ErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: string) {
-    console.log(data);
-    this.title = data.split(';')[0];
-    this.message = data.split(';')[1];
+  constructor(public dialogRef: MatDialogRef<ErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+    
+    this.title = data.title;
+    this.message = data.message;
 
   }
 
