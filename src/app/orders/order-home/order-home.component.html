@@ -22,8 +22,13 @@
               <p> <strong> Order Status : </strong> {{order.orderStatus}} </p>
               <p> <strong> Order Date : </strong> {{order.orderDate | date: 'd MMM yyyy, h:mm a' }} </p>             
               <div class="last-five-actions">
-                <button mat-raised-button color="primary"  (click)="viewOrderDialog(order)"> View </button>
-                <button mat-raised-button color="warn" (click)="updateOrderDialog(order)"> Cancel </button>
+                <button color="primary" mat-icon-button matTooltip="View Order" (click)="viewOrderDialog(order)">
+                  <mat-icon>open_in_new</mat-icon>
+                </button>
+
+                <button color="accent" mat-icon-button matTooltip="Cancel Order" (click)="updateOrderDialog(order)">
+                  <mat-icon>cancel</mat-icon>
+                </button>
               </div>
 
             </mat-card-content>
@@ -72,7 +77,7 @@
 
             <mat-table [dataSource]="dataSource" matSort>
 
-              <ng-container matColumnDef="orderId">
+              <ng-container matColumnDef="id">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Order Id </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
               </ng-container>
@@ -93,7 +98,7 @@
                 <mat-cell *matCellDef="let element"> {{element.orderBy}} </mat-cell>
               </ng-container>
 
-              <ng-container matColumnDef="status">
+              <ng-container matColumnDef="orderStatus">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Status </mat-header-cell>
                 <mat-cell *matCellDef="let element"
                   [ngClass]="{'completed-status': element.orderStatus === 'COMPLETED', 'cancel-status': !(element.orderStatus === 'COMPLETED')}">

@@ -1,12 +1,18 @@
-<mat-card class="user-details-container" appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>User Details</mat-card-title>
-      <button mat-icon-button (click)="close()" class="close-button">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-card-header>
-  
+<h2 mat-dialog-title>
+  User Details
+  <button mat-icon-button (click)="close()" class="close-button" aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</h2>
+
+<mat-dialog-content>
+  <mat-card class="user-details-container" appearance="outlined">   
+
     <mat-card-content>
+      
+      <!-- User Details Grid -->
+      <h3>User Details</h3>
+      
       <div class="details-grid">
         <div>
           <strong>Username:</strong>
@@ -40,8 +46,13 @@
           <strong>Security Number:</strong>
           <p>{{ user.customUserDetails.securityNumber || 'N/A' }}</p>
         </div>
+        <div>
+          <strong>Gender:</strong>
+          <p>{{ user.customUserDetails.securityNumber || 'N/A' }} updated Soon</p>
+        </div>
       </div>
-  
+
+      <!-- Account Status -->
       <h3>Account Status</h3>
       <div class="account-status-grid">
         <div>
@@ -57,13 +68,15 @@
           <mat-checkbox [(ngModel)]="user.customUser.enabled">Account Enabled</mat-checkbox>
         </div>
       </div>
-  
-      <h3>Roles</h3>
-      <p *ngFor="let role of getRoles()">{{ role }}</p>
-    </mat-card-content>
-  
-    <mat-card-actions>
+
+      <!-- User Roles -->
+      <h3>Roles</h3>      
+      <mat-chip *ngFor="let role of getRoles()">{{ role }}</mat-chip>
       
+    </mat-card-content>
+
+    <!-- Action Buttons -->
+    <mat-card-actions>
       <div class="remove" *ngIf="isRemove">
         <button mat-raised-button color="warn" (click)="remove()">Remove</button>
         <button mat-raised-button (click)="close()">Close</button>
@@ -72,7 +85,6 @@
       <div class="open" *ngIf="!isRemove">
         <button mat-raised-button (click)="close()">Close</button>
       </div>
-      
     </mat-card-actions>
   </mat-card>
-  
+</mat-dialog-content>

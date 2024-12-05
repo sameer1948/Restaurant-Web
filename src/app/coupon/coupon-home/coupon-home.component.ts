@@ -25,7 +25,7 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
 
   searchQuery: string = '';
 
-  displayedColumns: string[] = ['code', 'description', 'amount', 'percentage', 'minOrderAmount', 'maxDiscountAmount', 'status', 'actions'];
+  displayedColumns: string[] = ['couponName', 'description', 'amount', 'percentage', 'minOrderAmount', 'maxDiscountAmount', 'status', 'actions'];
   dataSource = new MatTableDataSource<Coupon>();
 
   popularCoupons: Coupon[] = [];

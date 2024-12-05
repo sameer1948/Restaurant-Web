@@ -62,7 +62,12 @@ export class LoginComponent {
             message : `${data.message}.`,
             action : 'close'
           }
-          this.dialog.open(ErrorDialogComponent, {data: input});
+          this.dialog.open(ErrorDialogComponent, 
+            {
+              data: input,
+              width: '400px',  
+              maxHeight: '80vh', 
+            });
         }
 
       }, error => {
@@ -72,7 +77,12 @@ export class LoginComponent {
           message : `Something Went Wrong...! <br>Please try Later`,
           action : 'close'
         }
-        this.dialog.open(ErrorDialogComponent, {data: data});
+        this.dialog.open(ErrorDialogComponent, 
+        {
+          data: data,
+          width: '400px',  
+          maxHeight: '80vh', 
+        });
       });
   }
 

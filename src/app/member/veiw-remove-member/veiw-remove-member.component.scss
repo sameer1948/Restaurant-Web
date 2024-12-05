@@ -1,50 +1,105 @@
-.user-details-container {
-    margin: 20px;
-    //padding: 16px;
-    background: linear-gradient(to top right, #e3f2fd, #f5f5f5); // Gradient background
-  
-    mat-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-  
-      .close-button {
-        margin-left: auto;
-      }
+mat-dialog-content,
+mat-dialog-actions {
+  background: linear-gradient(to top right, #e3f2fd, #f5f5f5); /* Gradient background */
+}
+
+mat-dialog-content {
+  margin-top: 1px;   
+}
+
+h2[mat-dialog-title] {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+  padding: 16px;
+  background: linear-gradient(to top right, #e3f2fd, #f5f5f5); /* Gradient background */
+  border-bottom: 2px solid #90c4e9; /* Border to create a visual separation */
+}
+
+.close-button {
+  background-color: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.close-button:hover {
+  color: #f44336;
+}
+
+.user-details-container {  
+  background: linear-gradient(to top right, #e3f2fd, #f5f5f5); // Gradient background
+
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .close-button {
+      margin-left: auto;
     }
-  
-    .details-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 16px;
-  
-      strong {
-        display: block;
-        margin-bottom: 4px;
-      }
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+
+    strong {
+      display: block;
+      margin-bottom: 4px;
     }
-  
-    .account-status-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-bottom: 16px;
-  
-      mat-checkbox {
-        margin-top: 8px;
-      }
+  }
+
+  .account-status-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+
+    mat-checkbox {
+      margin-top: 8px;
     }
-  
-    h3 {
-      margin-top: 16px;
-      margin-bottom: 8px;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center; 
+  }
+
+  mat-card-actions {
+    justify-content: center;
+    margin-top: 16px;
+
+    button {
+      margin: 10px;
     }
-  
-    mat-card-actions {
-      justify-content: center;
-      margin-top: 16px;
-    }
-    
+  }
+
+  mat-chip {
+    font-size: 0.95rem;
+    background-color: #56adeb; 
+    color: #2c3e50; 
+    border-radius: 16px;
+    padding: 8px 16px;
   }
   
+  mat-chip:hover {
+    background-color: #0f84e4;
+    cursor: pointer;
+  }
+
+}

@@ -7,21 +7,20 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./error-dialog.component.scss']
 })
 export class ErrorDialogComponent {
+  
+  title?: string;
+  message?: string;
 
-  title ?: string;
-  message ?: string;
-
-  constructor(public dialogRef: MatDialogRef<ErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
-    
-    this.title = data.title;
-    this.message = data.message;
-
+  constructor(
+    public dialogRef: MatDialogRef<ErrorDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title || 'Error';
+    this.message = data.message || 'An unexpected error occurred.';
   }
 
-  // Close dialog on cancel
-  onClose() {
+  // Close dialog
+  onClose(): void {
     this.dialogRef.close({ status: 'canceled' });
   }
-
-
 }

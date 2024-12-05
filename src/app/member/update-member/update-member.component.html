@@ -1,7 +1,7 @@
-<h2 mat-dialog-title class="dialog-title">
+<h2 mat-dialog-title>
   Update User Information
   <button mat-icon-button (click)="closeDialog()" class="close-button" aria-label="Close">
-    <mat-icon>close</mat-icon>
+      <mat-icon>close</mat-icon>
   </button>
 </h2>
 
@@ -42,6 +42,27 @@
           </mat-error>
         </mat-form-field>
       </mat-grid-tile>
+
+      <mat-grid-tile>
+
+        <div class="gender-icons">
+            <mat-label>Male</mat-label>
+            <mat-icon class="gender-icon" [ngClass]="{'selected': userForm.get('gender')?.value === 'male'}"
+                (click)="onGenderSelect('male')">
+                man
+            </mat-icon>
+
+            <mat-label>Female</mat-label>
+            <mat-icon class="gender-icon" [ngClass]="{'selected': userForm.get('gender')?.value === 'female'}"
+                (click)="onGenderSelect('female')">
+                woman
+            </mat-icon>
+        </div>
+
+        <mat-error *ngIf="userForm.get('gender')?.hasError('required') && userForm.get('gender')?.touched">
+            Gender is required.
+        </mat-error>
+    </mat-grid-tile>
 
       <mat-grid-tile>
         <mat-form-field appearance="fill">
@@ -164,7 +185,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <mat-checkbox formControlName="enabled">Account Enabled</mat-checkbox>
+        <mat-checkbox formControlName="enabled">Account Enabled &nbsp;</mat-checkbox>
       </mat-grid-tile>
 
       <mat-grid-tile colspan="2">

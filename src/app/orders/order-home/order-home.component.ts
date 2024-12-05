@@ -18,7 +18,7 @@ export class OrderHomeComponent implements OnInit , AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  readonly displayedColumns: string[] = ['orderId', 'orderDate', 'totalPrice', 'orderBy', 'status', 'actions'];
+  readonly displayedColumns: string[] = ['id', 'orderDate', 'totalPrice', 'orderBy', 'orderStatus', 'actions'];
 
   readonly pageSize : number = 5;
   readonly pageSizes : number[] = [5, 10, 20, 25, 50];

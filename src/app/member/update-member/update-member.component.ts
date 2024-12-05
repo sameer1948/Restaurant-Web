@@ -48,6 +48,7 @@ export class UpdateMemberComponent {
         firstName : [data.customUserDetails.firstName, Validators.required],
         middleName : [data.customUserDetails.middleName],
         lastName : [data.customUserDetails.lastName, Validators.required],
+        gender : ['male', Validators.required], // Need Adde the Gender
         email : [data.customUserDetails.email, [Validators.required, Validators.email]],
         phone : [data.customUserDetails.phone, [Validators.required, Validators.maxLength(10)]],
         address : [data.customUserDetails.address, [Validators.required]],
@@ -73,6 +74,10 @@ export class UpdateMemberComponent {
 
   public updateSelectedRoles(selectedRoles: string[]) : void {
     this.userForm.patchValue({ roles: selectedRoles });
+  }
+
+  onGenderSelect(genderValue: string): void {
+    this.userForm.get('gender')?.setValue(genderValue);
   }
 
   public updateUser() : void{

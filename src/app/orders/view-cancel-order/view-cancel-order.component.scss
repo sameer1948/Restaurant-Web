@@ -3,14 +3,44 @@
 .tax-details-section,
 .coupon-details-section {
     margin: 20px;
-
+    background: linear-gradient(to top right, #e3f2fd, #f5f5f5);
+    border: 2px solid #90c4e9;
 }
 
-div[mat-dialog-content]{
+h2[mat-dialog-title] {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+    padding: 16px;
+    background: linear-gradient(to top right, #e3f2fd, #f5f5f5);
+    border-bottom: 2px solid #90c4e9;
+}
+
+.close-button {
+    background-color: transparent;
+    border: none;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: absolute;
+    right: 1px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.close-button:hover {
+    color: #f44336;
+}
+
+div[mat-dialog-content] {
     background: linear-gradient(to bottom left, #e3f2fd, #f5f5f5); // Gradient background
 }
 
-div[mat-dialog-actions]{
+div[mat-dialog-actions] {
     background: linear-gradient(to bottom left, #e3f2fd, #f5f5f5); // Gradient background
 }
 
@@ -43,7 +73,7 @@ mat-form-field {
 }
 
 .coupon-card {
-    display: flex;    
+    display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 16px;

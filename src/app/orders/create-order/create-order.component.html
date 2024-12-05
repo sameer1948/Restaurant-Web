@@ -1,9 +1,10 @@
 <h2 mat-dialog-title>
-  Order Summary
+  Order Deatils
   <button mat-icon-button (click)="onCancel()" class="close-button" aria-label="Close">
       <mat-icon>close</mat-icon>
   </button>
 </h2>
+<!-- background: linear-gradient(to top right, #90c4e9, #f5f5f5); // Gradient Header background -->
 
 <mat-dialog-content>
 
@@ -56,46 +57,62 @@
     </table>
   </div>
 
-  <mat-grid-list cols="2" rowHeight="180px" class="summary-grid">
+  <mat-grid-list cols="2" rowHeight="280px" class="summary-grid">
     
     <mat-grid-tile>
       <div class="coupon-section" [ngClass]="{'success': couponApplied, 'error': couponError}">
-        <button mat-button (click)="toggleCouponSection()">
+        <button mat-button (click)="toggleCouponSection()" class="toggle-coupon-btn">
           {{ couponSectionVisible ? 'Hide Discount Coupon' : 'Have a Discount Coupon?' }}
         </button>
+      
         <div *ngIf="couponSectionVisible" class="coupon-details">
-          <input [(ngModel)]="couponCode" placeholder="Enter Coupon Code" />
-          <button mat-button *ngIf="!couponApplied" (click)="applyCoupon()">Apply</button>
-          <button mat-button *ngIf="couponApplied" (click)="removeCoupon()">Remove Coupon</button>
+          <input [(ngModel)]="couponCode" placeholder="Enter Coupon Code" class="coupon-input" />
+          <button mat-button *ngIf="!couponApplied" (click)="applyCoupon()" class="apply-btn">Apply</button>
+          <button mat-button *ngIf="couponApplied" (click)="removeCoupon()" class="remove-btn">Remove Coupon</button>
         </div>
+      
         <div *ngIf="couponApplied || couponError" class="coupon-feedback">
-          <span *ngIf="couponApplied">Coupon applied successfully!</span>
-          <span *ngIf="couponError">{{ couponErrorMessage }}</span>
-          <!-- <button mat-icon-button (click)="clearCouponFeedback()">
+          <span *ngIf="couponApplied" class="feedback-message success-feedback">
+            Coupon applied successfully!
+          </span>
+          <span *ngIf="couponError" class="feedback-message error-feedback">
+            {{ couponErrorMessage }}
+          </span>
+          <!-- <button mat-icon-button (click)="clearCouponFeedback()" class="clear-feedback-btn">
             <mat-icon>clear</mat-icon>
           </button> -->
         </div>
       </div>
+      
     </mat-grid-tile>
 
     <mat-grid-tile>
 
       <div class="summary">
-
-        <p>Subtotal: {{ calculateTotal() |  currency:'INR':'symbol':'1.0-2' }}</p>
-
-        <div *ngFor="let tax of taxes">
-          <p>{{ tax.taxType }}: {{ (calculateTotal() * (tax.value / 100)) |  currency:'INR':'symbol':'1.0-2' }}</p>
+        <div class="summary-item">
+          <span class="summary-label">Subtotal:</span>
+          <span class="summary-value">{{ calculateTotal() | currency:'INR':'symbol':'1.0-2' }}</span>
         </div>
-
-        <p>Discount: {{ discount |  currency:'INR':'symbol':'1.0-2' }}</p>
-
-        <h3>Grand Total: {{ grandTotal |  currency:'INR':'symbol':'1.0-2' }}</h3>
-
-      </div>
+      
+        <div *ngFor="let tax of taxes" class="summary-item">
+          <span class="summary-label">{{ tax.taxType }}:</span>
+          <span class="summary-value">{{ (calculateTotal() * (tax.value / 100)) | currency:'INR':'symbol':'1.0-2' }}</span>
+        </div>
+      
+        <div class="summary-item">
+          <span class="summary-label">Discount:</span>
+          <span class="summary-value">{{ discount | currency:'INR':'symbol':'1.0-2' }}</span>
+        </div>
+      
+        <div class="summary-item grand-total">
+          <span class="summary-label">Grand Total:</span>
+          <span class="summary-value grand-total-value">{{ grandTotal | currency:'INR':'symbol':'1.0-2' }}</span>
+        </div>
+      </div>      
 
     </mat-grid-tile>
   </mat-grid-list>
+  
 </mat-dialog-content>
 
 <mat-dialog-actions style="justify-content: flex-end;">

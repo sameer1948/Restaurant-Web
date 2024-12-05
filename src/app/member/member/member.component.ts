@@ -53,6 +53,10 @@ export class MemberComponent implements OnInit, AfterViewInit {
     });
   }
 
+  isAdmin(user: any): boolean {
+    console.log(user.customUser.roles)
+    return user.customUser.roles.includes('admin');
+  }
 
   applyFilter() {
     const filterValue = this.searchTerm.trim().toLowerCase();
@@ -96,7 +100,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "60%";
+    matDialogConfig.width = "70%";
     matDialogConfig.data = user;
     this.matDialog.open(UpdateMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {

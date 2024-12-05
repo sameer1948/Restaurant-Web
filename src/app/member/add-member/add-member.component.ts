@@ -14,7 +14,6 @@ import { UserService } from '../../services/user.service';
 export class AddMemberComponent {
   
   userForm: FormGroup;
-
   user: User = {
     username : '',
     password : '',
@@ -50,6 +49,7 @@ export class AddMemberComponent {
         firstName : ['', Validators.required],
         middleName : [''],
         lastName : ['', Validators.required],
+        gender : ['', Validators.required],
         email : ['', [Validators.required, Validators.email]],
         phone : ['', [Validators.required, Validators.maxLength(10)]],
         address : ['', [Validators.required]],
@@ -83,6 +83,10 @@ export class AddMemberComponent {
 
   public updateSelectedRoles(selectedRoles: string[]) : void {
     this.userForm.patchValue({ roles: selectedRoles });
+  }
+
+  onGenderSelect(genderValue: string): void {
+    this.userForm.get('gender')?.setValue(genderValue);
   }
 
   public createUser() : void{

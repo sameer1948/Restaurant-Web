@@ -1,20 +1,40 @@
-.dialog-title {
-    background-color: #ca5323cc;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
+mat-dialog-content,
+mat-dialog-actions {
+  background: linear-gradient(to top right, #e3f2fd, #f5f5f5); /* Gradient background */
 }
 
-mat-dialog-content, mat-dialog-actions {
-    background: linear-gradient(to top left, #e3f2fd, #f5f5f5); // Gradient background
+mat-dialog-content {
+  margin-top: 1px;   
+}
+
+h2[mat-dialog-title] {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+  padding: 16px;
+  background: linear-gradient(to top right, #e3f2fd, #f5f5f5); /* Gradient background */
+  border-bottom: 2px solid #90c4e9; /* Border to create a visual separation */
 }
 
 .close-button {
-    color: red;
+  background-color: transparent;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  position: absolute;
+  right: 1px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
+.close-button:hover {
+  color: #f44336;
+}
 
 h3 {
     font-size: 20px;

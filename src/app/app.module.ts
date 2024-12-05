@@ -14,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatIcon } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
@@ -131,6 +132,7 @@ import { SuccessDialogComponent } from './common/success-dialog/success-dialog.c
         MatInputModule,
         MatPaginatorModule,
         MatProgressSpinnerModule,
+        MatRadioModule,
         MatSelectModule,
         MatSnackBarModule,        
         MatSliderModule,
