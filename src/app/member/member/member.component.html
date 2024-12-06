@@ -24,39 +24,61 @@
     <table mat-table [dataSource]="dataSource" matSort>
 
       <ng-container matColumnDef="sno">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No </th>
-        <td mat-cell *matCellDef="let element; let i = index"> {{i + 1}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> S. No </th>
+        <td mat-cell *matCellDef="let element; let i = index"> <strong>{{i + 1}}.</strong></td>
       </ng-container>
 
       <ng-container matColumnDef="username">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
-        <td mat-cell *matCellDef="let element"> {{element.customUser.username}} </td>
+        <td mat-cell *matCellDef="let element"> <strong>{{element.customUser.username}}</strong> </td>
       </ng-container>
-
+      
       <ng-container matColumnDef="roles">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Roles </th>
-        <td mat-cell *matCellDef="let element"> {{element.customUser.roles}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span *ngFor="let role of element.customUser.roles.split(',')" [ngClass]="getRoleClass(role)">
+            <strong>{{ role }} , </strong>
+          </span>
+        </td>
       </ng-container>
+      
+      
 
       <ng-container matColumnDef="accountNonExpired">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Account Expired </th>
-        <td mat-cell *matCellDef="let element"> {{ element.customUser.accountNonExpired ? 'Active' : 'Expired' }} </td>
+        <td mat-cell *matCellDef="let element"> 
+          <span [ngClass]="{'active': element.customUser.accountNonExpired, 'expired': !element.customUser.accountNonExpired}">
+            <strong>{{ element.customUser.accountNonExpired ? 'Active' : 'Expired' }}</strong>
+          </span>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="accountNonLocked">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Account Locked </th>
-        <td mat-cell *matCellDef="let element"> {{ element.customUser.accountNonLocked ? 'Active' : 'Locked' }} </td>
+        <td mat-cell *matCellDef="let element"> 
+          <span [ngClass]="{'active': element.customUser.accountNonLocked, 'expired': !element.customUser.accountNonLocked}">
+          <strong>{{ element.customUser.accountNonLocked ? 'Active' : 'Locked' }}</strong>
+          </span>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="credentialsNonExpired">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Credentials Expired </th>
-        <td mat-cell *matCellDef="let element"> {{ element.customUser.credentialsNonExpired ? 'Active' : 'Expired' }}
+        <td mat-cell *matCellDef="let element">
+          <span [ngClass]="{'active': element.customUser.credentialsNonExpired, 'expired': !element.customUser.credentialsNonExpired}">
+          <strong>{{ element.customUser.credentialsNonExpired ? 'Active' : 'Expired' }}</strong>
+          </span>
         </td>
       </ng-container>
+      
 
       <ng-container matColumnDef="enabled">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Account Enabled </th>
-        <td mat-cell *matCellDef="let element"> {{element.customUser.enabled ? 'Enabled' : 'Disabled'}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span [ngClass]="{'active': element.customUser.enabled, 'expired': !element.customUser.enabled}">
+          <strong>{{ element.customUser.enabled ? 'Enabled' : 'Disabled' }}</strong>
+          </span>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -74,11 +96,9 @@
         </td>
       </ng-container>
 
-      <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
-
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'admin-row': isAdmin(row)}"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
     </table>
 
     <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 30, 40, 50]"></mat-paginator>

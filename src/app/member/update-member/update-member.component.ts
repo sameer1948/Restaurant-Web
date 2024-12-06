@@ -19,7 +19,7 @@ export class UpdateMemberComponent {
   userForm: FormGroup;
   showPassword: boolean = false;
   availableRoles : string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
-  availableGender: string[] = ['Male', 'Female']; // remove after clean up
+  availableGender: string[] = ['Male', 'Female']; 
 
   user: User = {
     username : '',
@@ -36,6 +36,8 @@ export class UpdateMemberComponent {
     firstName : '',
     middleName : '',
     lastName : '',
+    gender : '',
+    age : 20,
     email : '',
     phone : '',
     address : '',
@@ -51,7 +53,8 @@ export class UpdateMemberComponent {
         firstName: [data.customUserDetails.firstName, Validators.required],
         middleName: [data.customUserDetails.middleName],
         lastName: [data.customUserDetails.lastName, Validators.required],
-        gender: ['male', Validators.required], // Need Adde the Gender
+        gender: [data.customUserDetails.gender, Validators.required], 
+        age : [data.customUserDetails.age, [Validators.required, Validators.min(20), Validators.max(50)]],
         email: [data.customUserDetails.email, [Validators.required, Validators.email]],
         phone: [data.customUserDetails.phone, [Validators.required, Validators.maxLength(10)]],
         address: [data.customUserDetails.address, [Validators.required]],
@@ -59,13 +62,13 @@ export class UpdateMemberComponent {
 
         username: [{ value: data.customUser.username, disabled: false }, [Validators.required, Validators.minLength(6)]],
         password: [this.decryptPassword(data.customUser.password), [Validators.required, Validators.minLength(6)]],
-        roles: [[data.customUser.roles], Validators.required],
+        roles: [data.customUser.roles.split(','), Validators.required],
         accountNonExpired: [data.customUser.accountNonExpired],
         accountNonLocked: [data.customUser.accountNonLocked],
         credentialsNonExpired: [data.customUser.credentialsNonExpired],
         enabled: [data.customUser.enabled]
       }
-    );
+    );   
 
   }
 
@@ -101,6 +104,8 @@ export class UpdateMemberComponent {
           firstName: this.userForm.value.firstName,
           middleName: this.userForm.value.middleName,
           lastName: this.userForm.value.lastName,
+          gender:this.userForm.value.gender,
+          age:this.userForm.value.age,
           email: this.userForm.value.email,
           phone: this.userForm.value.phone,
           address: this.userForm.value.address,

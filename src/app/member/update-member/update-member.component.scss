@@ -76,6 +76,10 @@ mat-form-field {
   cursor: pointer;
 }
 
-.gender-icon.selected {
-  color: #1976d2; /* Color for selected gender (blue for example) */
+.gender-icon.selectedMale {
+  color: #1976d2; /* Blue for Male */
+}
+
+.gender-icon.selectedFemale {
+  color: #e91e63; /* Pink for Female */
 }

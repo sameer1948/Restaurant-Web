@@ -7,7 +7,6 @@ import { AddTaxFeeComponent } from '../add-tax-fee/add-tax-fee.component';
 import { VeiwRemoveTaxFeeComponent } from '../veiw-remove-tax-fee/veiw-remove-tax-fee.component';
 import { UpdateTaxFeeComponent } from '../update-tax-fee/update-tax-fee.component';
 import { TaxService } from '../../services/tax.service';
-import { Tax } from '../../model/Tax';
 import { TaxAndDetails } from '../../model/TaxAndDetails';
 import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
 
@@ -42,15 +41,57 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
   }
 
   ngOnInit(): void {        
+    this.initialize();
+  }
+
+  
+  initialize() {
     this.taxService.getTaxes().subscribe(
-      (response : TaxAndDetails[]) => {
+      (response: TaxAndDetails[]) => {
         this.dataSource.data = response;
-        //console.log(response);
-      }, (error) => {
-        console.log(error);
+  
+        // Explicitly define sorting data accessor to handle all cases.
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          // Return proper values based on the property
+          switch (property) {
+            case 'taxId':
+              // Ensure taxId is a number or string, or return a fallback (0 or '')
+              return item.tax?.taxId ?? 0;
+            case 'taxType':
+              // Ensure taxType is a string or return fallback empty string
+              return item.tax?.taxType ?? '';
+            case 'value':
+              // Ensure value is a number or return fallback (0)
+              return item.tax?.value ?? 0;
+            case 'status':
+              // Ensure status is a number (0 or 1), handle undefined or boolean
+              return item.tax?.status ? 1 : 0;
+            default:
+              // Return empty string as a fallback for unknown properties
+              return '';
+          }
+        };
+
+        this.dataSource.filterPredicate = (data: TaxAndDetails, filter: string) => {
+          const query = filter.trim().toLowerCase();
+          const tax = data.tax;
+          
+          // Check for matches in the properties you want to filter by
+          const matchesTaxId = tax.taxId?.toString().toLowerCase().includes(query);
+          const matchesTaxType = tax.taxType?.toLowerCase().includes(query);
+          const matchesValue = tax.value?.toString().toLowerCase().includes(query);
+          const matchesStatus = tax.status?.toString().toLowerCase().includes(query);
+
+          // Return true if any match is found
+          return matchesTaxId || matchesTaxType || matchesValue || matchesStatus;
+        };
+      },
+      (error) => {
+        console.error('Error fetching taxes:', error);
       }
     );
   }
+  
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -58,9 +99,10 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
   }
 
   applyFilter() {
-    const query = this.searchQuery.toLowerCase();
-    this.dataSource.filter = query.trim().toLowerCase();
+    // Set the filter value, which triggers the custom filterPredicate
+    this.dataSource.filter = this.searchQuery;  // The filter is now a string
   }
+  
 
   clearSearch() {
     this.searchQuery = ''; 

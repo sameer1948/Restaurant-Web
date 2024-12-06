@@ -29,6 +29,8 @@ export class AddMemberComponent {
     firstName : '',
     middleName : '',
     lastName : '',
+    gender : '',
+    age : 20,
     email : '',
     phone : '',
     address : '',
@@ -36,10 +38,10 @@ export class AddMemberComponent {
   };
 
   availableRoles : string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
-  availableGender: string[] = ['Male', 'Female']; // remove after clean up
+  availableGender: string[] = ['Male', 'Female']; 
   showPassword: boolean = false;
-  generatedUsername: string = '';  // remove after clean up
-  generatedPassword: string = ''; // remove after clean up
+  generatedUsername: string = '';  
+  generatedPassword: string = ''; 
 
   constructor(private matDialogRef: MatDialogRef<AddMemberComponent>,
     private formBuilder: FormBuilder, private userService : UserService) {
@@ -50,6 +52,7 @@ export class AddMemberComponent {
         middleName : [''],
         lastName : ['', Validators.required],
         gender : ['', Validators.required],
+        age : ['', [Validators.required, Validators.min(20), Validators.max(50)]],
         email : ['', [Validators.required, Validators.email]],
         phone : ['', [Validators.required, Validators.maxLength(10)]],
         address : ['', [Validators.required]],
@@ -107,6 +110,8 @@ export class AddMemberComponent {
           firstName: this.userForm.value.firstName,
           middleName: this.userForm.value.middleName,
           lastName: this.userForm.value.lastName,
+          gender:this.userForm.value.gender,
+          age:this.userForm.value.age,
           email: this.userForm.value.email,
           phone: this.userForm.value.phone,
           address: this.userForm.value.address,

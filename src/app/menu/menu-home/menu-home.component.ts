@@ -5,6 +5,7 @@ import { MenuList } from '../../model/MenuList';
 import { AddMenuComponent } from '../add-menu/add-menu.component';
 import { ModifyMenuComponent } from '../modify-menu/modify-menu.component';
 import { RemoveMenuComponent } from '../remove-menu/remove-menu.component';
+import { MenuDescriptionComponent } from '../menu-description/menu-description.component';
 
 @Component({
   selector: 'app-menu-home',
@@ -121,6 +122,15 @@ export class MenuHomeComponent implements OnInit {
         this.loadMenuItems(); // Reload items after addition
       }
     });
+  }
+
+  viewItem(item: MenuList): void {
+    const matDialogConfig = new MatDialogConfig();
+    matDialogConfig.disableClose = true;
+    matDialogConfig.autoFocus = true;
+    matDialogConfig.width = "60%";
+    matDialogConfig.data = item;    
+    this.matDialog.open(MenuDescriptionComponent, matDialogConfig);
   }
 
   editItem(item: MenuList): void {

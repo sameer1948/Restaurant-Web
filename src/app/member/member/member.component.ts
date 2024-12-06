@@ -56,6 +56,20 @@ export class MemberComponent implements OnInit, AfterViewInit {
     return user.customUser.roles.includes('admin');
   }
 
+  getRoleClass(roles: string): string {
+    if (roles.includes('ADMIN')) {
+      return 'admin';
+    } else if (roles.includes('USER')) {
+      return 'user';
+    } else if (roles.includes('MODERATOR')) {
+      return 'moderator';
+    } else if (roles.includes('GUEST')) {
+      return 'guest';
+    }
+    return '';
+  }
+  
+
   applyFilter() {
     const filterValue = this.searchTerm.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: CustomUserDetails, filter: string) => {
@@ -78,7 +92,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     matDialogConfig.width = "70%";    
     matDialogConfig.height = "70%";    
     this.matDialog.open(AddMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
-      if (response === 'success') {
+      if (response == 'success') {
        //console.log(response); // Reload items after addition
        this.initialize();
       }

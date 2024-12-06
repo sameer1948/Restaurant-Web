@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Tax } from '../model/Tax';
 import { Observable } from 'rxjs';
 import { TaxAndDetails } from '../model/TaxAndDetails';
 import { environment } from '../../environments/environment';
