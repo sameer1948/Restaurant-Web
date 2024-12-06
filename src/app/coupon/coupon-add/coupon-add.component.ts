@@ -86,7 +86,7 @@ export class CouponAddComponent {
   
   onSubmit(): void {
     if (this.couponForm.valid) {      
-      console.log(this.couponForm.value);
+      //console.log(this.couponForm.value);
       const couponAndDetails: CouponAndDetails = {
         coupon: {
           couponName: this.couponForm.value.code,
@@ -108,11 +108,11 @@ export class CouponAddComponent {
         }
       };
       
-      console.log(couponAndDetails);
+      //console.log(couponAndDetails);
 
       this.couponService.addCoupon(couponAndDetails).subscribe(
         (response : CouponAndDetails) => {
-          console.log(response);
+          //console.log(response);
           if (response != null) {
             const data = {
               title : 'Added Coupon Successfully',

@@ -124,11 +124,11 @@ export class CouponUpdateComponent {
           }
         };
 
-        console.log(this.couponForm.value);
+        //console.log(this.couponForm.value);
 
       this.couponService.updateCoupon(couponAndDetails).subscribe(
         (response : CouponAndDetails) => {
-          console.log(response);
+          //console.log(response);
           this.clearForm();
           this.dialogRef.close('success');
           const data = {

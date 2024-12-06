@@ -1,9 +1,9 @@
 <mat-card class="home-container" appearance="outlined">
   <div class="container">
 
-    <h2><mat-icon>badges</mat-icon>Account Information</h2>
+    <h2 class="section-title"><mat-icon>badge</mat-icon> Account Information</h2>
 
-    <mat-card>
+    <mat-card class="account-info-card">
       <mat-card-content>
         <div class="account-info-row">
           <div class="account-info-item">
@@ -18,15 +18,15 @@
             <p><strong>Roles:</strong> {{ user.roles }}</p>
           </div>
           <div class="account-info-item">
-            <p><strong>Account Status:</strong> {{ user.isEnabled ? 'Enabled' : 'Disabled' }}</p>
+            <p><strong>Account Status:</strong> {{ user.enabled ? 'Enabled' : 'Disabled' }}</p>
           </div>
         </div>
         <button mat-raised-button color="warn" (click)="openChangePasswordDialog()">Change Password</button>
       </mat-card-content>
     </mat-card>
 
-    <h2>Personal Information</h2>
-    <mat-card>
+    <h2 class="section-title">Personal Information</h2>
+    <mat-card class="personal-info-card">
       <form [formGroup]="personalInfoForm" (ngSubmit)="save()">
         <mat-card-content>
           <div class="form-row">
@@ -48,24 +48,35 @@
             </mat-form-field>
 
             <mat-form-field appearance="fill" class="form-field">
-              <mat-label>Email</mat-label>
-              <input matInput formControlName="email">
+              <mat-label>Gender</mat-label>
+              <!-- <mat-select formControlName="gender" >
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>                
+              </mat-select> -->
+              <mat-select (selectionChange)="updateGender($event.value)" formControlName="gender">
+                <mat-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
 
           <div class="form-row">
+            <mat-form-field appearance="fill" class="form-field">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email">
+            </mat-form-field>
+
             <mat-form-field appearance="fill" class="form-field">
               <mat-label>Phone</mat-label>
               <input matInput formControlName="phone">
             </mat-form-field>
+          </div>
 
+          <div class="form-row">
             <mat-form-field appearance="fill" class="form-field">
               <mat-label>Address</mat-label>
               <input matInput formControlName="address">
             </mat-form-field>
-          </div>
 
-          <div class="form-row">
             <mat-form-field appearance="fill" class="form-field">
               <mat-label>Security Number</mat-label>
               <input matInput formControlName="securityNumber">

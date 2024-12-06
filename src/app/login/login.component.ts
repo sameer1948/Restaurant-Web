@@ -47,7 +47,7 @@ export class LoginComponent {
 
     this._authenticationService.authenticate(loginRequest).subscribe(
       data => {
-        console.log(data);
+        //console.log(data);
         if (data.statusCode === 202) {
           this.notificationService.successMessage(data.message);
           this.loginForm.reset();

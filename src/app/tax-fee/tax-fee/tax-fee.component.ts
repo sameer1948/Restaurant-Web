@@ -38,14 +38,14 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
 
     const encryptedUserName = sessionStorage.getItem(decryptService.encrypt(this.USER_NAME));
     this.userName = decryptService.decrypt(encryptedUserName ?? '') ?? 'N/A';
-    console.log(this.userName)
+    //console.log(this.userName)
   }
 
   ngOnInit(): void {        
     this.taxService.getTaxes().subscribe(
       (response : TaxAndDetails[]) => {
         this.dataSource.data = response;
-        console.log(response);
+        //console.log(response);
       }, (error) => {
         console.log(error);
       }
@@ -75,7 +75,7 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
     matDialogConfig.width = "40%";
     this.matDialog.open(AddTaxFeeComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
-        console.log(response)
+        //console.log(response)
       }
     });
   }

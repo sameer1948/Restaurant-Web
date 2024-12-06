@@ -64,7 +64,7 @@ export class CreateOrderComponent implements OnInit {
       (response: any[]) => {
         const coupons = response.map(item => item.coupon);  // Extract only the `coupon` part of each object        
         this.applicableCoupons = coupons; //this.filterCoupons(coupons);
-        console.table(this.applicableCoupons);
+        //console.table(this.applicableCoupons);
       },
       (error) => {
         console.log(error);
@@ -152,10 +152,10 @@ export class CreateOrderComponent implements OnInit {
       } else {
         // Apply coupon
         if (coupon.isAmount) {
-          console.log('coupon.isAmount : ' + coupon.isAmount );
+          //console.log('coupon.isAmount : ' + coupon.isAmount );
           this.discount = coupon.amount ?? 0; // Apply the fixed amount
         } else if (coupon.isPercentage) {
-          console.log('coupon.isPercentage : ' + coupon.isPercentage );
+          //console.log('coupon.isPercentage : ' + coupon.isPercentage );
           this.discount = (this.calculateTotal() * (coupon.percentage ?? 0)) / 100; // Apply the percentage discount
         }
         this.couponApplied = true;
@@ -168,7 +168,7 @@ export class CreateOrderComponent implements OnInit {
       this.discount = 0;
       this.couponApplied = false;
     }
-    console.log('discount : ' + this.discount );
+    //console.log('discount : ' + this.discount );
   }
 
   // Clear coupon error feedback
@@ -201,11 +201,11 @@ export class CreateOrderComponent implements OnInit {
       id: ''
     };
     
-    console.log(order);
-    console.dir(order);
+    // console.log(order);
+    // console.dir(order);
     this.orderService.newOrder(order).subscribe(
       (response) => {
-        console.log('Order placed successfully:', response);
+        //console.log('Order placed successfully:', response);
         // Close the dialog with the generated order object        
         const data = {
           title : 'Order Created successfully',
@@ -213,8 +213,13 @@ export class CreateOrderComponent implements OnInit {
           action : 'success'
         }
 
-        this.dialog.open(SuccessDialogComponent, {data: data});
-        this.dialogRef.close('success');
+        this.dialog.open(SuccessDialogComponent, {data: data})
+        .afterClosed()
+        .subscribe(res => {
+          if (res === 'close') {          
+            this.dialogRef.close('success');
+          }
+        });
       },
       (error) => {
         // Check if the error has a response or status (depends on how your backend sends errors)

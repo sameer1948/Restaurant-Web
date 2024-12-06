@@ -20,6 +20,6 @@ export class SuccessDialogComponent {
 
   // Close dialog on cancel
   onClose() {
-    this.dialogRef.close();
+    this.dialogRef.close('close');
   }
 }

@@ -46,7 +46,7 @@ export class AddTaxFeeComponent {
   onSubmit(): void {
     if (this.taxAndDetailsForm.valid) {
       // Submit the form data to the database
-      console.log(this.taxAndDetailsForm.value);
+      //console.log(this.taxAndDetailsForm.value);
 
       const taxAndDetails : TaxAndDetails = {
         tax: {
@@ -60,10 +60,10 @@ export class AddTaxFeeComponent {
         }
       };
 
-      console.log(taxAndDetails);
+      //console.log(taxAndDetails);
       this.taxService.newTax(taxAndDetails).subscribe(
         (respsone : TaxAndDetails) => {
-          console.log(respsone);
+          //console.log(respsone);
           this.dialogRef.close(this.taxAndDetailsForm.value);
         }, (error) => {
           console.log(error);

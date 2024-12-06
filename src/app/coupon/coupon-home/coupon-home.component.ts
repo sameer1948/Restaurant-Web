@@ -41,7 +41,7 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     this.couponService.getAllCoupons().subscribe(
 
       (response : CouponAndDetails[]) => {
-        console.log(response)
+        //console.log(response)
         response.forEach(couponAndDetails => {    
           coupons.push({
             couponId: couponAndDetails.coupon.couponId,
@@ -62,7 +62,7 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
           });
           
         });  
-        console.log(coupons)      
+        //console.log(coupons)      
         this.dataSource.data = coupons;
         this.popularCoupons = coupons.length > 5 ? coupons.slice(0, 5) : coupons;
         
@@ -103,7 +103,7 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     this.matDialog.open(CouponAddComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
         this.initialize();
-        console.log(response)
+        //console.log(response)
       }
     });
   }
@@ -126,7 +126,7 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     this.matDialog.open(CouponUpdateComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
         this.initialize();
-        console.log(response)
+        //console.log(response)
       }
     });
   }
@@ -139,7 +139,7 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     this.matDialog.open(CouponViewRemoveComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
         this.initialize();
-        console.log(response)
+        //console.log(response)
       }
     });
   }

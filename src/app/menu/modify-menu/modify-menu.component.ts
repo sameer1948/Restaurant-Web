@@ -44,7 +44,7 @@ export class ModifyMenuComponent {
   }
 
   protected onSelect() {
-    console.log( this.selected);
+    //console.log( this.selected);
     this.form.setValue({
       menuItem: {
         id : this.selected.id,
@@ -60,7 +60,7 @@ export class ModifyMenuComponent {
 
 
   updateItem() {
-    console.log(this.form.value);
+    //console.log(this.form.value);
     const menuList = new MenuList();
 
     menuList.item = this.form.value.menuItem?.item;
@@ -71,7 +71,7 @@ export class ModifyMenuComponent {
 
     this.menuService.modifyItemInMenu(menuList).subscribe(
       (data) => {
-        console.log(data);        
+        //console.log(data);        
         this._notificationService.successMessage("Sucess");
         this._matDialogRef.close('sucess');
 

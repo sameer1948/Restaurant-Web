@@ -47,7 +47,7 @@ export class VeiwRemoveTaxFeeComponent {
   onSubmit(): void {
     if (this.taxAndFeeForm.valid) {
       // Submit the form data to the database
-      console.log(this.taxAndFeeForm.value);
+      //console.log(this.taxAndFeeForm.value);
       this.dialogRef.close(this.taxAndFeeForm.value);
     }
   }

@@ -168,8 +168,8 @@ export class NewOrderComponent {
     const totalAmount = orderOutput.reduce((total, order) => total + (order.menuItem?.price ?? 0) * (order?.quantity ?? 0), 0);
     
 
-    console.log('Order submitted:', orderOutput);
-    console.log('Total Amount:', totalAmount);
+    //console.log('Order submitted:', orderOutput);
+    //console.log('Total Amount:', totalAmount);
 
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
@@ -179,9 +179,8 @@ export class NewOrderComponent {
 
     this.matDialog.open(CreateOrderComponent, matDialogConfig)
     .afterClosed()
-    .subscribe(response => {
-      if (response.status === 'success') {
-        console.log(response);
+    .subscribe(response => {      
+      if (response === 'success') {        
         this.clearOrder()
       }
     });

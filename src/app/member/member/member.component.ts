@@ -37,7 +37,6 @@ export class MemberComponent implements OnInit, AfterViewInit {
 
   initialize() {
     this.adminService.getMembers().subscribe((data: CustomUserDetails[]) => {
-      console.table(data);
       this.dataSource.data = data;
       this.dataSource.sortingDataAccessor = (item, property) => {
         switch (property) {
@@ -54,7 +53,6 @@ export class MemberComponent implements OnInit, AfterViewInit {
   }
 
   isAdmin(user: any): boolean {
-    console.log(user.customUser.roles)
     return user.customUser.roles.includes('admin');
   }
 
@@ -81,7 +79,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     matDialogConfig.height = "70%";    
     this.matDialog.open(AddMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
-       console.log(response); // Reload items after addition
+       //console.log(response); // Reload items after addition
        this.initialize();
       }
     });
@@ -104,7 +102,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     matDialogConfig.data = user;
     this.matDialog.open(UpdateMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
-       console.log(response); // Reload items after addition
+       //console.log(response); // Reload items after addition
        this.initialize();
       }
     });
@@ -118,7 +116,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     matDialogConfig.data = {customUserDetails: user, type: 'remove'}
     this.matDialog.open(VeiwRemoveMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
-       console.log(response); // Reload items after addition
+       //console.log(response); // Reload items after addition
        this.initialize();
       }
     });

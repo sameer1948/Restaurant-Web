@@ -51,7 +51,7 @@ export class ViewCancelOrderComponent {
   public cancelOrder() : void {
     this.orderService.cancelOrder(this.order.id, this.order).subscribe(
       (response : Order) => {
-        console.log(response);
+        //console.log(response);
         this.dialogRef.close({ status: 'success' });
       },(error) => {console.log(error)}
     );

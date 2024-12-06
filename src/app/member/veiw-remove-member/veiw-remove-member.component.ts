@@ -26,7 +26,7 @@ export class VeiwRemoveMemberComponent {
   }
 
   remove() {    
-    console.log(this.user)
+    //console.log(this.user)
     this.matDialogRef.close('success')
   }
 }

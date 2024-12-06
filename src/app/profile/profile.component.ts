@@ -1,77 +1,12 @@
-// import { Component, OnInit } from '@angular/core';
-// import { FormGroup, Validators, FormControl } from '@angular/forms';
-
-// @Component({
-//   selector: 'app-profile',
-//   templateUrl: './profile.component.html',
-//   styleUrl: './profile.component.scss'
-// })
-// export class ProfileComponent implements OnInit {
-
-//   userForm: FormGroup;
-
-//   // User object with initial values
-//   user = {
-//     // account Information 
-//     username: "sameer",
-//     password: "sameer",
-//     roles: "ADMIN",
-//     isAccountNonExpired: true,
-//     isAccountNonLocked: true,
-//     isCredentialsNonExpired: true,
-//     isEnabled: true,
-
-//     //personal information 
-//     firstName: "Sameer",
-//     middleName: "",
-//     lastName: "Sheik",
-//     email: "sameer@gmail.com",
-//     phone: "8790761948",
-//     address: "Sample Address",
-//     securityNumber: ""
-//   };
-
-//   constructor() {
-//     // Initialize the form with user values
-//     this.userForm = new FormGroup({
-//       user: new FormGroup({
-
-//         username: new FormControl(this.user.username, Validators.required),
-//         password: new FormControl(this.user.password, Validators.required),
-//         roles: new FormControl(this.user.roles, Validators.required),
-//         isAccountNonExpired: new FormControl(this.user.isAccountNonExpired, Validators.required),
-//         isAccountNonLocked: new FormControl(this.user.isAccountNonLocked, Validators.required),
-//         isCredentialsNonExpired: new FormControl(this.user.isCredentialsNonExpired, Validators.required),
-//         isEnabled: new FormControl(this.user.isEnabled, Validators.required),
-
-//         firstName: new FormControl(this.user.firstName, Validators.required),
-//         middleName: new FormControl(this.user.middleName), // Optional field
-//         lastName: new FormControl(this.user.lastName, Validators.required),
-//         email: new FormControl(this.user.email, [Validators.required, Validators.email]),
-//         phone: new FormControl(this.user.phone, Validators.required),
-//         address: new FormControl(this.user.address, Validators.required),
-//         securityNumber: new FormControl(this.user.securityNumber, Validators.required),
-//       })
-//     });
-//     console.log(this.userForm);
-//   }
-
-//   ngOnInit(): void {
-//     // Any additional initialization can be done here
-//   }
-
-//   onSubmit(): void {
-//     if (this.userForm.valid) {
-//       console.log("Updated User Info: ", this.userForm.value);
-//       // Call a service to update the user info in the database
-//     }
-//   }
-
-// }
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
+import { UserService } from '../services/user.service';
+import { CustomUserDetails } from '../model/CustomUserDetails';
+import { User } from '../model/User';
+import { EncryptDecryptService } from '../services/encrypt-decrypt.service';
+import { ErrorDialogComponent } from '../common/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -79,50 +14,87 @@ import { ChangePasswordDialogComponent } from './change-password-dialog/change-p
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-  user: any = {
-    // account Information 
-    username: "sameer",
-    password: "sameer",
-    roles: "ADMIN",
-    isAccountNonExpired: true,
-    isAccountNonLocked: true,
-    isCredentialsNonExpired: true,
-    isEnabled: true,
-
-    // personal information 
-    firstName: "Sameer",
-    middleName: "",
-    lastName: "Sheik",
-    email: "sameer@gmail.com",
-    phone: "8790761948",
-    address: "Sample Address",
-    securityNumber: ""
-  };
+  
+  private readonly USER_NAME: string = 'USERNAME';
+  userName: any;
 
   personalInfoForm: FormGroup;
+  user: User; 
+  genders : string[] = ['Male', 'Female'];
 
-  constructor(private fb: FormBuilder, public dialog: MatDialog) {
+  constructor(private userService: UserService, 
+    private fb: FormBuilder, 
+    public dialog: MatDialog,
+    private decryptServices: EncryptDecryptService) {
+
+    this.userName = this.decryptServices.decrypt(sessionStorage.getItem(this.decryptServices.encrypt(this.USER_NAME)) ?? '');
+
     this.personalInfoForm = this.fb.group({
-      firstName: [this.user.firstName],
-      middleName: [this.user.middleName],
-      lastName: [this.user.lastName],
-      email: [this.user.email],
-      phone: [this.user.phone],
-      address: [this.user.address],
-      securityNumber: [this.user.securityNumber]
+      firstName: [''],
+      middleName: [''],
+      lastName: [''],
+      gender:[''],
+      email: [''],
+      phone: [''],
+      address: [''],
+      securityNumber: ['']
+    });
+
+    this.user = {
+      username: '',
+      password: '', 
+      roles: '', 
+      accountNonExpired: false,
+      accountNonLocked: false,
+      credentialsNonExpired: false,
+      enabled: false
+    };
+
+    this.userService.getUserByName(this.userName).subscribe(
+      (customUserDetails: CustomUserDetails) => {
+        console.log(customUserDetails);
+        this.user = customUserDetails.customUser;
+    
+      this.personalInfoForm.patchValue({
+        firstName: customUserDetails.customUserDetails.firstName,
+        middleName: customUserDetails.customUserDetails.middleName,
+        lastName: customUserDetails.customUserDetails.lastName,
+        gender:'Male', // need to chnage gender
+        email: customUserDetails.customUserDetails.email,
+        phone: customUserDetails.customUserDetails.phone,
+        address: customUserDetails.customUserDetails.address,
+        securityNumber: customUserDetails.customUserDetails.securityNumber
+      });
+    },
+    (error) => {
+      console.log(error)
+      const data = {
+        title : `Error `,
+        message : `Something Went Wrong...! <br>Please try Later`,
+        action : 'close'
+      }
+      this.dialog.open(ErrorDialogComponent, 
+      {
+        data: data,
+        width: '400px',  
+        maxHeight: '80vh', 
+      });
     });
   }
 
   ngOnInit(): void {}
+
+  public updateGender(gender: string) : void {
+    this.personalInfoForm.patchValue({ gender: gender });
+  }
 
   save() {
     console.log(this.personalInfoForm.value);
   }
 
   openChangePasswordDialog(): void {
-    const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
-      width: '300px',
-      data: { username: this.user.username }
+    const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {      
+      data: { username: this.userName }
     });
 
     dialogRef.afterClosed().subscribe(result => {

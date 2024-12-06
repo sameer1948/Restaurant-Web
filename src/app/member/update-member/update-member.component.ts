@@ -18,33 +18,33 @@ export class UpdateMemberComponent {
 
   userForm: FormGroup;
   showPassword: boolean = false;
-  availableRoles: string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
+  availableRoles : string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
   availableGender: string[] = ['Male', 'Female']; // remove after clean up
 
   user: User = {
-    username: '',
-    password: '',
-    roles: '',
-    accountNonExpired: true,
-    accountNonLocked: true,
-    credentialsNonExpired: true,
-    enabled: true
+    username : '',
+    password : '',
+    roles : '',
+    accountNonExpired : true,
+    accountNonLocked : true,
+    credentialsNonExpired : true,
+    enabled : true
   };
 
   userDetails: UserDetails = {
-    username: '',
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    address: '',
-    securityNumber: ''
+    username : '',
+    firstName : '',
+    middleName : '',
+    lastName : '',
+    email : '',
+    phone : '',
+    address : '',
+    securityNumber : ''
   };
 
-  constructor(private matDialogRef: MatDialogRef<UpdateMemberComponent>,
+  constructor(private matDialogRef :  MatDialogRef<UpdateMemberComponent>,
     @Inject(MAT_DIALOG_DATA) data: CustomUserDetails,
-    private formBuilder: FormBuilder, private userService: UserService) {
+    private formBuilder: FormBuilder, private userService : UserService) {
 
     this.userForm = this.formBuilder.group(
       {
@@ -69,13 +69,13 @@ export class UpdateMemberComponent {
 
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  public generatePassword(): void {
+  public generatePassword() : void {    
     this.userForm.patchValue({ password: Math.random().toString(36).slice(-8) });
   }
 
-  public updateSelectedRoles(selectedRoles: string[]): void {
+  public updateSelectedRoles(selectedRoles: string[]) : void {
     this.userForm.patchValue({ roles: selectedRoles });
   }
 
@@ -83,10 +83,10 @@ export class UpdateMemberComponent {
     this.userForm.get('gender')?.setValue(genderValue);
   }
 
-  public updateUser(): void {
+  public updateUser() : void{
     if (this.userForm.valid) {
-
-      const customUser: CustomUserDetails = {
+      
+      const customUser : CustomUserDetails = {
         customUser: {
           username: this.userForm.value.username,
           password: this.userForm.value.password,
@@ -107,13 +107,13 @@ export class UpdateMemberComponent {
           securityNumber: this.userForm.value.securityNumber,
         }
       };
-      console.log('User customUser:', customUser);
+      //console.log('User customUser:', customUser);
 
       this.userService.updateUser(customUser).subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           this.matDialogRef.close('success');
-        }, (error) => { }
+        }, (error) => {}
       );
     } else {
       this.userForm.markAllAsTouched();

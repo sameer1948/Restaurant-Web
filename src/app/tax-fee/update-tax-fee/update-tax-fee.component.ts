@@ -47,7 +47,7 @@ export class UpdateTaxFeeComponent {
   onSubmit(): void {
     if (this.taxAndDetailsForm.valid) {
       // Submit the form data to the database
-      console.log(this.taxAndDetailsForm.value);
+      //console.log(this.taxAndDetailsForm.value);
       this.dialogRef.close(this.taxAndDetailsForm.value);
     }
   }

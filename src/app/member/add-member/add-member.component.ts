@@ -114,11 +114,11 @@ export class AddMemberComponent {
         }
       };
 
-      console.log('User customUser:', customUser);
+      //console.log('User customUser:', customUser);
 
       this.userService.newUser(customUser).subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           this.matDialogRef.close('success');
         }, (error) => {}
       );

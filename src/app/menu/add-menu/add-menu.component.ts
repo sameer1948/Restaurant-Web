@@ -37,7 +37,7 @@ export class AddMenuComponent {
   }
 
   addItem() : void {
-    console.log(this.form.value);
+    //console.log(this.form.value);
     const menuList = new MenuList();
 
     menuList.item = this.form.value.menuItem?.item;
@@ -48,7 +48,7 @@ export class AddMenuComponent {
 
     this.menuService.addItemToMenu(menuList).subscribe(
       (data) => {
-        console.log(data);        
+        //console.log(data);        
         this._notificationService.successMessage("Sucess");
         this._matDialogRef.close('success');
 

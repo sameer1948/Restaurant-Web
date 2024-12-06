@@ -44,22 +44,6 @@ export class EncryptDecryptService {
      // Return decrypted string or null if decryption fails
      return decryptedText.length > 0 ? decryptedText : null;
    }
-
-
-/*   public encrypt(data: string): string {
-    const iv = CryptoJS.enc.Utf8.parse(this.iv);
-    const encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(this.key), { iv: iv });
-    return encrypted.toString();
-  }
-
-  public decrypt(cipherText: string): string {
-    const iv = CryptoJS.enc.Utf8.parse(this.iv);
-    const decrypted = CryptoJS.AES.decrypt(cipherText, CryptoJS.enc.Utf8.parse(this.key), { iv: iv });
-    const res = decrypted.toString(CryptoJS.enc.Utf8);
-    console.log(" res" + res)
-    return res; 
-  }*/
-
   
 }
 

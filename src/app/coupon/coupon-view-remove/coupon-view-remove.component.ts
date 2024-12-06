@@ -77,7 +77,7 @@ export class CouponViewRemoveComponent {
   onSubmit(): void {
     if (this.couponForm.valid) {
       // Submit the form data to the database
-      console.log(this.couponForm.value);
+      //console.log(this.couponForm.value);
       this.dialogRef.close(this.couponForm.value);
     }
   }
