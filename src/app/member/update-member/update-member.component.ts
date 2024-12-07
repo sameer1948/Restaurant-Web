@@ -1,11 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { CustomUserDetails } from '../../model/CustomUserDetails';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { User } from '../../model/User';
 import { UserDetails } from '../../model/UserDetails';
 import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
+import { ErrorDialogComponent } from '../../common/error-dialog/error-dialog.component';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-update-member',
@@ -13,48 +15,49 @@ import { environment } from '../../../environments/environment';
   styleUrl: './update-member.component.scss'
 })
 export class UpdateMemberComponent {
-  
-  private secretKey = `${environment.secretKey}`; 
+
+  private secretKey = `${environment.secretKey}`;
 
   userForm: FormGroup;
   showPassword: boolean = false;
-  availableRoles : string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
-  availableGender: string[] = ['Male', 'Female']; 
+  availableRoles: string[] = ['ADMIN', 'USER', 'MODERATOR', 'GUEST'];
+  availableGender: string[] = ['Male', 'Female'];
 
   user: User = {
-    username : '',
-    password : '',
-    roles : '',
-    accountNonExpired : true,
-    accountNonLocked : true,
-    credentialsNonExpired : true,
-    enabled : true
+    username: '',
+    password: '',
+    roles: '',
+    accountNonExpired: true,
+    accountNonLocked: true,
+    credentialsNonExpired: true,
+    enabled: true
   };
 
   userDetails: UserDetails = {
-    username : '',
-    firstName : '',
-    middleName : '',
-    lastName : '',
-    gender : '',
-    age : 20,
-    email : '',
-    phone : '',
-    address : '',
-    securityNumber : ''
+    username: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    gender: '',
+    age: 20,
+    email: '',
+    phone: '',
+    address: '',
+    securityNumber: ''
   };
 
-  constructor(private matDialogRef :  MatDialogRef<UpdateMemberComponent>,
+  constructor(private dialog: MatDialog,
+    private matDialogRef: MatDialogRef<UpdateMemberComponent>,
     @Inject(MAT_DIALOG_DATA) data: CustomUserDetails,
-    private formBuilder: FormBuilder, private userService : UserService) {
+    private formBuilder: FormBuilder, private userService: UserService) {
 
     this.userForm = this.formBuilder.group(
       {
         firstName: [data.customUserDetails.firstName, Validators.required],
         middleName: [data.customUserDetails.middleName],
         lastName: [data.customUserDetails.lastName, Validators.required],
-        gender: [data.customUserDetails.gender, Validators.required], 
-        age : [data.customUserDetails.age, [Validators.required, Validators.min(20), Validators.max(50)]],
+        gender: [data.customUserDetails.gender, Validators.required],
+        age: [data.customUserDetails.age, [Validators.required, Validators.min(20), Validators.max(50)]],
         email: [data.customUserDetails.email, [Validators.required, Validators.email]],
         phone: [data.customUserDetails.phone, [Validators.required, Validators.maxLength(10)]],
         address: [data.customUserDetails.address, [Validators.required]],
@@ -68,17 +71,17 @@ export class UpdateMemberComponent {
         credentialsNonExpired: [data.customUser.credentialsNonExpired],
         enabled: [data.customUser.enabled]
       }
-    );   
+    );
 
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  public generatePassword() : void {    
+  public generatePassword(): void {
     this.userForm.patchValue({ password: Math.random().toString(36).slice(-8) });
   }
 
-  public updateSelectedRoles(selectedRoles: string[]) : void {
+  public updateSelectedRoles(selectedRoles: string[]): void {
     this.userForm.patchValue({ roles: selectedRoles });
   }
 
@@ -86,10 +89,10 @@ export class UpdateMemberComponent {
     this.userForm.get('gender')?.setValue(genderValue);
   }
 
-  public updateUser() : void{
+  public updateUser(): void {
     if (this.userForm.valid) {
-      
-      const customUser : CustomUserDetails = {
+
+      const customUser: CustomUserDetails = {
         customUser: {
           username: this.userForm.value.username,
           password: this.userForm.value.password,
@@ -104,21 +107,46 @@ export class UpdateMemberComponent {
           firstName: this.userForm.value.firstName,
           middleName: this.userForm.value.middleName,
           lastName: this.userForm.value.lastName,
-          gender:this.userForm.value.gender,
-          age:this.userForm.value.age,
+          gender: this.userForm.value.gender,
+          age: this.userForm.value.age,
           email: this.userForm.value.email,
           phone: this.userForm.value.phone,
           address: this.userForm.value.address,
           securityNumber: this.userForm.value.securityNumber,
         }
       };
-      //console.log('User customUser:', customUser);
+      console.log('User customUser:', customUser);
 
       this.userService.updateUser(customUser).subscribe(
         (response) => {
-          //console.log(response);
-          this.matDialogRef.close('success');
-        }, (error) => {}
+          console.log(response);
+          const data = {
+            title: 'Member Created successfully',
+            message: `User Name : ${response.customUser.username} <br>Roles : ${response.customUser.roles} `,
+            action: 'success'
+          }
+
+          this.dialog.open(SuccessDialogComponent, { data: data })
+            .afterClosed()
+            .subscribe(res => {
+              if (res === 'close') {
+                this.matDialogRef.close('success');
+              }
+            });
+        }, (error) => {
+          console.log(error)
+          const data = {
+            title: `Error `,
+            message: `Something Went Wrong...! <br>Please try Later`,
+            action: 'close'
+          }
+          this.dialog.open(ErrorDialogComponent,
+            {
+              data: data,
+              width: '400px',
+              maxHeight: '80vh',
+            });
+        }
       );
     } else {
       this.userForm.markAllAsTouched();

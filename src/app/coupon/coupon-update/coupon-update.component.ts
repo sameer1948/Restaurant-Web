@@ -7,6 +7,7 @@ import { CouponAndDetails } from '../../model/CouponAndDetails';
 import { CouponService } from '../../services/coupon.service';
 import { error } from 'console';
 import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
+import { ErrorDialogComponent } from '../../common/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-coupon-update',
@@ -137,8 +138,19 @@ export class CouponUpdateComponent {
             action : 'update'
           }
           this.dialog.open(SuccessDialogComponent, {data: data});
-        },(error) => {
+        },(error) => {          
           console.log(error)
+          const data = {
+            title : `Error `,
+            message : `Something Went Wrong...! <br>Please try Later`,
+            action : 'close'
+          }
+          this.dialog.open(ErrorDialogComponent, 
+          {
+            data: data,
+            width: '400px',  
+            maxHeight: '80vh', 
+          });
         }
       );
         

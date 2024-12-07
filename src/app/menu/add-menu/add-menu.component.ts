@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MenuList } from '../../model/MenuList';
-import { MatDialogRef } from '@angular/material/dialog';
-import { NotificationService } from '../../common/notification.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MenuService } from '../../services/menu.service';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
+import { ErrorDialogComponent } from '../../common/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-add-menu',
@@ -17,8 +18,8 @@ export class AddMenuComponent {
   form : FormGroup = new FormGroup({ 
     menuItem: new FormGroup({ 
       item : new FormControl('', Validators.required),       
-      quantity : new FormControl('', Validators.required),       
-      price : new FormControl('', Validators.required),       
+      quantity : new FormControl('', [Validators.required, Validators.min(1)]),       
+      price : new FormControl('', [Validators.required, Validators.min(1)]),       
       description : new FormControl('', Validators.required),
       imagePath : new FormControl() 
     }) 
@@ -29,8 +30,8 @@ export class AddMenuComponent {
   selectedQty: any;
 
   constructor(private menuService : MenuService,
-    private _matDialogRef :  MatDialogRef<AddMenuComponent>,
-    private _notificationService : NotificationService) {}
+    private dialog: MatDialog,
+    private matDialogRef :  MatDialogRef<AddMenuComponent>,) {}
   
   protected onInput(event: Event) {
     this.value.set((event.target as HTMLInputElement).value);
@@ -41,19 +42,41 @@ export class AddMenuComponent {
     const menuList = new MenuList();
 
     menuList.item = this.form.value.menuItem?.item;
-    menuList.quantity = this.selectedQty;
+    menuList.quantity = this.form.value.menuItem?.quantity;
     menuList.price = this.form.value.menuItem?.price;
     menuList.description = this.form.value.menuItem?.description;
     menuList.imagePath = this.form.value.menuItem?.imagePath;
 
     this.menuService.addItemToMenu(menuList).subscribe(
-      (data) => {
+      (response) => {
         //console.log(data);        
-        this._notificationService.successMessage("Sucess");
-        this._matDialogRef.close('success');
+        const data = {
+          title : 'Menu Created successfully',
+          message :   `Menu Id : ${response.id}  <br>Name : ${response.item} <br>Price:  ${response.price}`,
+          action : 'success'
+        }
+
+        this.dialog.open(SuccessDialogComponent, {data: data})
+        .afterClosed()
+        .subscribe(res => {
+          if (res === 'close') {          
+            this.matDialogRef.close('success');
+          }
+        });
 
       }, (error) => {        
-        this._notificationService.errorMessage("Something went wrong while Inserting Menu...!")
+        console.log(error)
+        const data = {
+          title : `Error `,
+          message : `Something Went Wrong...! <br>Please try Later`,
+          action : 'close'
+        }
+        this.dialog.open(ErrorDialogComponent, 
+        {
+          data: data,
+          width: '400px',  
+          maxHeight: '80vh', 
+        });
       }
     );
         
@@ -68,7 +91,7 @@ export class AddMenuComponent {
         imagePath : ''
       }
     });
-    this._matDialogRef.close();
+    this.matDialogRef.close();
   }
 
 }

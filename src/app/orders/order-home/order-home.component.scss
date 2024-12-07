@@ -71,3 +71,37 @@
     font-weight: bolder;
     color: red;
 }
+
+/* Style for error message container */
+.error-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    //background-color: #f44336; /* Red background */
+    color: #f44336; /* White text */
+    padding: 16px;
+    margin: 20px 0;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .error-container mat-icon {
+    margin-right: 8px;
+    font-size: 20px;
+  }
+
+  
+.hide { display: none; }
+
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

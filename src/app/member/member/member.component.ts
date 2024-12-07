@@ -8,6 +8,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateMemberComponent } from '../update-member/update-member.component';
 import { AddMemberComponent } from '../add-member/add-member.component';
 import { VeiwRemoveMemberComponent } from '../veiw-remove-member/veiw-remove-member.component';
+import { error } from 'console';
 
 @Component({
   selector: 'app-member',
@@ -19,9 +20,16 @@ export class MemberComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  readonly pageSize: number = 5;
+  pageSizes: number[] = [5, 10];
+
   displayedColumns: string[] = ['sno', 'username', 'roles', 'accountNonExpired', 'accountNonLocked', 'credentialsNonExpired', 'enabled', 'actions'];
   dataSource = new MatTableDataSource<CustomUserDetails>();
+  
   searchTerm: string = '';
+  isLoading = true;
+  isError = false;
+  errorMessage: string | null = null;  
 
   constructor(private adminService: AdminService, private matDialog : MatDialog) {}
 
@@ -34,26 +42,37 @@ export class MemberComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-
   initialize() {
-    this.adminService.getMembers().subscribe((data: CustomUserDetails[]) => {
-      this.dataSource.data = data;
-      this.dataSource.sortingDataAccessor = (item, property) => {
-        switch (property) {
-          case 'username': return item.customUser.username;
-          case 'accountNonExpired': return item.customUser.accountNonExpired ? 'Active' : 'Expired' ;
-          case 'accountNonLocked': return item.customUser.accountNonLocked ? 'Active' : 'Expired' ;
-          case 'credentialsNonExpired': return item.customUser.credentialsNonExpired ? 'Active' : 'Expired' ;
-          case 'enabled': return item.customUser.enabled ? 'Active' : 'Expired' ;
-          case 'roles': return item.customUser.roles;          
-          default: return '';
-        }
-      };
-    });
+    this.adminService.getMembers().subscribe(
+      (data: CustomUserDetails[]) => {
+        this.isLoading = false;
+        this.dataSource.data = data;
+        this.pageSizes = this.generatepageSizes(data.length, this.pageSize);   
+          this.dataSource.sortingDataAccessor = (item, property) => {
+            switch (property) {
+              case 'username': return item.customUser.username;
+              case 'accountNonExpired': return item.customUser.accountNonExpired ? 'Active' : 'Expired' ;
+              case 'accountNonLocked': return item.customUser.accountNonLocked ? 'Active' : 'Expired' ;
+              case 'credentialsNonExpired': return item.customUser.credentialsNonExpired ? 'Active' : 'Expired' ;
+              case 'enabled': return item.customUser.enabled ? 'Active' : 'Expired' ;
+              case 'roles': return item.customUser.roles;          
+              default: return '';
+            }
+          };
+      }, (error) => {
+        console.error('Error loading Members', error);
+        this.isLoading = false;
+        this.isError = true
+        this.errorMessage = `Error loading Members`; 
+      });
   }
 
-  isAdmin(user: any): boolean {
-    return user.customUser.roles.includes('admin');
+  generatepageSizes(size: number, increment: number): number[] {
+    const result: number[] = [];
+    for (let i = increment; i <= size; i += increment) {
+        result.push(i);
+    }
+    return result;
   }
 
   getRoleClass(roles: string): string {

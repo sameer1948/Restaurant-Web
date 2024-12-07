@@ -1,10 +1,12 @@
 import { Component} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { User } from '../../model/User';
 import { CustomUserDetails } from '../../model/CustomUserDetails';
 import { UserDetails } from '../../model/UserDetails';
 import { UserService } from '../../services/user.service';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
+import { ErrorDialogComponent } from '../../common/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-add-member',
@@ -43,7 +45,8 @@ export class AddMemberComponent {
   generatedUsername: string = '';  
   generatedPassword: string = ''; 
 
-  constructor(private matDialogRef: MatDialogRef<AddMemberComponent>,
+  constructor(private dialog: MatDialog,
+    private matDialogRef: MatDialogRef<AddMemberComponent>,
     private formBuilder: FormBuilder, private userService : UserService) {
 
     this.userForm = this.formBuilder.group(
@@ -58,7 +61,6 @@ export class AddMemberComponent {
         address : ['', [Validators.required]],
         securityNumber : ['', [Validators.required]],        
 
-        //username : [{ value: '', disabled: true }, [Validators.required, Validators.minLength(6)]],        
         username : ['', [Validators.required, Validators.minLength(6)]],        
         password : ['', [Validators.required, Validators.minLength(6)]],
         roles : [[], Validators.required], 
@@ -73,9 +75,12 @@ export class AddMemberComponent {
 
   ngOnInit() {}
 
-  public generateUsername() : void  {
-    const randomValue = Math.random().toString(36).substring(7);
-    this.generatedUsername = `${this.userDetails.firstName}.${this.userDetails.lastName}.${randomValue}`;
+  public generateUsername(): void {
+    const firstNamePart = this.userForm.value.firstName.substring(0, 4);
+    const lastNamePart = this.userForm.value.lastName.substring(0, 4);
+    //const randomValue = Math.random().toString(36).substring(2, 10); // Updated to get a random string
+
+    this.generatedUsername = `${firstNamePart}${lastNamePart}`;
     this.userForm.patchValue({ username: this.generatedUsername });
   }
 
@@ -119,13 +124,38 @@ export class AddMemberComponent {
         }
       };
 
-      //console.log('User customUser:', customUser);
+      console.log('User customUser:', customUser);
 
       this.userService.newUser(customUser).subscribe(
         (response) => {
           //console.log(response);
-          this.matDialogRef.close('success');
-        }, (error) => {}
+          const data = {
+            title : 'Member Created successfully',
+            message :   `User Name : ${response.customUser.username} <br>Roles : ${response.customUser.roles} `,
+            action : 'success'
+          }
+  
+          this.dialog.open(SuccessDialogComponent, {data: data})
+          .afterClosed()
+          .subscribe(res => {
+            if (res === 'close') {          
+              this.matDialogRef.close('success');
+            }
+          });
+        }, (error) => {
+          console.log(error)
+          const data = {
+            title : `Error `,
+            message : `Something Went Wrong...! <br>Please try Later`,
+            action : 'close'
+          }
+          this.dialog.open(ErrorDialogComponent, 
+          {
+            data: data,
+            width: '400px',  
+            maxHeight: '80vh', 
+          });
+        }
       );
 
 

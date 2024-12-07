@@ -17,6 +17,11 @@ export class TaxService {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<TaxAndDetails>(`${this.TAX_API_URL}new-tax`, taxAndDetails, {headers : headers});
   }
+
+  public updateTax(taxAndDetails : TaxAndDetails) : Observable<TaxAndDetails> {
+    const headers = { 'content-type': 'application/json'}  
+    return this.httpClient.post<TaxAndDetails>(`${this.TAX_API_URL}new-tax`, taxAndDetails, {headers : headers});
+  }
   
   public getTaxes(): Observable<TaxAndDetails[]> {
     return this.httpClient.get<TaxAndDetails[]>(`${this.TAX_API_URL}fetch-taxes`);     

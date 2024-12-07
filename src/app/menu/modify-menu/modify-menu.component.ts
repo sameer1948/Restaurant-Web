@@ -1,9 +1,10 @@
 import { Component, Inject, signal } from '@angular/core';
-import { NotificationService } from '../../common/notification.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MenuList } from '../../model/MenuList';
 import { MenuService } from '../../services/menu.service';
+import { ErrorDialogComponent } from '../../common/error-dialog/error-dialog.component';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-modify-menu',
@@ -31,9 +32,9 @@ export class ModifyMenuComponent {
   quantities: number[] = Array.from({ length: 100 }, (_, i) => (i + 1));
   selectedQty: number = 1;
 
-  constructor(private _notificationService : NotificationService,
-    private menuService : MenuService, 
-    private _matDialogRef :  MatDialogRef<ModifyMenuComponent>,
+  constructor(private menuService : MenuService, 
+    private dialog: MatDialog,
+    private matDialogRef :  MatDialogRef<ModifyMenuComponent>,
     @Inject(MAT_DIALOG_DATA) data: MenuList) {
       this.selected = data;
       this.onSelect()
@@ -71,18 +72,40 @@ export class ModifyMenuComponent {
     menuList.imagePath = this.form.value.menuItem?.imagePath;
 
     this.menuService.modifyItemInMenu(menuList).subscribe(
-      (data) => {
+      (response) => {
         //console.log(data);        
-        this._notificationService.successMessage("Sucess");
-        this._matDialogRef.close('sucess');
+        const data = {
+          title : 'Menu Updated successfully',
+          message :   `Menu Id : ${response.id}  <br>Name : ${response.item} <br>Price:  ${response.price}`,
+          action : 'success'
+        }
+
+        this.dialog.open(SuccessDialogComponent, {data: data})
+        .afterClosed()
+        .subscribe(res => {
+          if (res === 'close') {          
+            this.matDialogRef.close('success');
+          }
+        });
 
       }, (error) => {
-        this._notificationService.errorMessage("Something went wrong while Updating Menu...!")
+        console.log(error)
+        const data = {
+          title : `Error `,
+          message : `Something Went Wrong...! <br>Please try Later`,
+          action : 'close'
+        }
+        this.dialog.open(ErrorDialogComponent, 
+        {
+          data: data,
+          width: '400px',  
+          maxHeight: '80vh', 
+        });
       }
     );
   }
 
   onClose() {
-    this._matDialogRef.close();
+    this.matDialogRef.close();
   }
 }

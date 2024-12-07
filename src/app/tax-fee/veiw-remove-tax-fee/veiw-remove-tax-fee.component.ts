@@ -35,7 +35,7 @@ export class VeiwRemoveTaxFeeComponent {
         value: [this.taxAndDetails.tax.value, Validators.required],         
         status: [this.taxAndDetails.tax.status? 'Enabled' : 'Disabled', Validators.required],
         memberName: [this.userName, Validators.required],
-        message: [this.taxAndDetails.taxDetails.message + message, Validators.required],
+        message: [this.taxAndDetails.taxDetails.message + (this.isRemove ? message : ''), Validators.required],
       }
     );
   }

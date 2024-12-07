@@ -12,19 +12,20 @@
 
         <div class="coupon-grid">
 
-          <button mat-raised-button *ngFor="let coupon of popularCoupons" class="coupon-card" (click)="onCardClick(coupon)">
+          <button mat-raised-button *ngFor="let coupon of popularCoupons" class="coupon-card"
+            (click)="onCardClick(coupon)">
 
             <mat-card-header>
-    
-              <mat-card-title>{{ coupon.couponName }}</mat-card-title> 
-              
-    
+
+              <mat-card-title>{{ coupon.couponName }}</mat-card-title>
+
+
             </mat-card-header>
-    
+
             <mat-card-content>
               <p>{{ coupon.description }}</p>
             </mat-card-content>
-    
+
           </button>
 
         </div>
@@ -37,9 +38,9 @@
     <mat-card class="data-section" appearance="outlined">
 
       <mat-card-content>
-        
+
         <h2>Coupons Services</h2>
-        
+
         <mat-grid-list cols="3" rowHeight="100px">
 
           <mat-grid-tile>
@@ -65,7 +66,19 @@
           </mat-grid-tile>
 
         </mat-grid-list>
-        
+
+        <div class="loading-container mat-elevation-z8">
+          @if (isLoading ) {
+          <div class="loading-shade">
+            @if (isLoading) {
+            <mat-spinner></mat-spinner>
+            }
+
+          </div>
+          }
+        </div>
+
+
         <mat-card appearance="outlined">
 
           <mat-card-content class="coupon-table-continer">
@@ -89,17 +102,19 @@
 
               <ng-container matColumnDef="percentage">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Percentage </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.percentage}}  %</mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.percentage}} %</mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="minOrderAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Min Order Amount </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.minOrderAmount | currency:'INR':'symbol':'1.0-2'}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.minOrderAmount | currency:'INR':'symbol':'1.0-2'}}
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="maxDiscountAmount">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Max Discount </mat-header-cell>
-                <mat-cell *matCellDef="let element"> {{element.maxDiscountAmount | currency:'INR':'symbol':'1.0-2'}} </mat-cell>
+                <mat-cell *matCellDef="let element"> {{element.maxDiscountAmount | currency:'INR':'symbol':'1.0-2'}}
+                </mat-cell>
               </ng-container>
 
               <ng-container matColumnDef="status">
@@ -115,24 +130,40 @@
 
                 <mat-cell *matCellDef="let element">
 
-                  <button color="primary" mat-icon-button matTooltip="Open Discount Coupon" (click)="viewCouponDialog(element)">
+                  <button color="primary" mat-icon-button matTooltip="Open Discount Coupon"
+                    (click)="viewCouponDialog(element)">
                     <mat-icon>open_in_new</mat-icon>
                   </button>
 
-                  <button color="accent" mat-icon-button matTooltip="Edit Discount Coupon" (click)="updateCouponDialog(element)">
+                  <button color="accent" mat-icon-button matTooltip="Edit Discount Coupon"
+                    (click)="updateCouponDialog(element)">
                     <mat-icon>create</mat-icon>
                   </button>
 
-                  <button color="warn" mat-icon-button matTooltip="Delete Discount Coupon" (click)="deleteCouponDialog(element)">
+                  <button color="warn" mat-icon-button matTooltip="Delete Discount Coupon"
+                    (click)="deleteCouponDialog(element)">
                     <mat-icon>delete</mat-icon>
                   </button>
 
                 </mat-cell>
               </ng-container>
 
+              <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef>
+                  <!-- Error message container -->
+                  <div *ngIf="isError" class="error-container">
+                    <mat-icon color="warn">error</mat-icon>
+                    <span>{{ errorMessage }}</span>
+                  </div>
+                </mat-footer-cell>
+              </ng-container>
+
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
+              <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+              </mat-footer-row>
             </mat-table>
 
             <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizes"></mat-paginator>

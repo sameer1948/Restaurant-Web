@@ -23,33 +23,45 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   
-  readonly pageSize : number = 5;
-  readonly pageSizes : number[] = [5, 10, 20, 25];
-
-  searchQuery: string = '';  
-
   displayedColumns: string[] = ['taxId', 'taxType', 'value', 'status', 'actions'];
   dataSource = new MatTableDataSource<TaxAndDetails>();
 
+  readonly pageSize : number = 5;
+  pageSizes : number[] = [5, 10,];
+
+  searchQuery: string = ''; 
+  isLoading = true;
+  isError = false;
+  errorMessage: string | null = null;  
+  
   constructor(private matDialog: MatDialog, 
     private taxService : TaxService, 
     private decryptService : EncryptDecryptService) {
-
-    const encryptedUserName = sessionStorage.getItem(decryptService.encrypt(this.USER_NAME));
-    this.userName = decryptService.decrypt(encryptedUserName ?? '') ?? 'N/A';
-    //console.log(this.userName)
+    
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const encryptedUserName = sessionStorage.getItem(decryptService.encrypt(this.USER_NAME));
+      this.userName = decryptService.decrypt(encryptedUserName ?? '') ?? 'N/A';
+    }
+    
   }
 
   ngOnInit(): void {        
     this.initialize();
   }
-
   
   initialize() {
+    
+    this.isLoading = true; // Start loading
+    this.isError = false;
+    this.errorMessage = null; 
+
     this.taxService.getTaxes().subscribe(
       (response: TaxAndDetails[]) => {
+        
+        this.isLoading = false;
         this.dataSource.data = response;
-  
+        this.pageSizes = this.generatepageSizes(response.length, this.pageSize);
+
         // Explicitly define sorting data accessor to handle all cases.
         this.dataSource.sortingDataAccessor = (item, property) => {
           // Return proper values based on the property
@@ -87,7 +99,10 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
         };
       },
       (error) => {
-        console.error('Error fetching taxes:', error);
+        console.error('Error fetching taxes:', error);        
+        this.isLoading = false;
+        this.isError = true
+        this.errorMessage = `Error fetching taxes`;
       }
     );
   }
@@ -98,9 +113,16 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  generatepageSizes(size: number, increment: number): number[] {
+    const result: number[] = [];
+    for (let i = increment; i <= size; i += increment) {
+        result.push(i);
+    }
+    return result;
+  }
+
   applyFilter() {
-    // Set the filter value, which triggers the custom filterPredicate
-    this.dataSource.filter = this.searchQuery;  // The filter is now a string
+    this.dataSource.filter = this.searchQuery;
   }
   
 
@@ -118,6 +140,7 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
     this.matDialog.open(AddTaxFeeComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
         //console.log(response)
+        this.initialize();
       }
     });
   }
@@ -137,7 +160,12 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
     matDialogConfig.disableClose = true;
     matDialogConfig.width = "40%";
     matDialogConfig.data = taxAndDetails;
-    this.matDialog.open(UpdateTaxFeeComponent, matDialogConfig)
+    this.matDialog.open(UpdateTaxFeeComponent, matDialogConfig).afterClosed().subscribe(response => {
+      if (response === 'success') {
+        //console.log(response)
+        this.initialize();
+      }
+    });
   }
 
   deleteTaxAndFeeDialog(taxAndDetails: TaxAndDetails) {
@@ -145,7 +173,12 @@ export class TaxFeeComponent implements OnInit , AfterViewInit {
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "40%";
     matDialogConfig.data = {taxAndDetails : taxAndDetails, type : 'remove'}
-    this.matDialog.open(VeiwRemoveTaxFeeComponent, matDialogConfig)
+    this.matDialog.open(VeiwRemoveTaxFeeComponent, matDialogConfig).afterClosed().subscribe(response => {
+      if (response === 'success') {
+        //console.log(response)
+        this.initialize();
+      }
+    });
   }
 
 

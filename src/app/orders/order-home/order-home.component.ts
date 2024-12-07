@@ -21,9 +21,12 @@ export class OrderHomeComponent implements OnInit , AfterViewInit {
   readonly displayedColumns: string[] = ['id', 'orderDate', 'totalPrice', 'orderBy', 'orderStatus', 'actions'];
 
   readonly pageSize : number = 5;
-  readonly pageSizes : number[] = [5, 10, 20, 25, 50];
+  pageSizes : number[] = [5, 10, 20, 25, 50];
 
   searchQuery: string = '';
+  isLoading = false;
+  isError = false;
+  errorMessage: string | null = null; 
 
   lastFiveOrders : Order[] = [];
 
@@ -32,9 +35,18 @@ export class OrderHomeComponent implements OnInit , AfterViewInit {
   constructor(private orderService : OrderService, private matDialog: MatDialog) {}
 
   ngOnInit(): void {
+    this.initializer();
+  }
+
+  initializer() {
+    this.isLoading = true; // Start loading
+    this.isError = false;
+    this.errorMessage = null;
     this.orderService.getOrders().subscribe(
       (response : Order[]) => {
-        this.dataSource.data = response;
+        this.isLoading = false;
+        this.dataSource.data = response;    
+        this.pageSizes = this.generatepageSizes(response.length, this.pageSize);    
         this.lastFiveOrders = response
         .sort((a, b) => {
           const dateA = a.orderDate ? new Date(a.orderDate).getTime() : 0; 
@@ -42,9 +54,13 @@ export class OrderHomeComponent implements OnInit , AfterViewInit {
           return dateB - dateA; // Sorting in descending order
         })
         .slice(0, 5); // Take the first 5 after sorting
-        //console.table(response);
-      }, (error) => {}
-    );
+      }, (error) => {
+        console.error('Error loading menu items', error);
+        this.isLoading = false;
+        this.isError = true
+        this.errorMessage = `Error loading menu items`; 
+      }
+    ); 
   }
 
   ngAfterViewInit(): void {
@@ -63,6 +79,13 @@ export class OrderHomeComponent implements OnInit , AfterViewInit {
     this.applyFilter(); 
   }
 
+  generatepageSizes(size: number, increment: number): number[] {
+    const result: number[] = [];
+    for (let i = increment; i <= size; i += increment) {
+        result.push(i);
+    }
+    return result;
+  }
 
   viewOrderDialog(order: Order) {
     const matDialogConfig = new MatDialogConfig();

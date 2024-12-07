@@ -1,84 +1,108 @@
 <mat-card class="menu-container" appearance="outlined">
-    <mat-card-header>
-        <mat-card-title> <mat-icon>menu</mat-icon> Menu </mat-card-title>
+    <mat-card-header class="menu-header">
+        <mat-card-title>
+            <mat-icon>menu</mat-icon> Menu Items
+        </mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
-        <div class="search-container">
-            <button color="accent" mat-icon-button matTooltip="Add New Menu" (click)="addItem()">
-                <mat-icon>playlist_add</mat-icon>
-            </button>
-            <mat-form-field>
-                <mat-label>Search For Item</mat-label>
-                <input matInput type="text" [(ngModel)]="searchTerm" placeholder="Enter Item Name" autocomplete="off" (input)="searchItems()">
-                <button *ngIf="searchTerm" matSuffix mat-icon-button aria-label="Clear" (click)="clearSearch()">
-                    <mat-icon>close</mat-icon>
+
+        <h2>Menu Services</h2>
+
+        <mat-grid-list cols="3" rowHeight="100px">
+            <mat-grid-tile>
+                <button color="accent" mat-icon-button matTooltip="Add New Menu" (click)="addItem()">
+                    <mat-icon>playlist_add</mat-icon>
                 </button>
-            </mat-form-field>
+            </mat-grid-tile>
+
+            <!-- Search Bar -->
+            <mat-grid-tile>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-icon matPrefix>search</mat-icon>
+                    <mat-label>Search Menu</mat-label>
+                    <input matInput [(ngModel)]="searchQuery" (input)="applyFilter()" />
+
+                    <button mat-icon-button *ngIf="searchQuery" matSuffix (click)="clearSearch()">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <div class="loading-container mat-elevation-z8">
+            @if (isLoading ) {
+            <div class="loading-shade">
+                @if (isLoading) {
+                <mat-spinner></mat-spinner>
+                }
+
+            </div>
+            }
         </div>
 
-        <div class="item-list-container">
-             
-            <h2>Item List (Total: {{ filteredItems.length }})</h2>
-            <ul>
-                <li class="headings">
-                    <span class="item-number"><strong>S.No</strong></span>
-                    <span class="item-name"><strong>Item Name</strong></span>
-                    <span class="item-quantity"><strong>Quantity</strong></span>
-                    <span class="item-price"><strong>Price</strong></span>
-                    <span class="item-path"><strong>Path</strong></span>
-                    <span class="item-name"><strong>Actions</strong></span>
-                </li>
+        <mat-table [dataSource]="dataSource" matSort>
 
-                <!-- Loading Spinner - Show when isLoading is true -->
-                <div *ngIf="isLoading" class="loading-container">
-                    <mat-spinner></mat-spinner>
-                    <p>Loading menu items...</p>
-                </div>
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Item Id</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.id }}</mat-cell>
+            </ng-container>
 
-                <li *ngFor="let item of getPaginatedItems(); let i = index">
-                    <mat-card class="item-card">
-                        <div class="item-content">
-                            <span class="item-number">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</span> <!-- S.No -->
-                            <span class="item-name">{{ item.item }}</span>
-                            <span class="item-quantity">{{ item.quantity }}</span>
-                            <span class="item-price">{{ item.price }}</span>
-                            <span class="item-path">{{ item.imagePath }}</span>
-                            <div class="item-actions">
-                                    
-                                <button color="primary" mat-icon-button matTooltip="Edit Menu" (click)="editItem(item)">
-                                    <mat-icon>edit_note</mat-icon>
-                                </button>
-                                <button color="warn" mat-icon-button matTooltip="Delete Menu" (click)="deleteItem(item)">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </div>
-                        </div>
-                    </mat-card>
-                </li>
-                 <!-- Show Error Message if there's an error -->
-                <div *ngIf="isError" class="error-message">
-                    <p>{{ errorMessage }}</p>
-                </div>
-            </ul>           
-        </div>
+            <ng-container matColumnDef="item">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Item Name</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.item }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="quantity">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Quantity</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.quantity }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.price | currency:'INR':'symbol':'1.0-2'
+                    }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="imagePath">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Image Path</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{ element.imagePath }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button color="primary" mat-icon-button matTooltip="Edit Menu" (click)="editItem(element)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button color="warn" mat-icon-button matTooltip="Delete Menu" (click)="deleteItem(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    <button color="accent" mat-icon-button matTooltip="View Item" (click)="viewItem(element)">
+                        <mat-icon>visibility</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="noData">
+                <mat-footer-cell *matFooterCellDef>
+                    <!-- Error message container -->
+                    <div *ngIf="isError" class="error-container">
+                        <mat-icon color="warn">error</mat-icon>
+                        <span>{{ errorMessage }}</span>
+                    </div>
+                </mat-footer-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+            <mat-footer-row *matFooterRowDef="['noData']"
+                [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
+            </mat-footer-row>
+        </mat-table>
+
+        <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizes"></mat-paginator>
+
     </mat-card-content>
-
-    <mat-card-actions>
-        <div class="btn-nav-container">
-            <button color="primary" mat-icon-button matTooltip="Prev Page" (click)="prevPage()" [disabled]="currentPage === 1">
-                <mat-icon>arrow_back</mat-icon>
-            </button>
-            <strong>{{currentPage}}</strong>
-            <button color="primary" mat-icon-button matTooltip="Next Page" (click)="nextPage()" [disabled]="currentPage >= (filteredItems.length / itemsPerPage)">
-                <mat-icon>arrow_forward</mat-icon>
-            </button>
-        </div>
-
-        <div class="selection-nav-container">
-            <strong>No. of Items Per Page:</strong>
-            <button *ngIf="items.length > 10" mat-raised-button (click)="setItemsPerPage(10)">10</button>
-            <button *ngIf="items.length > 20" mat-raised-button (click)="setItemsPerPage(20)">20</button>
-            <button *ngIf="items.length > 50" mat-raised-button (click)="setItemsPerPage(50)">50</button>            
-        </div>
-    </mat-card-actions>
 </mat-card>

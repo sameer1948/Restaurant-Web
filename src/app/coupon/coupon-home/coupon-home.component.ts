@@ -21,9 +21,12 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   readonly pageSize : number = 5;
-  readonly pageSizes : number[] = [5, 10, 20, 25];
+  pageSizes : number[] = [5, 10, 20, 25];
 
   searchQuery: string = '';
+  isLoading = true;
+  isError = false;
+  errorMessage: string | null = null;
 
   displayedColumns: string[] = ['couponName', 'description', 'amount', 'percentage', 'minOrderAmount', 'maxDiscountAmount', 'status', 'actions'];
   dataSource = new MatTableDataSource<Coupon>();
@@ -37,6 +40,9 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
   }
 
   initialize() {
+    this.isLoading = true; // Start loading
+    this.isError = false;
+    this.errorMessage = null;
     let coupons : Coupon[] = [];
     this.couponService.getAllCoupons().subscribe(
 
@@ -64,12 +70,17 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
         });  
         //console.log(coupons)      
         this.dataSource.data = coupons;
+        this.isLoading = false;
+        this.dataSource.data = coupons;   
+        this.pageSizes = this.generatepageSizes(coupons.length, this.pageSize);  
         this.popularCoupons = coupons.length > 5 ? coupons.slice(0, 5) : coupons;
-        
-        
+                
       },
       (error) => {
-        console.log(error);
+        console.error('Error loading Coupons', error);
+        this.isLoading = false;
+        this.isError = true
+        this.errorMessage = `Error loading Coupons`; 
       }
     );
   }
@@ -79,7 +90,6 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-
   applyFilter() {
     const query = this.searchQuery.toLowerCase();
     this.dataSource.filter = query.trim().toLowerCase();
@@ -88,6 +98,14 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
   clearSearch() {
     this.searchQuery = ''; 
     this.applyFilter(); 
+  }
+  
+  generatepageSizes(size: number, increment: number): number[] {
+    const result: number[] = [];
+    for (let i = increment; i <= size; i += increment) {
+        result.push(i);
+    }
+    return result;
   }
 
   onCardClick(coupon: Coupon) {
@@ -107,7 +125,6 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
       }
     });
   }
-
 
   viewCouponDialog(coupon: Coupon) {
     const matDialogConfig = new MatDialogConfig();
@@ -143,7 +160,6 @@ export class CouponHomeComponent implements OnInit , AfterViewInit {
       }
     });
   }
-
 
 }
 

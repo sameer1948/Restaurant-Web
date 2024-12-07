@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
 import { TaxService } from '../../services/tax.service';
 import { TaxAndDetails } from '../../model/TaxAndDetails';
-import { error } from 'console';
+import { response } from 'express';
+import { ErrorDialogComponent } from '../../common/error-dialog/error-dialog.component';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-add-tax-fee',
@@ -19,13 +21,14 @@ export class AddTaxFeeComponent {
   taxAndDetailsForm: FormGroup;
 
   constructor(private fb: FormBuilder,
+    private dialog: MatDialog,
     private dialogRef: MatDialogRef<AddTaxFeeComponent>,
-    private decryptService: EncryptDecryptService, 
-    private taxService : TaxService) {
+    private decryptService: EncryptDecryptService,
+    private taxService: TaxService) {
 
     const encryptedUserName = sessionStorage.getItem(decryptService.encrypt(this.USER_NAME));
     this.userName = decryptService.decrypt(encryptedUserName ?? '') ?? 'N/A';
-    
+
     const message = `This is Added By ${this.userName}`;
 
     this.taxAndDetailsForm = this.fb.group(
@@ -48,7 +51,7 @@ export class AddTaxFeeComponent {
       // Submit the form data to the database
       //console.log(this.taxAndDetailsForm.value);
 
-      const taxAndDetails : TaxAndDetails = {
+      const taxAndDetails: TaxAndDetails = {
         tax: {
           taxType: this.taxAndDetailsForm.value.taxType,
           value: this.taxAndDetailsForm.value.value,
@@ -60,16 +63,39 @@ export class AddTaxFeeComponent {
         }
       };
 
-      //console.log(taxAndDetails);
+      console.log(taxAndDetails);
       this.taxService.newTax(taxAndDetails).subscribe(
-        (respsone : TaxAndDetails) => {
-          //console.log(respsone);
-          this.dialogRef.close(this.taxAndDetailsForm.value);
+        (respsone: TaxAndDetails) => {
+          const item = respsone.tax;        
+          const data = {
+            title: 'Tax Item Created successfully',
+            message: `Tax Id : ${item.taxId}  <br>Name : ${item.taxType} <br>value:  ${item.value}`,
+            action: 'success'
+          }
+
+          this.dialog.open(SuccessDialogComponent, { data: data })
+            .afterClosed()
+            .subscribe(res => {
+              if (res === 'close') {
+                this.dialogRef.close('success');
+              }
+            });
         }, (error) => {
-          console.log(error);
+          console.log(error)
+          const data = {
+            title: `Error `,
+            message: `Something Went Wrong...! <br>Please try Later`,
+            action: 'close'
+          }
+          this.dialog.open(ErrorDialogComponent,
+            {
+              data: data,
+              width: '400px',
+              maxHeight: '80vh',
+            });
         }
       );
-      
+
     }
   }
 

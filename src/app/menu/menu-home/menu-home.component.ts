@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MenuService } from '../../services/menu.service';
 import { MenuList } from '../../model/MenuList';
@@ -6,23 +6,30 @@ import { AddMenuComponent } from '../add-menu/add-menu.component';
 import { ModifyMenuComponent } from '../modify-menu/modify-menu.component';
 import { RemoveMenuComponent } from '../remove-menu/remove-menu.component';
 import { MenuDescriptionComponent } from '../menu-description/menu-description.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-menu-home',
   templateUrl: './menu-home.component.html',
   styleUrls: ['./menu-home.component.scss']
 })
-export class MenuHomeComponent implements OnInit {
-  
-  searchTerm: string = '';  
-  currentPage: number = 1;  
-  itemsPerPage: number = 5;  
-  items: MenuList[] = [];
-  filteredItems: MenuList[] = [];
-  
-  isLoading: boolean = true;  
-  isError: boolean = false;  
-  errorMessage: string = '';  
+export class MenuHomeComponent implements OnInit , AfterViewInit {
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
+  displayedColumns: string[] = ['id', 'item', 'quantity', 'price', 'imagePath', 'actions'];
+  dataSource = new MatTableDataSource<MenuList>();
+
+  readonly pageSize: number = 5;
+  pageSizes: number[] = [5, 10];
+
+  searchQuery: string = ''; 
+  isLoading = true;
+  isError = false;
+  errorMessage: string | null = null;  
 
   constructor(private menuService: MenuService, private matDialog: MatDialog) {}
 
@@ -30,93 +37,52 @@ export class MenuHomeComponent implements OnInit {
     this.loadMenuItems();
   }
 
-  loadMenuItems(): void {
-    
-    this.isLoading = true;  
-    this.isError = false;
-    this.errorMessage = ''; 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
+  loadMenuItems(): void {   
+    this.isLoading = true; // Start loading
+    this.isError = false;
+    this.errorMessage = null; 
     this.menuService.getAllItems().subscribe(
-      (menuList: MenuList[]) => {
-        this.isLoading = false;  
-        if (menuList.length === 0) {
-          this.isError = true;
-          this.errorMessage = 'No data found';
-        } else {
-          this.items = menuList;
-          this.filteredItems = menuList;
-          this.updatePagination();
-        }
+      (response: MenuList[]) => {
+        this.isLoading = false;
+        this.dataSource.data = response;    
+        this.pageSizes = this.generatepageSizes(response.length, this.pageSize);    
       },
       (error) => {
-        this.isLoading = false;  
-        this.isError = true;
-        if (error.status === 404) {
-          this.errorMessage = 'Menu items not found (404)';
-        } else if (error.status === 403) {
-          this.errorMessage = 'Access denied (403)';
-        } else {
-          this.errorMessage = 'Failed to load menu items. Please try again later.';
-        }
+        console.error('Error loading menu items', error);
+        this.isLoading = false;
+        this.isError = true
+        this.errorMessage = `Error loading menu items`; 
       }
     );
   }
 
-  setItemsPerPage(value: number): void {
-    this.itemsPerPage = value;
-    this.currentPage = 1; // Reset to first page
-    this.updatePagination();
+  applyFilter(): void {
+    this.dataSource.filter = this.searchQuery.trim().toLowerCase();  // Trigger the filter
   }
-
-  searchItems(): void {
-    this.filteredItems = this.items.filter(item => 
-        item.item.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        (item.quantity !== null && item.quantity.toString().includes(this.searchTerm)) ||
-        (item.price !== null && item.price.toString().includes(this.searchTerm)) ||
-        (item.imagePath && item.imagePath.toLowerCase().includes(this.searchTerm.toLowerCase()))
-    );
-    this.currentPage = 1; // Reset to first page after search
-    this.updatePagination();
-  }
-
 
   clearSearch(): void {
-    this.searchTerm = '';
-    this.filteredItems = this.items;
-    this.currentPage = 1; 
-    this.updatePagination();
+    this.searchQuery = '';
+    this.applyFilter(); // Reset the filter when clearing
   }
 
-  updatePagination() {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = Math.min(startIndex + this.itemsPerPage, this.filteredItems.length);
-    return { startIndex, endIndex }; // Calculate indices for pagination
-  }
-
-  getPaginatedItems(): MenuList[] {
-    const { startIndex, endIndex } = this.updatePagination();
-    return this.filteredItems.slice(startIndex, endIndex);
-  }
-
-  prevPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagination();
+  generatepageSizes(size: number, increment: number): number[] {
+    const result: number[] = [];
+    for (let i = increment; i <= size; i += increment) {
+        result.push(i);
     }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < Math.ceil(this.filteredItems.length / this.itemsPerPage)) {
-      this.currentPage++;
-      this.updatePagination();
-    }
+    return result;
   }
 
   addItem(): void {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "60%";
+    matDialogConfig.width = '60%';
     this.matDialog.open(AddMenuComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
         this.loadMenuItems(); // Reload items after addition
@@ -128,8 +94,8 @@ export class MenuHomeComponent implements OnInit {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "60%";
-    matDialogConfig.data = item;    
+    matDialogConfig.width = '60%';
+    matDialogConfig.data = item;
     this.matDialog.open(MenuDescriptionComponent, matDialogConfig);
   }
 
@@ -137,8 +103,8 @@ export class MenuHomeComponent implements OnInit {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "60%";
-    matDialogConfig.data = item;    
+    matDialogConfig.width = '60%';
+    matDialogConfig.data = item;
     this.matDialog.open(ModifyMenuComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
         this.loadMenuItems(); // Reload items after modification
@@ -150,8 +116,8 @@ export class MenuHomeComponent implements OnInit {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "50%";
-    matDialogConfig.data = item;    
+    matDialogConfig.width = '50%';
+    matDialogConfig.data = item;
     this.matDialog.open(RemoveMenuComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
         this.loadMenuItems(); // Reload items after deletion
@@ -159,254 +125,3 @@ export class MenuHomeComponent implements OnInit {
     });
   }
 }
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-// import { MenuService } from '../../services/menu.service';
-// import { MenuList } from '../../model/MenuList';
-// import { AddMenuComponent } from '../add-menu/add-menu.component';
-// import { ModifyMenuComponent } from '../modify-menu/modify-menu.component';
-// import { RemoveMenuComponent } from '../remove-menu/remove-menu.component';
-
-// @Component({
-//   selector: 'app-menu-home',
-//   templateUrl: './menu-home.component.html',
-//   styleUrls: ['./menu-home.component.scss']
-// })
-// export class MenuHomeComponent implements OnInit {
-  
-//   searchTerm: string = '';  
-//   currentPage: number = 1;  
-//   itemsPerPage: number = 5;  
-//   startIndex: number = 0;  
-
-//   items : MenuList[] = [];
-
-//   endIndex: number = this.itemsPerPage; 
-//   filteredItems: MenuList[] = this.items;
-  
-//   constructor(private menuService : MenuService,
-//      private matDialog : MatDialog,){}
-
-     
-//   ngOnInit(): void {
-//     this.menuService.getAllItems().subscribe(
-//       (menuList : MenuList[]) => {        
-//         this.items = menuList;
-//         console.log(menuList);
-//       }, (error) => {
-//         console.log(error);
-//       }
-//     );   
-//   }
-
-//   setItemsPerPage(value: number): void {
-//     this.itemsPerPage = value;
-//     this.currentPage = 1; // Reset to first page
-//     this.updatePagination();
-//   }
-
-//   searchItems(): void {
-//     this.filteredItems = this.items.filter(item =>
-//       item.item.toLowerCase().includes(this.searchTerm.toLowerCase())
-//     );
-//     this.currentPage = 1; // Reset to first page after search
-//     this.updatePagination();
-//   }
-
-//   clearSearch(): void {
-//     this.searchTerm = '';
-//     this.filteredItems = this.items;
-//     this.currentPage = 1; 
-//     this.updatePagination();
-//   }
-
-//   updatePagination(): void {    
-//     this.startIndex = (this.currentPage - 1) * this.itemsPerPage;
-//     this.endIndex = Math.min(this.startIndex + this.itemsPerPage, this.filteredItems.length);
-//   }
-
-//   prevPage(): void {
-//     if (this.currentPage > 1) {
-//       this.currentPage--;
-//       this.updatePagination();
-//     }
-//   }
-
-//   nextPage(): void {
-//     if (this.currentPage < Math.ceil(this.filteredItems.length / this.itemsPerPage)) {
-//       this.currentPage++;
-//       this.updatePagination();
-//     }
-//   }
-
-//   addItem(): void {
-//     const matDialogConfig = new MatDialogConfig()
-//     matDialogConfig.disableClose = true;
-//     matDialogConfig.autoFocus = true;
-//     matDialogConfig.width = "60%";
-//     let result = this.matDialog.open(AddMenuComponent, matDialogConfig);
-//     result.afterClosed().subscribe(
-//       (response) => {
-//         if(response === 'success'){
-//           console.log(response)
-//         }          
-//       }
-//     );
-   
-//   }
-
-
-//   editItem(item: MenuList): void {
-//     const matDialogConfig = new MatDialogConfig()
-//     matDialogConfig.disableClose = true;
-//     matDialogConfig.autoFocus = true;
-//     matDialogConfig.width = "60%";
-//     matDialogConfig.data = item;    
-//     let result = this.matDialog.open(ModifyMenuComponent, matDialogConfig);
-//     result.afterClosed().subscribe(
-//       (response) => {
-//         if(response === 'success'){
-//           console.log(response)
-//         }          
-//       }
-//     );
-//   }
-
-//   deleteItem(item: MenuList): void {
-//     console.log('Delete item:', item);
-//     const matDialogConfig = new MatDialogConfig()
-//     matDialogConfig.disableClose = true;
-//     matDialogConfig.autoFocus = true;
-//     matDialogConfig.width = "25%";
-//     matDialogConfig.data = item;    
-//     let result = this.matDialog.open(RemoveMenuComponent, matDialogConfig);
-//     result.afterClosed().subscribe(
-//       (response) => {
-//         if(response === 'success'){
-//           console.log(response)
-//         }
-          
-//       }
-//     );
-//   }
-
-// }
-
-
-
-
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-menu-home',
-//   templateUrl: './menu-home.component.html',
-//   styleUrl: './menu-home.component.scss'
-// })
-// export class MenuHomeComponent {
-
-//   searchTerm : string = '';  
-//   currentPage : number = 1;  
-//   itemsPerPage : number = 5;  
-//   startIndex : number = 0;  
-
-//   items = [  
-//     { item : "idly-2", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-3", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-4", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-5", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-6", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-7", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-8", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},
-//     { item : "idly-2", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-3", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-4", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-5", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-6", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-7", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-8", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},   
-//     { item : "idly-3", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-4", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-5", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-6", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-7", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-8", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-3", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-4", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-5", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-6", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-7", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//     { item : "idly-8", qty : "2", price : 20, itemPngPath : "src/main/resources/static/idly.png"},  
-//    ]; 
-
-//   endIndex = this.itemsPerPage; 
-//   filteredItems = this.items;
-
-//   // Update items per page
-//   public setItemsPerPage(value: number): void {
-//     this.itemsPerPage = value;
-//     this.currentPage = 1; // Reset to first page
-//     this.updatePagination();
-//   }
-
-//   // Search items
-//   public searchItems(): void {
-//     this.filteredItems = this.items.filter(item =>
-//       item.item.toLowerCase().includes(this.searchTerm.toLowerCase())
-//     );
-//     console.log(this.filteredItems)
-//     this.currentPage = 1; // Reset to first page after search
-//     this.updatePagination();
-//   }
-
-//   public clearSearch() : void {
-//     this.searchTerm = '';
-//     this.startIndex = 0;
-//     this.endIndex = this.itemsPerPage; 
-//     this.updatePagination();
-//   }
-
-//   // Update pagination based on current page and items per page
-//   public updatePagination(): void {
-//     this.startIndex = (this.currentPage - 1) * this.itemsPerPage;
-//     this.endIndex = Math.min(this.startIndex + this.itemsPerPage, this.filteredItems.length);
-//   }
-
-//   // Navigate to previous page
-//   public prevPage(): void {
-//     if (this.currentPage > 1) {
-//       this.currentPage--;
-//       this.updatePagination();
-//     }
-//   }
-
-//   // Navigate to next page
-//   public nextPage(): void {
-//     if (this.currentPage < Math.ceil(this.filteredItems.length / this.itemsPerPage)) {
-//       this.currentPage++;
-//       this.updatePagination();
-//     }
-//   }
-
-
-//   addItem(): void {  
-//     console.log('Add new item');  
-   
-//    }  
-   
-//    deleteItem(item: any): void {  
-//     console.log('Delete item:', item);  
-   
-//    }  
-
-//    editItem(item: any): void {  
-//     console.log('Edit item:', item);  
-   
-//   }
-  
-
-  
- 
-// }
