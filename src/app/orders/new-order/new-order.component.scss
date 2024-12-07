@@ -122,14 +122,17 @@
     text-align: center; /* Center the quantity */
   }
   
-  .loading-container {
+  .loading-container {    
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;
-    height: 150px; /* Adjust as needed */
-    text-align: center;
-    font-size: 18px;
+    justify-content: center;  
   }
   
   .error-message {

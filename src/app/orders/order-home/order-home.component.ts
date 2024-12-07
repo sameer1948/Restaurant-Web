@@ -55,10 +55,10 @@ export class OrderHomeComponent implements OnInit , AfterViewInit {
         })
         .slice(0, 5); // Take the first 5 after sorting
       }, (error) => {
-        console.error('Error loading menu items', error);
+        console.error('Error loading Orders', error);
         this.isLoading = false;
         this.isError = true
-        this.errorMessage = `Error loading menu items`; 
+        this.errorMessage = `Error loading Orders`; 
       }
     ); 
   }
