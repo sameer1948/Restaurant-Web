@@ -36,13 +36,13 @@ export class OrderService {
   }
   
   
-  public cancelOrder(orderId : string, order : Order) : Observable<Order> {
+  public cancelOrder(orderId : string) : Observable<Order> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'  // Explicitly accept JSON response
     });
     
-    return this.httpClient.patch<Order>(`${this.ORDER_API_URL}update-order/${orderId}`, order, {headers})
+    return this.httpClient.patch<Order>(`${this.ORDER_API_URL}cancel-order/${orderId}`, {headers})
   }
 
   // private handleError(error: HttpErrorResponse) {

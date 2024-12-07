@@ -1,11 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { EncryptDecryptService } from '../../services/encrypt-decrypt.service';
 import { Order } from '../../model/Order';
 import { MenuList } from '../../model/MenuList';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { OrderService } from '../../services/order.service';
-import { error } from 'console';
+import { ErrorDialogComponent } from '../../common/error-dialog/error-dialog.component';
+import { SuccessDialogComponent } from '../../common/success-dialog/success-dialog.component';
 
 @Component({
   selector: 'app-view-cancel-order',
@@ -22,6 +23,7 @@ export class ViewCancelOrderComponent {
   orderedMenu : MenuList[] = [];
 
   constructor(
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<ViewCancelOrderComponent>,
     private decryptServices: EncryptDecryptService,
     private fb: FormBuilder,
@@ -49,11 +51,37 @@ export class ViewCancelOrderComponent {
   
   
   public cancelOrder() : void {
-    this.orderService.cancelOrder(this.order.id, this.order).subscribe(
+    this.orderService.cancelOrder(this.order.id).subscribe(
       (response : Order) => {
-        //console.log(response);
-        this.dialogRef.close({ status: 'success' });
-      },(error) => {console.log(error)}
+          //console.log(data);        
+          const data = {
+            title : 'Order Updated successfully',
+            message :   `Order ${response.id}  has been Cancelled`,
+            action : 'success'
+          }
+  
+          this.dialog.open(SuccessDialogComponent, {data: data})
+          .afterClosed()
+          .subscribe(res => {
+            if (res === 'close') {          
+              this.dialogRef.close('success');
+            }
+          });
+  
+        }, (error) => {
+          console.log(error)
+          const data = {
+            title : `Error `,
+            message : `Something Went Wrong...! <br>Please try Later`,
+            action : 'close'
+          }
+          this.dialog.open(ErrorDialogComponent, 
+          {
+            data: data,
+            width: '400px',  
+            maxHeight: '80vh', 
+          });
+        }
     );
   }
 

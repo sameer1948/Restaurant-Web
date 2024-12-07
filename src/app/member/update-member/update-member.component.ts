@@ -119,7 +119,7 @@ export class UpdateMemberComponent {
 
       this.userService.updateUser(customUser).subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           const data = {
             title: 'Member Created successfully',
             message: `User Name : ${response.customUser.username} <br>Roles : ${response.customUser.roles} `,

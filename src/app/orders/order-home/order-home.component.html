@@ -26,7 +26,7 @@
                   <mat-icon>open_in_new</mat-icon>
                 </button>
 
-                <button color="accent" mat-icon-button matTooltip="Cancel Order" (click)="updateOrderDialog(order)">
+                <button color="accent" *ngIf="order.orderStatus == 'COMPLETED'" mat-icon-button matTooltip="Cancel Order" (click)="updateOrderDialog(order)">
                   <mat-icon>cancel</mat-icon>
                 </button>
               </div>

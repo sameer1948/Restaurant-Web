@@ -101,7 +101,11 @@ export class OrderHomeComponent implements OnInit , AfterViewInit {
     matDialogConfig.disableClose = true;
     matDialogConfig.width = "70%";
     matDialogConfig.data = {order : order, type : 'cancel'}
-    this.matDialog.open(ViewCancelOrderComponent, matDialogConfig)
+    this.matDialog.open(ViewCancelOrderComponent, matDialogConfig).afterClosed().subscribe(response => {
+      if (response === 'success') {
+        this.initializer();
+      }
+    });
   }
 
   

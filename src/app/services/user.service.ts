@@ -12,7 +12,8 @@ export class UserService {
   private USER_API_URL: string = `${environment.apiUrl}user/`;
 
 
-  constructor(private httpClient: HttpClient) { }  
+  constructor(private httpClient: HttpClient) { }
+  
 
   public newUser(customUserDetails : CustomUserDetails) : Observable<CustomUserDetails> {
     const headers = { 'content-type': 'application/json'}  
@@ -24,22 +25,26 @@ export class UserService {
   }
 
   public getMembers() : Observable<CustomUserDetails[]> {    
-    return this.httpClient.get<CustomUserDetails[]>(this.USER_API_URL + 'fetchd-users');
+    return this.httpClient.get<CustomUserDetails[]>(this.USER_API_URL + 'fetch-users');
   }
   
   public updateUser(customUserDetails : CustomUserDetails) : Observable<CustomUserDetails> {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails>(`${this.USER_API_URL}update-user`, customUserDetails, {headers : headers});
+    return this.httpClient.patch<CustomUserDetails>(`${this.USER_API_URL}update-user`, customUserDetails, {headers : headers});
   }
 
   public updatePassword(userName : string, password: string) : Observable<CustomUserDetails> {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails>(`${this.USER_API_URL}update-password/${userName}`, password, {headers : headers});
+    return this.httpClient.patch<CustomUserDetails>(`${this.USER_API_URL}update-password/${userName}`, password, {headers : headers});
   }
 
-  public removeUser(customUserDetails : CustomUserDetails) : Observable<CustomUserDetails> {
-    const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<CustomUserDetails>(`${this.USER_API_URL}remove-user`, customUserDetails, {headers : headers});
+  public removeUser(userName: string): Observable<string> {
+    const headers = { 'content-type': 'application/json' };  
+    return this.httpClient.delete<string>(`${this.USER_API_URL}delete-user/${userName}`, {
+      headers,
+      responseType: 'text' as 'json' // Set responseType to 'text'
+    });
   }
+  
 
 }

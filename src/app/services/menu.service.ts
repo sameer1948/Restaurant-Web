@@ -17,24 +17,27 @@ export class MenuService {
 
   public getAllItems(): Observable<MenuList[]> {
     return this.httpClient.get<MenuList[]>(this.MENU_API_URL + 'fetch-menus');
-     // .pipe(catchError(this.handleError));  // Handle errors
-  }
-  
-
-  public addItemToMenu(menu : MenuList) : Observable<MenuList> {
-    const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<MenuList>(this.MENU_API_URL + 'add-menu', menu, {headers : headers});
+    // .pipe(catchError(this.handleError));  // Handle errors
   }
 
-  public modifyItemInMenu(menu : MenuList) : Observable<MenuList> {
-    const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.patch<MenuList>(this.MENU_API_URL + 'update-menu', menu, {headers : headers});
+
+  public addItemToMenu(menu: MenuList): Observable<MenuList> {
+    const headers = { 'content-type': 'application/json' }
+    return this.httpClient.post<MenuList>(this.MENU_API_URL + 'add-menu', menu, { headers: headers });
   }
 
-  public removeItemInMenu(id: string) : Observable<string> {    
-    return this.httpClient.delete<string>(this.MENU_API_URL + 'delete-menu/' + id);
+  public modifyItemInMenu(menu: MenuList): Observable<MenuList> {
+    const headers = { 'content-type': 'application/json' }
+    return this.httpClient.patch<MenuList>(this.MENU_API_URL + 'update-menu', menu, { headers: headers });
   }
 
+  public removeItemInMenu(id: string): Observable<string> {
+    const headers = { 'content-type': 'application/json' };
+    return this.httpClient.delete<string>(this.MENU_API_URL + 'delete-menu/' + id, {
+      headers,
+      responseType: 'text' as 'json' // Set responseType to 'text'
+    });
+  }
 
   // private handleError(error: HttpErrorResponse) {
   //   // Handle different types of errors (network, server, etc.)
