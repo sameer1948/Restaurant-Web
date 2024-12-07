@@ -52,7 +52,7 @@ export class ProfileComponent implements OnInit {
 
     this.userService.getUserByName(this.userName).subscribe(
       (customUserDetails: CustomUserDetails) => {
-        console.log(customUserDetails);
+        //console.log(customUserDetails);
         this.user = customUserDetails.customUser;
     
       this.personalInfoForm.patchValue({
@@ -94,7 +94,8 @@ export class ProfileComponent implements OnInit {
 
   openChangePasswordDialog(): void {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {      
-      data: { username: this.userName }
+      data: { username: this.userName , password : this.user.password},
+      width:'30%',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -103,5 +104,5 @@ export class ProfileComponent implements OnInit {
         console.log('Password changed:', result);
       }
     });
-  }
+  }  
 }

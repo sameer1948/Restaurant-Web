@@ -34,6 +34,11 @@ export class UserService {
     return this.httpClient.post<CustomUserDetails>(`${this.USER_API_URL}update-user`, customUserDetails, {headers : headers});
   }
 
+  public updatePassword(userName : string, password: string) : Observable<CustomUserDetails> {
+    const headers = { 'content-type': 'application/json'}  
+    return this.httpClient.post<CustomUserDetails>(`${this.USER_API_URL}update-password/${userName}`, password, {headers : headers});
+  }
+
   public removeUser(customUserDetails : CustomUserDetails) : Observable<CustomUserDetails> {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<CustomUserDetails>(`${this.USER_API_URL}remove-user`, customUserDetails, {headers : headers});
