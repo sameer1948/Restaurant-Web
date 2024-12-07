@@ -12,13 +12,7 @@ export class UserService {
   private USER_API_URL: string = `${environment.apiUrl}user/`;
 
 
-  constructor(private httpClient: HttpClient) { }
-
-  // public getAllItems(): Observable<MenuList[]> {
-  //   return this.httpClient.get<MenuList[]>(this.MENU_API_URL + 'fetch-menus');
-  //    // .pipe(catchError(this.handleError));  // Handle errors
-  // }
-  
+  constructor(private httpClient: HttpClient) { }  
 
   public newUser(customUserDetails : CustomUserDetails) : Observable<CustomUserDetails> {
     const headers = { 'content-type': 'application/json'}  
@@ -29,6 +23,10 @@ export class UserService {
     return this.httpClient.get<CustomUserDetails>(`${this.USER_API_URL}fetch-user/${userName}`);
   }
 
+  public getMembers() : Observable<CustomUserDetails[]> {    
+    return this.httpClient.get<CustomUserDetails[]>(this.USER_API_URL + 'fetchd-users');
+  }
+  
   public updateUser(customUserDetails : CustomUserDetails) : Observable<CustomUserDetails> {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<CustomUserDetails>(`${this.USER_API_URL}update-user`, customUserDetails, {headers : headers});

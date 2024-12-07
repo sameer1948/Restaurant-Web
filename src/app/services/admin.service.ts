@@ -19,7 +19,11 @@ export class AdminService {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<CustomUserDetails[]>(this.USER_API_URL + 'fetch-users', null, {headers : headers});
   }
-  
+
+  public getMembers() : Observable<CustomUserDetails[]> {    
+    return this.httpClient.get<CustomUserDetails[]>(this.USER_API_URL + 'fetchd-users');
+  }
+    
   addUser(newUser: CustomUserDetails) {
     const headers = { 'content-type': 'application/json'}  
     return this.httpClient.post<CustomUserDetails[]>(this.USER_API_URL + 'fetch-all-user', null, {headers : headers});
