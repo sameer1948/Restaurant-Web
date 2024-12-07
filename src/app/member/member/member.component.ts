@@ -2,13 +2,13 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { AdminService } from '../../services/admin.service';
+import { UserService } from '../../services/user.service';
 import { CustomUserDetails } from '../../model/CustomUserDetails';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { UpdateMemberComponent } from '../update-member/update-member.component';
 import { AddMemberComponent } from '../add-member/add-member.component';
 import { VeiwRemoveMemberComponent } from '../veiw-remove-member/veiw-remove-member.component';
-import { error } from 'console';
+
 
 @Component({
   selector: 'app-member',
@@ -31,7 +31,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
   isError = false;
   errorMessage: string | null = null;  
 
-  constructor(private adminService: AdminService, private matDialog : MatDialog) {}
+  constructor(private userService : UserService, private matDialog : MatDialog) {}
 
   ngOnInit() {
     this.initialize();
@@ -43,7 +43,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
   }
 
   initialize() {
-    this.adminService.getMembers().subscribe(
+    this.userService.getMembers().subscribe(
       (data: CustomUserDetails[]) => {
         this.isLoading = false;
         this.dataSource.data = data;

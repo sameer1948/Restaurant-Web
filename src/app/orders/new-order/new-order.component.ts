@@ -174,7 +174,7 @@ export class NewOrderComponent {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = '70%';
+    matDialogConfig.width = '80%';    
     matDialogConfig.data = orderOutput;
 
     this.matDialog.open(CreateOrderComponent, matDialogConfig)
