@@ -8,7 +8,7 @@ import { EncryptDecryptService } from '../services/encrypt-decrypt.service';
 import { ErrorDialogComponent } from '../common/error-dialog/error-dialog.component';
 import { SuccessDialogComponent } from '../common/success-dialog/success-dialog.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-profile',
