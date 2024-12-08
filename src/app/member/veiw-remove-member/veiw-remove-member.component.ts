@@ -35,7 +35,7 @@ export class VeiwRemoveMemberComponent {
 
     this.userService.removeUser(this.user.customUser.username).subscribe(
       (response) => {
-        console.log(response);
+        //console.log(response);
         const data = {
           title: 'Member Removed successfully',
           message: `${this.user.customUser.username} has been Deleted from Database..!`,

@@ -124,7 +124,7 @@ export class AddMemberComponent {
         }
       };
 
-      console.log('User customUser:', customUser);
+      //console.log('User customUser:', customUser);
 
       this.userService.newUser(customUser).subscribe(
         (response) => {

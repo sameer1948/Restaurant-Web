@@ -45,7 +45,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
   initialize() {
     this.userService.getMembers().subscribe(
       (data: CustomUserDetails[]) => {
-        console.log(data)
+        //console.log(data)
         this.isLoading = false;
         this.dataSource.data = data;
         

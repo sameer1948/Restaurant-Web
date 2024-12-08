@@ -115,7 +115,7 @@ export class UpdateMemberComponent {
           securityNumber: this.userForm.value.securityNumber,
         }
       };
-      console.log('User customUser:', customUser);
+      //console.log('User customUser:', customUser);
 
       this.userService.updateUser(customUser).subscribe(
         (response) => {

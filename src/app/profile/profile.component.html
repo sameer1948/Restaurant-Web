@@ -57,6 +57,21 @@
                 <mat-option *ngFor="let gender of genders" [value]="gender">{{ gender }}</mat-option>
               </mat-select>
             </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-icon matPrefix>calendar_today</mat-icon><mat-label>Age</mat-label>
+              <input matInput type="number" formControlName="age" />
+              <mat-error *ngIf="personalInfoForm.get('age')?.hasError('required') && personalInfoForm.get('age')?.touched">
+                  Age is required.
+              </mat-error>
+              <mat-error *ngIf="personalInfoForm.get('age')?.hasError('min') && personalInfoForm.get('age')?.touched">
+                  Age must be more than 20.
+              </mat-error>
+              <mat-error *ngIf="personalInfoForm.get('age')?.hasError('max') && personalInfoForm.get('age')?.touched">
+                  Age cannot be more than 50.
+              </mat-error>
+          </mat-form-field>
+            
           </div>
 
           <div class="form-row">

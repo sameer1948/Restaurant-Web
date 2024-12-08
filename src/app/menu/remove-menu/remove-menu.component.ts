@@ -24,7 +24,7 @@ export class RemoveMenuComponent {
 
     this.menuService.removeItemInMenu(this.data.id ?? '').subscribe(
       (response) => {
-        console.log(response);        
+        //console.log(response);        
         const data = {
           title : 'Menu Removed successfully',
           message :   `Menu Id : ${this.data.id}  has been Removed from Database.`,

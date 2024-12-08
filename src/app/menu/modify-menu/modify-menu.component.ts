@@ -57,12 +57,12 @@ export class ModifyMenuComponent {
       }
     });
     this.selectedQty = this.selected.quantity;
-    console.log(this.selectedQty)
+    //console.log(this.selectedQty)
   }
 
 
   updateItem() {
-    console.log(this.form.value);
+    //console.log(this.form.value);
     const menuList = new MenuList();
 
     menuList.item = this.form.value.menuItem?.item;

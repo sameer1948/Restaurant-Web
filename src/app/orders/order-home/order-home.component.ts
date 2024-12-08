@@ -90,8 +90,8 @@ export class OrderHomeComponent implements OnInit, AfterViewInit {
     const dateObject = new Date(event.value ?? '');
     const formattedDate = this.formatDate(dateObject);
 
-    console.log('Selected date:', this.orderByDate);
-    console.log('Formatted date:', formattedDate);
+    //console.log('Selected date:', this.orderByDate);
+    //console.log('Formatted date:', formattedDate);
     this.dataSource.filter = formattedDate.split(' ')[0].trim().toLowerCase();
   }
 
