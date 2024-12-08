@@ -36,6 +36,7 @@ export class UpdateTaxFeeComponent {
     this.taxAndDetails = data;
     this.taxAndDetailsForm = this.fb.group(
       {
+        taxId : this.taxAndDetails.tax.taxId,
         taxType: [this.taxAndDetails.tax.taxType, Validators.required],
         value: [this.taxAndDetails.tax.value, Validators.required],
         status: [this.taxAndDetails.tax.status ? 'Enabled' : 'Disabled', Validators.required],
@@ -53,17 +54,21 @@ export class UpdateTaxFeeComponent {
     if (this.taxAndDetailsForm.valid) {
       const taxAndDetails: TaxAndDetails = {
         tax: {
+          taxId : this.taxAndDetailsForm.value.taxId,
           taxType: this.taxAndDetailsForm.value.taxType,
           value: this.taxAndDetailsForm.value.value,
           status: this.taxAndDetailsForm.value.status === 'Enabled' ? true : false,
         },
         taxDetails: {
+          taxId : this.taxAndDetailsForm.value.taxId,
           memberName: this.taxAndDetailsForm.value.memberName,
-          message: this.taxAndDetailsForm.value.message
+          message: this.taxAndDetailsForm.value.message,
+          timeStamp : new Date()
+
         }
       };
 
-      console.log(taxAndDetails);
+      //console.log(taxAndDetails);
       this.taxService.updateTax(taxAndDetails).subscribe(
         (respsone: TaxAndDetails) => {
           const item = respsone.tax;

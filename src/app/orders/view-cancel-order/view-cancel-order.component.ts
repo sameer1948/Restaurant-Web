@@ -17,30 +17,50 @@ export class ViewCancelOrderComponent {
 
   isCancel: boolean = false;
   order!: Order;
-  menuGroupedByOccurrences: Map<string, { item: MenuList, count: number }> = new Map();
-  orderForm : FormGroup;
+  menuGroupedByOccurrences: Map<string, number> = new Map();
+  ordered: MenuList[] = [];
+  orderedMenu: MenuList[] = [];
+  orderForm: FormGroup;
   localImagePath: any = 'assets/images/no-image.jpg';
-  orderedMenu : MenuList[] = [];
+
 
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<ViewCancelOrderComponent>,
     private decryptServices: EncryptDecryptService,
     private fb: FormBuilder,
-    private orderService : OrderService,
+    private orderService: OrderService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-    
+
     this.order = data.order;
-    this.orderedMenu = data.order.orderDetails.menuLists;
+    this.ordered = data.order.orderDetails.menuLists;
     this.isCancel = data.type === 'cancel';
 
-    this.orderForm = this.fb.group({
-        orderId : [this.order.id],
-        orderBy : [this.order.orderBy],
-        orderDate : [this.order.orderDate],
-        totalPrice : [this.order.totalPrice],
-        orderStatus : [this.order.orderStatus],
-      });
+    this.orderForm = this.fb.group(
+      {
+        orderId: [this.order.id],
+        orderBy: [this.order.orderBy],
+        orderDate: [this.order.orderDate],
+        totalPrice: [this.order.totalPrice],
+        orderStatus: [this.order.orderStatus],
+      }
+    );
+    //console.table(this.ordered)
+
+    // Loop through the menu array and populate the map
+    this.ordered.forEach(menuItem => {
+      // If the item already exists in the map, increment its count
+      if (this.menuGroupedByOccurrences.has(menuItem.id ?? '')) {
+        this.menuGroupedByOccurrences.set(menuItem.id ?? '', this.menuGroupedByOccurrences.get(menuItem.id ?? '')! + 1);
+      } else {
+        // If the item does not exist in the map, add it with a count of 1
+        this.menuGroupedByOccurrences.set(menuItem.id ?? '', 1);
+        this.orderedMenu.push(menuItem)
+      }
+    });
+
+    //console.log(this.menuGroupedByOccurrences);
+    //console.log(this.orderedMenu);
   }
 
   public getCount(menuList: MenuList): number {
@@ -48,47 +68,46 @@ export class ViewCancelOrderComponent {
     //console.log(`Item ID: ${menuList.id}, Count: ${count}`);
     return count;
   }
-  
-  
-  public cancelOrder() : void {
+
+  public cancelOrder(): void {
     this.orderService.cancelOrder(this.order.id).subscribe(
-      (response : Order) => {
-          //console.log(data);        
-          const data = {
-            title : 'Order Updated successfully',
-            message :   `Order ${response.id}  has been Cancelled`,
-            action : 'success'
-          }
-  
-          this.dialog.open(SuccessDialogComponent, {data: data})
+      (response: Order) => {
+        //console.log(data);        
+        const data = {
+          title: 'Order Updated successfully',
+          message: `Order ${response.id}  has been Cancelled`,
+          action: 'success'
+        }
+
+        this.dialog.open(SuccessDialogComponent, { data: data })
           .afterClosed()
           .subscribe(res => {
-            if (res === 'close') {          
+            if (res === 'close') {
               this.dialogRef.close('success');
             }
           });
-  
-        }, (error) => {
-          console.log(error)
-          const data = {
-            title : `Error `,
-            message : `Something Went Wrong...! <br>Please try Later`,
-            action : 'close'
-          }
-          this.dialog.open(ErrorDialogComponent, 
+
+      }, (error) => {
+        console.log(error)
+        const data = {
+          title: `Error `,
+          message: `Something Went Wrong...! <br>Please try Later`,
+          action: 'close'
+        }
+        this.dialog.open(ErrorDialogComponent,
           {
             data: data,
-            width: '400px',  
-            maxHeight: '80vh', 
+            width: '400px',
+            maxHeight: '80vh',
           });
-        }
+      }
     );
   }
 
 
   // Close dialog on cancel
-  public onClose() : void{
+  public onClose(): void {
     this.dialogRef.close({ status: 'canceled' });
   }
-  
+
 }

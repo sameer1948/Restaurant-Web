@@ -25,13 +25,13 @@ export class MemberComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['sno', 'username', 'roles', 'accountNonExpired', 'accountNonLocked', 'credentialsNonExpired', 'enabled', 'actions'];
   dataSource = new MatTableDataSource<CustomUserDetails>();
-  
+
   searchTerm: string = '';
   isLoading = true;
   isError = false;
-  errorMessage: string | null = null;  
+  errorMessage: string | null = null;
 
-  constructor(private userService : UserService, private matDialog : MatDialog) {}
+  constructor(private userService: UserService, private matDialog: MatDialog) { }
 
   ngOnInit() {
     this.initialize();
@@ -45,32 +45,37 @@ export class MemberComponent implements OnInit, AfterViewInit {
   initialize() {
     this.userService.getMembers().subscribe(
       (data: CustomUserDetails[]) => {
+        console.log(data)
         this.isLoading = false;
         this.dataSource.data = data;
-        this.pageSizes = this.generatepageSizes(data.length, this.pageSize);   
-          this.dataSource.sortingDataAccessor = (item, property) => {
-            switch (property) {
-              case 'username': return item.customUser.username;
-              case 'accountNonExpired': return item.customUser.accountNonExpired ? 'Active' : 'Expired' ;
-              case 'accountNonLocked': return item.customUser.accountNonLocked ? 'Active' : 'Expired' ;
-              case 'credentialsNonExpired': return item.customUser.credentialsNonExpired ? 'Active' : 'Expired' ;
-              case 'enabled': return item.customUser.enabled ? 'Active' : 'Expired' ;
-              case 'roles': return item.customUser.roles;          
-              default: return '';
-            }
-          };
+        
+        //const usernames = data.map(user => user.customUser.username);
+        //console.log(usernames);
+
+        this.pageSizes = this.generatepageSizes(data.length, this.pageSize);
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            case 'username': return item.customUser.username;
+            case 'accountNonExpired': return item.customUser.accountNonExpired ? 'Active' : 'Expired';
+            case 'accountNonLocked': return item.customUser.accountNonLocked ? 'Active' : 'Expired';
+            case 'credentialsNonExpired': return item.customUser.credentialsNonExpired ? 'Active' : 'Expired';
+            case 'enabled': return item.customUser.enabled ? 'Active' : 'Expired';
+            case 'roles': return item.customUser.roles;
+            default: return '';
+          }
+        };
       }, (error) => {
         console.error('Error loading Members', error);
         this.isLoading = false;
         this.isError = true
-        this.errorMessage = `Error loading Members`; 
+        this.errorMessage = `Error loading Members`;
       });
   }
 
   generatepageSizes(size: number, increment: number): number[] {
     const result: number[] = [];
     for (let i = increment; i <= size; i += increment) {
-        result.push(i);
+      result.push(i);
     }
     return result;
   }
@@ -87,14 +92,14 @@ export class MemberComponent implements OnInit, AfterViewInit {
     }
     return '';
   }
-  
+
 
   applyFilter() {
     const filterValue = this.searchTerm.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: CustomUserDetails, filter: string) => {
       return data.customUser.username.toLowerCase().includes(filter) ||
-             data.customUserDetails.firstName.toLowerCase().includes(filter) ||
-             data.customUserDetails.email.toLowerCase().includes(filter);
+        data.customUserDetails.firstName.toLowerCase().includes(filter) ||
+        data.customUserDetails.email.toLowerCase().includes(filter);
     };
     this.dataSource.filter = filterValue;
   }
@@ -108,12 +113,12 @@ export class MemberComponent implements OnInit, AfterViewInit {
     const matDialogConfig = new MatDialogConfig();
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
-    matDialogConfig.width = "70%";    
-    matDialogConfig.height = "70%";    
+    matDialogConfig.width = "70%";
+    matDialogConfig.height = "70%";
     this.matDialog.open(AddMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response == 'success') {
-       //console.log(response); // Reload items after addition
-       this.initialize();
+        //console.log(response); // Reload items after addition
+        this.initialize();
       }
     });
   }
@@ -123,7 +128,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "60%";
     matDialogConfig.data = user;
-    matDialogConfig.data = {customUserDetails: user, type: 'open'}
+    matDialogConfig.data = { customUserDetails: user, type: 'open' }
     this.matDialog.open(VeiwRemoveMemberComponent, matDialogConfig)
   }
 
@@ -135,8 +140,8 @@ export class MemberComponent implements OnInit, AfterViewInit {
     matDialogConfig.data = user;
     this.matDialog.open(UpdateMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
-       //console.log(response); // Reload items after addition
-       this.initialize();
+        //console.log(response); // Reload items after addition
+        this.initialize();
       }
     });
   }
@@ -146,11 +151,11 @@ export class MemberComponent implements OnInit, AfterViewInit {
     matDialogConfig.disableClose = true;
     matDialogConfig.autoFocus = true;
     matDialogConfig.width = "60%";
-    matDialogConfig.data = {customUserDetails: user, type: 'remove'}
+    matDialogConfig.data = { customUserDetails: user, type: 'remove' }
     this.matDialog.open(VeiwRemoveMemberComponent, matDialogConfig).afterClosed().subscribe(response => {
       if (response === 'success') {
-       //console.log(response); // Reload items after addition
-       this.initialize();
+        //console.log(response); // Reload items after addition
+        this.initialize();
       }
     });
   }

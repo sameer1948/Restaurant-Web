@@ -20,13 +20,14 @@
               <p> <strong> Price : </strong> {{ order.totalPrice | currency:'INR':'symbol':'1.0-2' }} </p>
               <p> <strong> Order By : </strong> {{order.orderBy}} </p>
               <p> <strong> Order Status : </strong> {{order.orderStatus}} </p>
-              <p> <strong> Order Date : </strong> {{order.orderDate | date: 'd MMM yyyy, h:mm a' }} </p>             
+              <p> <strong> Order Date : </strong> {{order.orderDate | date: 'd MMM yyyy, h:mm a' }} </p>
               <div class="last-five-actions">
                 <button color="primary" mat-icon-button matTooltip="View Order" (click)="viewOrderDialog(order)">
                   <mat-icon>open_in_new</mat-icon>
                 </button>
 
-                <button color="accent" *ngIf="order.orderStatus == 'COMPLETED'" mat-icon-button matTooltip="Cancel Order" (click)="updateOrderDialog(order)">
+                <button color="accent" *ngIf="order.orderStatus == 'COMPLETED'" mat-icon-button
+                  matTooltip="Cancel Order" (click)="updateOrderDialog(order)">
                   <mat-icon>cancel</mat-icon>
                 </button>
               </div>
@@ -48,15 +49,15 @@
 
         <h2>Order Services</h2>
 
-        <mat-grid-list cols="1" rowHeight="100px">
+        <mat-grid-list cols="3" rowHeight="100px">
 
           <!-- Search Bar -->
           <mat-grid-tile>
 
-            <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-form-field appearance="fill" style="width: 90%;">
 
               <mat-icon matPrefix>search</mat-icon>
-              <mat-label>Search Coupon</mat-label>
+              <mat-label>Search Orders</mat-label>
 
               <input matInput [(ngModel)]="searchQuery" (input)="applyFilter()" />
 
@@ -68,18 +69,53 @@
 
           </mat-grid-tile>
 
+          <mat-grid-tile>
+
+            <mat-form-field appearance="fill" style="width: 90%;">
+              <mat-icon matPrefix>person_search</mat-icon>
+              <mat-label>Order By</mat-label>
+            
+              <mat-select (selectionChange)="orderByFilter($event.value)" [(value)]="selectedOrderBy">
+                <mat-option *ngIf="selectedOrderBy == null" [value]="null"></mat-option>
+                <mat-option *ngFor="let orderBy of orderbyList" [value]="orderBy">{{ orderBy }}</mat-option>
+              </mat-select>
+              
+              <button mat-icon-button matSuffix (click)="clearOrderBy()" *ngIf="selectedOrderBy != null">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <mat-grid-tile>
+
+            <mat-form-field appearance="fill" style="width: 90%;">
+              <mat-label>Order Date</mat-label>
+
+              <input matInput [matDatepicker]="startPicker" [(ngModel)]="orderByDate"
+                (dateChange)="onDateSelected($event)" />
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+
+              <button mat-icon-button matSuffix (click)="clearOrderByDate()" *ngIf="orderByDate != null">
+                <mat-icon>clear</mat-icon>
+              </button>
+
+            </mat-form-field>
+          </mat-grid-tile>
+
         </mat-grid-list>
 
         <div class="loading-container mat-elevation-z8">
           @if (isLoading ) {
           <div class="loading-shade">
-              @if (isLoading) {
-              <mat-spinner></mat-spinner>
-              }
+            @if (isLoading) {
+            <mat-spinner></mat-spinner>
+            }
 
           </div>
           }
-      </div>
+        </div>
 
         <!-- <button mat-button (click)="sortData()">Sort by Usage Count</button> -->
         <mat-card appearance="outlined">
@@ -134,21 +170,21 @@
 
               <ng-container matColumnDef="noData">
                 <mat-footer-cell *matFooterCellDef>
-                    <!-- Error message container -->
-                    <div *ngIf="isError" class="error-container">
-                        <mat-icon color="warn">error</mat-icon>
-                        <span>{{ errorMessage }}</span>
-                    </div>
+                  <!-- Error message container -->
+                  <div *ngIf="isError" class="error-container">
+                    <mat-icon color="warn">error</mat-icon>
+                    <span>{{ errorMessage }}</span>
+                  </div>
                 </mat-footer-cell>
-            </ng-container>
+              </ng-container>
 
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-            <mat-footer-row *matFooterRowDef="['noData']"
+              <mat-footer-row *matFooterRowDef="['noData']"
                 [ngClass]="{'hide':!(dataSource!=null && dataSource.data.length==0)}">
-            </mat-footer-row>
-        </mat-table>
+              </mat-footer-row>
+            </mat-table>
 
             <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizes"></mat-paginator>
 

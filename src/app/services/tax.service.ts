@@ -20,7 +20,7 @@ export class TaxService {
 
   public updateTax(taxAndDetails : TaxAndDetails) : Observable<TaxAndDetails> {
     const headers = { 'content-type': 'application/json'}  
-    return this.httpClient.post<TaxAndDetails>(`${this.TAX_API_URL}new-tax`, taxAndDetails, {headers : headers});
+    return this.httpClient.patch<TaxAndDetails>(`${this.TAX_API_URL}update-tax`, taxAndDetails, {headers : headers});
   }
   
   public getTaxes(): Observable<TaxAndDetails[]> {

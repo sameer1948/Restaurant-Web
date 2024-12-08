@@ -187,10 +187,12 @@ export class CreateOrderComponent implements OnInit {
 
   // Close dialog on complete
   onComplete() {
+    const now = new Date();
     // Prepare the order object structure  
     const order: Order = {
       orderBy: this.userName, // This should USERNAME
       totalPrice: parseFloat(this.grandTotal.toFixed(2)),
+      orderDate: now.toISOString(),
       orderStatus: "PENDING",
       orderDetails: {
         menuLists: this.getMenuList(),

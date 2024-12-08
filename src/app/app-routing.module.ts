@@ -23,7 +23,7 @@ const routes: Routes = [
   { path : 'order', component: OrderHomeComponent },
   { path : 'coupon', component : CouponHomeComponent },
   { path : 'tax', component : TaxFeeComponent },
-  { path : 'menu', component:MenuHomeComponent, canActivate : [authGuard, roleAdminGuard],},
+  { path : 'menu', component:MenuHomeComponent, canActivate : [authGuard,],},
   { path : 'login', component: LoginComponent },
   { path : 'members', component:MemberComponent, canActivate : [authGuard, roleAdminGuard],},
   { path : 'profile', component: ProfileComponent,   canActivate : [authGuard] },
