@@ -86,7 +86,7 @@ export class ChangePasswordDialogComponent {
       // Call user service to update password
       this.userService.updatePassword(oldPassword, newPassword).subscribe(
         (response) => {
-          console.log(response);
+          //console.log(response);
           const data = {
             title: 'Password Changed Successfully',
             message: `Username: ${response.customUser.username} <br>Roles: ${response.customUser.roles}`,

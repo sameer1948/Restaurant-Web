@@ -101,7 +101,7 @@ export class ProfileComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Handle password change logic here
-        console.log('Password changed:', result);
+        //console.log('Password changed:', result);
       }
     });
   }  
@@ -132,7 +132,7 @@ export class ProfileComponent implements OnInit {
           securityNumber: this.personalInfoForm!.value.securityNumber,
         }
       };
-      console.log('User customUser:', customUser);
+      //console.log('User customUser:', customUser);
 
       this.userService.updateUser(customUser).subscribe(
         (response) => {

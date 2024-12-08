@@ -63,7 +63,7 @@ export class AddTaxFeeComponent {
         }
       };
 
-      console.log(taxAndDetails);
+      //console.log(taxAndDetails);
       this.taxService.newTax(taxAndDetails).subscribe(
         (respsone: TaxAndDetails) => {
           const item = respsone.tax;        
