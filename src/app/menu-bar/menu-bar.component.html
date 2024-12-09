@@ -30,8 +30,8 @@
 
 <mat-drawer-container autosize>
     <mat-drawer #drawer opened="false" mode="side" position="start">
-
-        <mat-nav-list *ngIf="isAuthenticated$">
+        
+        <mat-nav-list *ngIf="(userRole$ | async) === 'ADMIN' || (userRole$ | async) === 'USER'">
             <!-- Admin menu items -->
             <mat-list-item>
                 <button routerLink="order" mat-button><mat-icon>dashboard</mat-icon> Orders</button>
