@@ -20,9 +20,9 @@ import { NewOrderComponent } from './orders/new-order/new-order.component';
 const routes: Routes = [
   { path : '', component: HomeComponent },
   { path : 'new-order', component: NewOrderComponent },  
-  { path : 'order', component: OrderHomeComponent },
-  { path : 'coupon', component : CouponHomeComponent },
-  { path : 'tax', component : TaxFeeComponent },
+  { path : 'order', component: OrderHomeComponent , canActivate : [authGuard,],},
+  { path : 'coupon', component : CouponHomeComponent , canActivate : [authGuard,],},
+  { path : 'tax', component : TaxFeeComponent , canActivate : [authGuard,],},
   { path : 'menu', component:MenuHomeComponent, canActivate : [authGuard,],},
   { path : 'login', component: LoginComponent },
   { path : 'members', component:MemberComponent, canActivate : [authGuard, roleAdminGuard],},
