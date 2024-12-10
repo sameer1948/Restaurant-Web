@@ -17,6 +17,8 @@ export class ChangePasswordDialogComponent {
   
   passwordForm: FormGroup;
   oldPassword: string;  // Decrypted old password
+  username : string;
+
 
   showOldPassword: boolean = false; // Flag to toggle old password visibility
   showNewPassword: boolean = false; // Flag to toggle new password visibility
@@ -30,6 +32,7 @@ export class ChangePasswordDialogComponent {
     
     // Decrypt old password (provided in dialog data)
     this.oldPassword = this.decryptPassword(data.password);
+    this.username = data.username;
 
     // Initialize the password form group
     this.passwordForm = this.fb.group(
@@ -82,9 +85,8 @@ export class ChangePasswordDialogComponent {
     if (this.passwordForm.valid) {      
       // Get the new password values
       const { oldPassword, newPassword } = this.passwordForm.value;
-
       // Call user service to update password
-      this.userService.updatePassword(oldPassword, newPassword).subscribe(
+      this.userService.updatePassword(this.username, newPassword).subscribe(
         (response) => {
           //console.log(response);
           const data = {
