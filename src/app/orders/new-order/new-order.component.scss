@@ -1,144 +1,146 @@
-
 .home-container {
-    margin: 20px;
-    background: linear-gradient(to bottom left, #e3f2fd, #f5f5f5); // Gradient background
-  }
-  
-  mat-card-header {
-    display: flex;
-    align-items: center; 
-  }
-  
-  mat-card-title {
-    display: flex; 
-    align-items: center; 
-    margin-left: 10px; 
-    margin-right: 10px; 
-    gap: 15px
-  }
-  
-  .full-width {
-    flex: 1;  
-  }
-  
-  .partial-width {
-    flex: 0 0 70%; 
-  }
-  
-  mat-form-field {
-    width: 80%;
-  }
-  
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;    
-  }
-  
-  .row {
-    display: flex;
-    width: 95%;    
-  }
-  
-  .menu-column {
-    flex: 1; /* Allow it to grow */
-    border: 1px solid #ddd;
-    //padding: 16px;  
-    min-height: 350px; /* Set minimum height */
-    max-height: 550px; /* Set maximum height to enable scrolling */
-    overflow-y: auto; /* Enable vertical scrolling for the menu list */
-    background-color: rgba(217, 255, 0, 0.034);
-  }
-  
-  .selection-column {
-    flex: 0 0 30%; /* Fixed width for selected items */
-    border: 1px solid #ddd;
-    //padding: 16px;  
-    min-height: 350px; /* Set minimum height */
-    max-height: 550px; /* Set maximum height to enable scrolling */
-    overflow-y: auto; /* Enable vertical scrolling for the menu list */
-    background-color: rgba(0, 247, 255, 0.082);
-  }
-  
-  .selected-item-card {
-    margin-bottom: 16px;
-  }
-  
-  .menu-item {
-    display: flex;
-    //justify-content: space-around;    
-    padding: 0px;
-    width: 200px;
-    height: 275px;
-    //background-color:beige;
-    transition: transform 0.5s; 
-  }
-  
-  .menu-item:hover {
-    transform: scale(1.20); 
-  }
-  
-  .heading-card {
-    margin-bottom: 16px; /* Space below the heading card */
-  }
-  
-  .card-header {
-    display: flex;
-    justify-content: space-between; /* Space out the columns */
-    margin: 0;
-    padding: 0;
-  }
-  
-  .card-header .header-item {
-    font-weight: bold;
-    font-size: 16px;
-    padding: 0 16px; /* Add some padding for spacing between columns */
-  }
-  
-  
-  .card-content {
-    display: flex;
-    align-items: center; /* Center items vertically */
-    justify-content: space-between; /* Space out items */
-  }
-  
-  .card-action-buttons {
-    display: flex;
-    align-items: center; /* Align buttons and quantity */
-    //gap: 16px; /* Space between buttons and quantity */
-  }
-  
-  .action-buttons {
-    padding: 10px;
-    display: flex;
-    align-items: center; /* Center items vertically */
-    justify-content: center; /* Distribute space between buttons */
-    gap: 20px; /* Optional: adjust gap size as needed */
-  }
-  
-  .quantity {
-    font-weight: bold; /* Optional: make quantity text bold */
-    width: auto; /* Fixed width for quantity display */
-    text-align: center; /* Center the quantity */
-  }
-  
-  .loading-container {    
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.15);
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;  
-  }
-  
-  .error-message {
-    color: red;
-    text-align: center;
-    padding: 10px;  
-    margin: 20px;
-  }
-  
+  margin: 20px;
+  background: linear-gradient(to bottom left, #e3f2fd, #f5f5f5); // Gradient background
+}
+
+mat-card-header {
+  display: flex;
+  align-items: center;
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+  gap: 15px
+}
+
+.full-width {
+  flex: 1;
+}
+
+.partial-width {
+  flex: 0 0 70%;
+}
+
+mat-form-field {
+  width: 80%;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  width: 95%;
+}
+
+.menu-column {
+  flex: 1;
+  border: 1px solid #ddd;
+  //padding: 16px;  
+  min-height: 350px;
+  max-height: 550px;
+  overflow-y: auto;
+  background-color: rgba(217, 255, 0, 0.034);
+}
+
+.selection-column {
+  flex: 0 0 30%;
+  border: 1px solid #ddd;
+  min-height: 350px;
+  max-height: 550px;
+  overflow-y: auto;
+  background-color: rgba(0, 247, 255, 0.082);
+}
+
+.selected-item-card {
+  margin-bottom: 16px;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  width: 220px;
+  height: 300px;
+  background-color: #F5F5DC;
+  border-radius: 12px;
+  border: 2px solid #8A2BE2;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.menu-item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.heading-card {
+  margin-bottom: 16px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.card-header .header-item {
+  font-weight: bold;
+  font-size: 16px;
+  padding: 0 16px;
+}
+
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-action-buttons {
+  display: flex;
+  align-items: center;
+  //gap: 16px; /* Space between buttons and quantity */
+}
+
+.action-buttons {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.quantity {
+  font-weight: bold;
+  width: auto;
+  text-align: center;
+}
+
+.loading-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  padding: 10px;
+  margin: 20px;
+}
