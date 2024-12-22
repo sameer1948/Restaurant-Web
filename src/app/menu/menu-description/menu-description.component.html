@@ -9,7 +9,7 @@
     
     <!-- Image Container -->
     <div class="image-container">
-        <img mat-card-image [src]="localImagePath" alt="{{ menu.item }}" 
+        <img mat-card-image src={{menu.imagePath}} alt="{{ menu.item }}"
              class="menu-image" />
     </div>
     
@@ -20,8 +20,6 @@
             <span class="menu-quantity">Quantity: {{ menu.quantity }}</span>
             <span class="menu-price">Price: {{ menu.price | currency:'INR':'symbol':'1.0-2' }}</span>
         </div>
-        <p class="menu-description">{{ menu.description }}</p>
-        <p class="menu-description">{{ menu.description }}</p>
         <p class="menu-description">{{ menu.description }}</p>
     </div>
     
