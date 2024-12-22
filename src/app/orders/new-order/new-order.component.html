@@ -78,8 +78,8 @@
             <mat-card class="menu-item">
               <!-- <img mat-card-image [src]="item.imagePath" alt="{{ item.item }}" /> -->
               <!-- Image card component with a fixed size -->
-              <div class="menu-image">
-                <img mat-card-image [src]="localImagePath" alt="{{ item.item }}"
+              <div class="menu-image">                
+                <img mat-card-image src={{item.imagePath}} alt="{{ item.item }}"
                   style="width: 150px; height: 150px; object-fit: cover;" />
               </div>
               <mat-card-content>
