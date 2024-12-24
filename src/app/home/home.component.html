@@ -5,7 +5,7 @@
   <mat-card-content>
     <div class="marquee">
       <div class="marquee-content">
-        <a *ngFor="let image of images" [href]="image.link" class="marquee-image-wrapper">
+        <a *ngFor="let image of getRepeatedImages(10)" [href]="image.link" class="marquee-image-wrapper">
           <img [src]="image.src" [alt]="image.alt" class="marquee-image" />
         </a>
       </div>

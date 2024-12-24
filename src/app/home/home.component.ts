@@ -25,5 +25,12 @@ export class HomeComponent {
     
   ];
  
+  getRepeatedImages(times : number) {
+    let repeatedImages: any = [];
+    for (let i = 0; i < times; i++) {
+      repeatedImages = repeatedImages.concat(this.images); 
+    }
+    return repeatedImages;
+  }
      
 }

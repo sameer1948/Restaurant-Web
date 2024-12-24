@@ -17,7 +17,7 @@
 
 .marquee-content {
   display: inline-block;
-  animation: scroll 10s linear infinite; /* Adjust speed as needed */
+  animation: scroll 100s linear infinite; /* Adjust speed as needed */
   position: relative; /* Allows positioning */
   left: 50%; /* Start the marquee in the middle */
   transform: translateX(-50%); /* Center the first image */
